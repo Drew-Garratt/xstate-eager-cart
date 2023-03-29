@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '../styles/globals.scss';
 
 const RootLayout = (
   // Layouts must accept a children prop.
