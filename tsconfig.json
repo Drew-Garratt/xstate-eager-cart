@@ -4,24 +4,52 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/test-utils": ["../config/tests/test-utils"],
-      "@/config/*": ["./config/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/components/*": ["./components/*"],
-      "@/backend/*": ["./backend/*"],
-      "@/features/*": ["./features/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/public/*": ["../public/*"],
-      "@/themes/*": ["./themes/*"]
-    }
+      "@/test-utils": [
+        "../config/tests/test-utils"
+      ],
+      "@/config/*": [
+        "./config/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/backend/*": [
+        "./backend/*"
+      ],
+      "@/features/*": [
+        "./features/*"
+      ],
+      "@/pages/*": [
+        "src/pages/*"
+      ],
+      "@/public/*": [
+        "../public/*"
+      ],
+      "@/themes/*": [
+        "./themes/*"
+      ]
+    },
+    "strictNullChecks": true
   },
-  "exclude": ["**/node_modules", "**/.*/"],
+  "plugins": [{ "name": "next" }],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
+  ],
   "include": [
+    ".next/types/**/*.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

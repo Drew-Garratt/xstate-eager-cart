@@ -1,25 +1,31 @@
 {
-    "extensions": {
-        "recommendations": [
-        "folke.vscode-monorepo-workspace",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "ZixuanChen.vitest-explorer",
-        "Orta.vscode-jest"
-        ]
-    },
-    "settings": {
-        "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-        },
-        // Disable vscode formatting for js,jsx,ts,tsx files
-        // to allow dbaeumer.vscode-eslint to format them
-        "[javascript]": {
-        "editor.formatOnSave": false
-        },
-        "eslint.alwaysShowStatus": true,
+  "folders": [
+    {
+      "name": "🌳 nextjs",
+      "path": "."
     }
+  ],
+  "extensions": {
+    "recommendations": [
+      "folke.vscode-monorepo-workspace",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "zixuanchen.vitest-explorer",
+      "orta.vscode-jest",
+      "statelyai.stately-vscode"
+    ]
+  },
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    // Disable vscode formatting for js,jsx,ts,tsx files
+    // to allow dbaeumer.vscode-eslint to format them
+    "[javascript]": {
+      "editor.formatOnSave": false
+    },
+    "eslint.alwaysShowStatus": true
+  }
 }
-  

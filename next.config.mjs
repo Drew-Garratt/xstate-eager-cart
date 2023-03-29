@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 import withBundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs'; // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import { createSecureHeaders } from 'next-secure-headers';
 import pc from 'picocolors';
 
@@ -209,10 +210,9 @@ const nextConfig = {
     // @link {https://nextjs.org/blog/next-11-1#es-modules-support|Blog 11.1.0}
     // @link {https://github.com/vercel/next.js/discussions/27876|Discussion}
     esmExternals: true,
-    // Experimental monorepo support
-    // @link {https://github.com/vercel/next.js/pull/22867|Original PR}
-    // @link {https://github.com/vercel/next.js/discussions/26420|Discussion}
-    externalDir: true,
+
+    // @link {https://beta.nextjs.org/docs/upgrade-guide#step-1-creating-the-app-directory}
+    appDir: true,
   },
 
   typescript: {
@@ -291,6 +291,23 @@ const nextConfig = {
 };
 
 let config = nextConfig;
+
+if (!NEXTJS_DISABLE_SENTRY) {
+  config = withSentryConfig(config, {
+    // Additional config options for the Sentry Webpack plugin. Keep in mind that
+    // the following options are set automatically, and overriding them is not
+    // recommended:
+    //   release, url, org, project, authToken, configFile, stripPrefix,
+    //   urlPrefix, include, ignore
+    // For all available options, see:
+    // https://github.com/getsentry/sentry-webpack-plugin#options.
+    // silent: isProd, // Suppresses all logs
+    dryRun: NEXTJS_SENTRY_UPLOAD_DRY_RUN,
+  });
+} else {
+  const { sentry, ...rest } = config;
+  config = rest;
+}
 
 if (process.env.ANALYZE === 'true') {
   config = withBundleAnalyzer({
