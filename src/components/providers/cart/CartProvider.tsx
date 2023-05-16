@@ -2,7 +2,6 @@ import { createContext, ReactNode } from 'react';
 import { useInterpret } from '@xstate/react';
 import { cartMachine } from './machine/cartMachine';
 import { assign, ContextFrom, InterpreterFrom, StateFrom } from 'xstate';
-import pusAddItemToQueue from './actions/pusAddItemToQueue';
 
 /**
  * Generic types for the cart context
@@ -48,66 +47,139 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
    *
    * useSelector can be used to subscribe to the specific values in state without triggering a re-render for every state change.
    */
-  const cartService = useInterpret(cartMachine, {
-    // Enable devTools in development
-    devTools: process.env.NODE_ENV === 'development',
-    /**
-     * Services
-     *
-     * Services are actors that invoked by the machine when a transition to a given state occurs.
-     * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
-     * https://stately.ai/docs/xstate/actors/actions-vs-actors
-     */
-    services: {
-      executeAddToCartFromQueue: async () => {
-        return { data: null };
+  const cartService = useInterpret(
+    cartMachine,
+    {
+      // Enable devTools in development
+      devTools: true,
+      /**
+       * Services
+       *
+       * Services are actors that invoked by the machine when a transition to a given state occurs.
+       * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
+       * https://stately.ai/docs/xstate/actors/actions-vs-actors
+       */
+      services: {
+        initialiseCart: async () => {
+          return { data: null };
+        },
+        checkAsyncQueue: (_, event) => (sendBack) => {
+          if (event.type !== 'SEND_TO_CART_QUEUE') return;
+          switch (event.data.type) {
+            case 'ADD_ITEM':
+              sendBack({ type: 'ASYNC_ADD_TO_CART', data: event.data.data });
+              break;
+            case 'UPDATE_ITEM':
+              sendBack({ type: 'ASYNC_UPDATE_CART', data: event.data.data });
+              break;
+            case 'REMOVE_ITEM':
+              sendBack({
+                type: 'ASYNC_REMOVE_FROM_CART',
+                data: event.data.data,
+              });
+              break;
+            default:
+              return;
+          }
+        },
+        asyncAddToCart: async () => {
+          return { data: null };
+        },
+        asyncUpdateCart: async () => {
+          return { data: null };
+        },
+        asyncRemoveFromCart: async () => {
+          return { data: null };
+        },
+        checkOptimisticQueue: (context) => (sendBack) => {
+          if (context.cartContext.optimisticQueue.length < 1) return;
+
+          /**
+           * Get the last event in the async queue
+           */
+          const event =
+            context.cartContext.optimisticQueue[
+              context.cartContext.optimisticQueue.length - 1
+            ];
+
+          switch (event.type) {
+            case 'ADD_ITEM':
+              sendBack({
+                type: 'SKIP_ACTION',
+              });
+              break;
+            case 'UPDATE_ITEM':
+              sendBack({
+                type: 'OPTIMISTIC_UPDATE_CART',
+                data: event.data,
+              });
+              break;
+            case 'REMOVE_ITEM':
+              sendBack({
+                type: 'OPTIMISTIC_REMOVE_FROM_CART',
+                data: event.data,
+              });
+              break;
+            default:
+              return;
+          }
+        },
       },
-      executeRemoveFromCartQueue: async () => {
-        return { data: null };
+      /**
+       * Actions
+       *
+       * Actions are functions that are executed when a transition occurs.
+       * Here we load actions from the actions folder and assign them to machine.
+       */
+      actions: {
+        removeOldestItemFromQueue: () => {},
+        addSuccessMessage: () => {},
+        assignError: () => {},
+        addActionToOptimisticQueue: assign((context, event) => {
+          return {
+            ...context,
+            cartContext: {
+              ...context.cartContext,
+              optimisticQueue: [
+                event.data,
+                ...context.cartContext.optimisticQueue,
+              ],
+            },
+          };
+        }),
+        removeOldestFromOptQueue: assign((context) => {
+          return {
+            ...context,
+            cartContext: {
+              ...context.cartContext,
+              optimisticQueue: context.cartContext.optimisticQueue.slice(1),
+            },
+          };
+        }),
       },
-      executeUpdateCartFromQueue: async () => {
-        return { data: null };
+      /**
+       * Guards
+       *
+       * Guards are functions that are executed when a transition occurs.
+       * They are used to determine if a transition should occur
+       */
+      guards: {
+        ifThereAreErrors: (context) => {
+          return false;
+        },
+        thereAreMoreOptimisticActionsInQueue: (context) => {
+          return context.cartContext.optimisticQueue.length > 0;
+        },
+        thereAreMoreAsyncActionsInQueue: (context) => {
+          return context.cartContext.asyncQueue.length > 0;
+        },
       },
     },
-    /**
-     * Actions
-     *
-     * Actions are functions that are executed when a transition occurs.
-     * Here we load actions from the actions folder and assign them to machine.
-     */
-    actions: {
-      pusAddItemToQueue,
-      pushUpdateItemToQueue: assign({
-        queue: (context, event) => [...context.queue, event],
-      }),
-      pushRemoveItemToQueue: assign({
-        queue: (context, event) => [...context.queue, event],
-      }),
-      removeOldestItemFromQueue: assign({
-        queue: (context) => [context.queue[0], ...context.queue],
-      }),
-      addItemAndUpdateTotals: () => {},
-      updateItemAndUpdateTotals: () => {},
-      removeItemAndUpdateTotals: () => {},
-      assignCart: assign({
-        cart: (context) => context.workingCart,
-      }),
-      throwErrorMessage: () => {},
-    },
-    /**
-     * Guards
-     *
-     * Guards are functions that are executed when a transition occurs.
-     * They are used to determine if a transition should occur
-     */
-    guards: {
-      itemIsAddToCart: (context) => context.queue[0].type === 'ADD_ITEM',
-      itemIsUpdateCart: (context) => context.queue[0].type === 'UPDATE_ITEM',
-      itemIsRemoveFromCart: (context) =>
-        context.queue[0].type === 'REMOVE_ITEM',
-      thereAreMoreItemsInTheQueue: (context) => context.queue.length > 0,
-    },
-  });
+    (state) => {
+      // subscribes to state changes
+      console.log(state);
+    }
+  );
 
   return (
     <CartContext.Provider value={cartService}>{children}</CartContext.Provider>

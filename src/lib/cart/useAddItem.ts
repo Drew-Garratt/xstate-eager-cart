@@ -9,5 +9,12 @@ export function useAddItem(item: CartItemBody) {
     throw new Error('useAddItem must be used within a CartProvider');
   }
 
-  return cartService.send({ type: 'ADD_ITEM', input: { item } });
+  const { send } = cartService;
+
+  return () => {
+    send({
+      type: 'SEND_TO_CART_QUEUE',
+      data: { type: 'ADD_ITEM', data: { item } },
+    });
+  };
 }

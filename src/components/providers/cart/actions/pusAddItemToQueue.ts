@@ -1,12 +1,13 @@
+import { Cart } from 'types.d/cart';
 import { assign } from 'xstate';
 import { CartMachineContext } from '../CartProvider';
 import { AddItemEvent } from '../machine/cartMachine';
 
 const pusAddItemToQueue = assign<CartMachineContext, AddItemEvent>({
   queue: (context, event) => [...context.queue, event],
-  cart: (context, event) => {
-    if (context.cart) {
-      const { cart } = context;
+  cart: (context, event): Cart | null => {
+    const { cart } = context;
+    if (cart) {
       const { lineItems } = cart;
       const { item } = event.input;
 
@@ -17,7 +18,7 @@ const pusAddItemToQueue = assign<CartMachineContext, AddItemEvent>({
       if (existingItem) {
         return {
           ...cart,
-          line_items: lineItems.map((lineItem) => {
+          lineItems: lineItems.map((lineItem) => {
             if (lineItem.id === item.productId) {
               return {
                 ...lineItem,
@@ -32,7 +33,12 @@ const pusAddItemToQueue = assign<CartMachineContext, AddItemEvent>({
 
       return {
         ...cart,
-        lineitems: [...lineItems, item],
+        lineItems: [
+          ...lineItems,
+          {
+            id: item.productId,
+          },
+        ],
       };
     }
 
