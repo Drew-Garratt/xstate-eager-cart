@@ -31,8 +31,14 @@
       "@/features/*": [
         "./features/*"
       ],
-      "@/pages/*": [
-        "src/pages/*"
+      "@/app/*": [
+        "src/app/*"
+      ],
+      "@/types/*": [
+        "src/types.d/*"
+      ],
+      "@/styles/*": [
+        "./styles/*"
       ],
       "@/public/*": [
         "../public/*"
@@ -41,12 +47,22 @@
         "./themes/*"
       ]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "plugins": [{ "name": "next" }],
+  "plugins": [
+    {
+      "name": "next"
+    }
+  ],
   "exclude": [
     "**/node_modules",
-    "**/.*/"
+    "**/.*/",
+    "**/typegen.ts"
   ],
   "include": [
     ".next/types/**/*.ts",
