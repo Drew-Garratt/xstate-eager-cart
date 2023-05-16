@@ -5,11 +5,13 @@ import { CartProvider } from '../cart/CartProvider';
 import { inspect } from '@xstate/inspect';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
-  const inspectCalled = useRef(false);
+  if (process.env.NODE_ENV === 'development') {
+    const inspectCalled = useRef(false);
 
-  if (inspectCalled.current === false) {
-    inspect();
-    inspectCalled.current = true;
+    if (inspectCalled.current === false) {
+      inspect({ iframe: false });
+      inspectCalled.current = true;
+    }
   }
 
   return (
