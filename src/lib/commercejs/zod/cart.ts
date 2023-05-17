@@ -48,4 +48,4 @@ export const commercejsCartSchema = z.object({
   meta: z.unknown(),
 });
 
-type CommercejsCart = z.infer<typeof commercejsCartSchema>;
+export type CommercejsCart = z.infer<typeof commercejsCartSchema>;

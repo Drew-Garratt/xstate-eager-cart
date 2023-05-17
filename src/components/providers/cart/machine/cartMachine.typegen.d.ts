@@ -9,6 +9,11 @@ export interface Typegen0 {
       data: unknown;
       __tip: 'See the XState TS docs to learn how to strongly type this.';
     };
+    'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]': {
+      type: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
+      data: unknown;
+      __tip: 'See the XState TS docs to learn how to strongly type this.';
+    };
     'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]': {
       type: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]';
       data: unknown;
@@ -23,6 +28,10 @@ export interface Typegen0 {
       type: 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]';
       data: unknown;
     };
+    'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]': {
+      type: 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
+      data: unknown;
+    };
     'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]': {
       type: 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]';
       data: unknown;
@@ -35,6 +44,7 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     asyncAddToCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]';
+    asyncCreateCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
     asyncRemoveFromCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]';
     asyncUpdateCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
     checkAsyncQueue: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Check Queue:invocation[0]';
@@ -45,16 +55,19 @@ export interface Typegen0 {
     actions:
       | 'addActionToOptimisticQueue'
       | 'addSuccessMessage'
+      | 'assignCart'
       | 'assignError'
       | 'removeOldestFromOptQueue'
       | 'removeOldestItemFromQueue';
     delays: never;
     guards:
+      | 'cartExists'
       | 'ifThereAreErrors'
       | 'thereAreMoreAsyncActionsInQueue'
       | 'thereAreMoreOptimisticActionsInQueue';
     services:
       | 'asyncAddToCart'
+      | 'asyncCreateCart'
       | 'asyncRemoveFromCart'
       | 'asyncUpdateCart'
       | 'checkAsyncQueue'
@@ -67,8 +80,10 @@ export interface Typegen0 {
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
+    assignCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
     assignError:
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
+      | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]'
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
     removeOldestFromOptQueue:
@@ -82,15 +97,19 @@ export interface Typegen0 {
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {
+    cartExists: '';
     ifThereAreErrors: 'done.state.Store Machine.Cart.Ready.Cart Async.Execute async action';
     thereAreMoreAsyncActionsInQueue: '';
     thereAreMoreOptimisticActionsInQueue: '';
   };
   eventsCausingServices: {
     asyncAddToCart: 'ASYNC_ADD_TO_CART';
+    asyncCreateCart: '';
     asyncRemoveFromCart: 'ASYNC_REMOVE_FROM_CART';
     asyncUpdateCart: 'ASYNC_UPDATE_CART';
-    checkAsyncQueue: '' | 'RETRY' | 'SEND_TO_CART_QUEUE';
+    checkAsyncQueue:
+      | ''
+      | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
     checkOptimisticQueue: '' | 'SEND_TO_CART_QUEUE';
     initialiseCart: 'xstate.init';
   };
@@ -106,6 +125,8 @@ export interface Typegen0 {
     | 'Cart.Ready.Cart Async.Execute async action.Action errored'
     | 'Cart.Ready.Cart Async.Execute async action.Add to Cart'
     | 'Cart.Ready.Cart Async.Execute async action.Check Queue'
+    | 'Cart.Ready.Cart Async.Execute async action.Check for Cart'
+    | 'Cart.Ready.Cart Async.Execute async action.Create Cart'
     | 'Cart.Ready.Cart Async.Execute async action.Remove from Cart'
     | 'Cart.Ready.Cart Async.Execute async action.Update Cart'
     | 'Cart.Ready.Cart Async.Idle'
@@ -135,6 +156,8 @@ export interface Typegen0 {
                             | 'Action errored'
                             | 'Add to Cart'
                             | 'Check Queue'
+                            | 'Check for Cart'
+                            | 'Create Cart'
                             | 'Remove from Cart'
                             | 'Update Cart';
                         };

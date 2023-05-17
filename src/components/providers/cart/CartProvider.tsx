@@ -2,6 +2,7 @@ import { createContext, ReactNode } from 'react';
 import { useInterpret } from '@xstate/react';
 import { cartMachine } from './machine/cartMachine';
 import { assign, ContextFrom, InterpreterFrom, StateFrom } from 'xstate';
+import { commercejsAddToCart } from '@/lib/commercejs/postAddToCart';
 
 /**
  * Generic types for the cart context
@@ -83,6 +84,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           }
         },
         asyncAddToCart: async () => {
+          const cart = await commercejsAddToCart({
+            cartId: 'test',
+            productId: 'test',
+            quantity: 1,
+          });
+
+          console.log(cart);
+
           return { data: null };
         },
         asyncUpdateCart: async () => {
