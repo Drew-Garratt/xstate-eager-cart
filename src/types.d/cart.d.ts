@@ -89,7 +89,7 @@ export interface Cart {
   /**
    * List of cart line items.
    */
-  lineItems: LineItem[];
+  lineItems: Map<string, LineItem>;
   /**
    * The sum of all the pricexs of all the items in the cart.
    * Duties, taxes, shipping and discounts excluded.
