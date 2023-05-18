@@ -1,9 +1,9 @@
-import { CartContext } from '@/components/providers/cart/CartProvider';
+import { StoreContext } from '@/components/providers/store/StoreProvider';
 import { useContext } from 'react';
 import { CartItemBody } from 'types.d/cart';
 
 export function useAddItem(item: CartItemBody) {
-  const cartService = useContext(CartContext);
+  const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
     throw new Error('useAddItem must be used within a CartProvider');

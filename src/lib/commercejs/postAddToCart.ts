@@ -1,6 +1,16 @@
 import { CommercejsCart, commercejsCartSchema } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
+import exp from 'constants';
 
+/**
+ * Commmerce JS Add to Cart
+ *
+ * @description Add an item to the cart
+ * @link https://commercejs.com/docs/sdk/cart/#add-to-cart
+ *
+ * @param param0 : { cartId: string; productId: string; quantity: number; options?: unknown; variantId?: string; }
+ * @returns : Promise<CommercejsCart | false>
+ */
 export async function commercejsAddToCart({
   cartId,
   productId,
@@ -23,3 +33,5 @@ export async function commercejsAddToCart({
     schema: commercejsCartSchema,
   });
 }
+
+export default commercejsAddToCart;

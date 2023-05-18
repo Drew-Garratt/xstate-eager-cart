@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useRef } from 'react';
-import { CartProvider } from '../cart/CartProvider';
+import { StoreProvider } from '../store/StoreProvider';
 import { inspect } from '@xstate/inspect';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {

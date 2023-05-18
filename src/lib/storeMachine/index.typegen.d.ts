@@ -77,6 +77,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     addActionToOptimisticQueue: 'SEND_TO_CART_QUEUE';
     addSuccessMessage:
+      | 'ASYNC_QUEUE_IS_EMPTY'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
@@ -91,6 +92,7 @@ export interface Typegen0 {
       | 'OPTIMISTIC_UPDATE_CART'
       | 'SKIP_ACTION';
     removeOldestItemFromQueue:
+      | 'ASYNC_QUEUE_IS_EMPTY'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';

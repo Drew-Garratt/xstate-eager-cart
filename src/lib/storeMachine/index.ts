@@ -1,5 +1,15 @@
 import { Cart, CartItemBody } from 'types.d/cart';
-import { createMachine } from 'xstate';
+import {
+  ActionObject,
+  AnyStateMachine,
+  ConditionPredicate,
+  ContextFrom,
+  createMachine,
+  EventFrom,
+  InterpreterFrom,
+  InvokeCreator,
+  StateFrom,
+} from 'xstate';
 
 export interface AddItemCartInput {
   data: { item: CartItemBody };
@@ -30,10 +40,30 @@ export type CartEvents =
   | UpdateItemCartEvent
   | RemoveItemCartEvent;
 
-export const cartMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgGEDNVqBJCs1MggGzNjAGII6KtUoA3dAGsaaLLkKlKNeoxZsO3XmATj0RAh2EBtAAwBdU2cSgADuljsyw6yAAeiAEwBOL9Q8Bmfx8PEwAOExCTABYAGhAAT0QARgBWFOoggHYUpIA2KI8PTO8UgF9SuNlsfGJyERUmACUwAgh4ugZUHABBWHiKImoAUVcwIgBXVFwCPoGcYkMKQWEaWFQDGQxqhTrlTupm1vaGntnBkbHJ6bP5okXLFzsHRZd3BH8TXyTUr2+kj9y-0ycUSCCSISS1Ci+VCSRMgVyRQK5UqW3ktSUHVUhzaWK6vX651GEym8xuCycSyEIjWG2oVXRinq+xxx06p0Jw2JVzJhNu9ySViQICejmcwre4Ki1FyXhS8MCJiSmTh-iSIOS8PSOTSHlC+pMJkyoSiKJADJqTL22JauJOBIGXMupJmfIpwn4yCGADkACIAfQAKgB5f20bqNQP+gCKAFUhvGHsLRS9haDMrLqCrQiljSkCv44m8PLl9dQfErDR4UqFctkzRadpiGgdbWzGBzHRcSdc3XdKXQSGNJDho+MwOP+N1kABNb20f3dX0BkNhiOBpO2exiiivZL+TK+fxRLwFE9RNIFjVgsK+aG1i8BPIffwNtGW3Z41tHPGdonO3s5ndChB2HUdx0nac5wXRohjwYMADUhn9AAxRpgzwNdI03EVt1TUBJQPI9zw8c9LwCa9vlPctS1yGs5ThCI3zkD9mxZNtfwdf8e15ID+2EUCiBHMcJwEKD539WMAAVfW6QNkPDbDzEePDKT3MEiIyEiyPzCiEkQLxQn8GjaxrfMIm8XJmO2DFmRtH97TOJ0eNdPjFlbABbdAxFwAAzTB0A8nAGmWERdGkel3ybOymg4xzOW7HlXKIfkB2aLyfJwfzAuCzodAoCR9HucwcJTNSJWSLxMhMagTTyXToRMHJC30hA5Q8PwklrEs9RNExAWsxlPxbVlOKcxKXXJfiQPS7y-ICoKQrATAAswagbC4AxfKwDzIpY6LrVihz2S45ykqm9zZsy7LFry3QispSxStU8UCMq6raqieqz1yJr-kojw4SzLq6LlWFL0yQbWJi787RO8buUmvt3O6CAIBwDBcsYUKaHCzZ9tsw7YfbfEEYA3iUuA6hUfRzGGnywqDEekrlOTF7dwqsEqpquq6J+v6WtBLxomB2sIi+lJ-BSPUoYOr9RvirtEcAynpuptGMfQLHUH4ZbVvWzbUG2zBdsbQn5bi+GEuVinUoEmnNe1hm9CZ4wWaFLdnnKt6uY+3mGt+5rKLhdJAYfGtES618KnNKLzZGy2O1OiaVbtkDYxsCANm1nHRAKqR8Zsq0LeOpOyZci6BwzrPSXp+7XYoJ7Wc9nd1KSbnPu+0jA-+1qc0yTr+5zAtZfj9jS9J63yeStPqGr7OlpWrADa2na9qL4bx7hsup4r5Gq8zhe7vzh63YsZvcK9163Henmvr57uBevHxfGzOilUBC99VH4uE4nv9qYAHcCCOAoFAHA2BUCYHiPwWCgZGgzmelfDmPtQjZAyBHfMUt4RGg8M-Y8GRTJRC+v4OsUQpY-03vZbek9HTdGAaA8BkDoGeh9CuUMikoxxgTEMJBrdOawmMikWUwivAfC+u3FIwdhHUBrF1YRuRSGZHIaaGOZtf5bxJgA5gEAuACC9H6IMHD1wxnjImC+ZVr6SiSAUPwvxjTfDqqeWIrV8jGThP8X40QAiULYtQrRp1aBDiEn+cColWGGNXJw0xPC+H4RvggQEkJ8hRCrIUL6sJ1StRyMkrx1YfCkKiJkSGai44aP8WNTkQSwJcTCZOOJ3sElqiPICEIijcxykltebI6Q4ShDlL9MIBRlS+JhgrK2jpqkhNqSJepgoVLIPUrpcs8psGFEyIEIy140i+FlHCfJYj8jFNGUTcZHZgw2A4B5XgHBBg6L0RE9hWEuFmN4RY9mbcUi-FqkEYWuRAR0VCJRcIvhqxdVSE1T+pCTklxoTgC5VyblkG4jyBFZBrlrGRT0aaudaRTHXkNPxR04Vooxbcs6pJSVIpSt0aaDSrHJFlLkPwqTwikPsesyihkvilmIQotURoYV-xJZc9F1KKW4CpZimlOKDFPOidw8xHtL78J9nkI01AP4bK+QMo0LjQQhEMlmL+TUwjgysqUgm5TiVaKleSlO8LRVkqxbS9yUyRyuspJ6AA0swKSi5aCBmYMGb09KUEJJSX4YpXUVQFH1Cea8bTpT+G7gU6I2QbFCs0b+O1yKJWOsRdK7FbrgkepxcGKSQa8DMGQEGhc0lZLyWeWG9S+RdnQiqv0oI7dDxcozDRSWpFJYbOhGUS1G8iXExzU68VDrc0ypLTU8tlbmDVtrcwGCcFELITQhhZt7zFmc0RKEGUHbjTkLDr3UEXVYSyMPP08hnTvgeCzRUk487BIjnnXUgQLbObfEzBEMROzvhpA2ZRHUmrwQZsUb8JEr6bXTsLeS91BaxVFtmb++ZbND1qtlDVfJARDL5iwXg1qeQTTlgNIomxNjZReHKDHCg6AIBwBcOo3YCzVUJIALR1gyNELw-zZShD1EJrw14eMBHLC-CsHwzI5FUaiK1VDUBcfiW8Hj7cBMnmE4ZMTspryKNkYaQ07cAhmtCAhtQjhNB8HU40t4xQIOQlM1WNBdYaMvvHYSsZbYHMMoQHqGUcoFQfGVKqLJoIEQhf2ayxEPgkjWbObQogAXw1OeZSIsLSoVTwii4gM81B277NWT4EdyXE6pfzTPYC6W279RPf8RrUsDxoK+t0zM2ZczZH1IiYRlX-7JxtrVtWqHMP1f-QB4rAIjLDvawVsEELZGHPol9OTg24XDenpXASV15o5QaJNvD-zNWAxTaRAoVVBbJAiyZf5ARsyBE2wE8u51972w1nTTox2El5G+dLOiAQHx5ikeR-qzL7wwiB9CbzymJ1+aG29pGbkD411wEdnD3HJSlgHjWfwonsiHkM61ITNUhO1n1Ny+ERQXuVKVjtj7IFPXCBwNSMAv3iwBA6rKC70sI7ZGvKZe73PSJFC8HD2OKnJ0pYAQ60bKNpo4D1nICAnPPDc5C3z6stZBfg8PFCWix4PjwiMgxnz0NTlVYAfQkBHAwEQLAFA0ELcNOIDoukYp-zDSXiomD698JpRKl1NVHIpE8h08Vnc3RHOsdu7aiePwSpiG-Gls4-ViB8zJqMhmiHUQu2R4mYMVDMyIKx9d455IH1PgqiKOk8FXVtlFJk4iGvcblGF-OTO6V6ulsDxr9B+vmSgXkYKHj6D8pSwkejvD3zVv-4fvueXlV8flRVRmyWI0HwYP+8qv8WRrLilpCheb2flvYW2u7-am236WfhssRlqvA8jLEOKP1-pRoR-XuNDVQ8x5UmKIqiGQz5S4I7z4irIZ5pzpX4upjalrFqNIP7qSFDpAv5FI9T0Sf7Aqlh2L-79QHjtxGSd5dAfrQGQELoDh35s4rC97giAxQjgjCLGgpp5BcqIjlhdTEK-S-B0R1jEFobOrF7wHfoTZx6V5gh0SapVSD7h7D4QbKIso0ZoIWRfIlLlBAA */
+/**
+ * Generic types for the cart context
+ *
+ * Using Xstate's ContextFrom, StateFrom, and InterpreterFrom
+ * we can get the types for the cart machine and use them
+ * in or functions to provide type safety.
+ */
+export type StoreService = InterpreterFrom<typeof storeMachine>;
+export type StoreMachineContext = ContextFrom<typeof storeMachine>;
+export type StoreState = StateFrom<typeof storeMachine>;
+export type StoreEvents = EventFrom<typeof storeMachine>;
+
+export type StoreActor =
+  | AnyStateMachine
+  | InvokeCreator<StoreMachineContext, StoreEvents>;
+export type StoreGuard = ConditionPredicate<StoreMachineContext, StoreEvents>;
+export type StoreAction =
+  | ActionObject<StoreMachineContext, StoreEvents>
+  | (() => void);
+
+export const storeMachine = createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgGEDNVqBJCs1MggGzNjAGII6KtUoA3dAGsaaLLkKlKNeoxZsO3XmATj0RAh2EBtAAwBdU2cSgADuljsyw6yAAeiAEwBGEwE5qXgCsHiYAbIG+Jl6h0QAsADQgAJ6IALSh-gDsABw52V5esb6xmb4eoQC+FYmy2PjE5CIqTABKYAQQSXQMqDgAgrBJFETUAKKuYEQArqi4BIPDOMSGFILCNLCoBjIYdQqNyj3UbR1dzf0LI+OTM3OXS0Qrli52Disu7gg++dTZ5VGZWIxDy+MqJFIIYqxaixADM0VCpUyoVh3kyVRqu3kDSU3VUJ06eN6AyGVwm01mS3uyycqyEIk222otWxiiaRwJZx6F1JY3JtyppIeTy8ViQIFejmc4s+mUyJmosMywURuT+yPBiB80V+oNiBXhgRMgWy2QxIBZ9TZh3x7UJ5xJwz5N0p8yFNOE-GQowAcgARAD6ABUAPIB2h9FpBgMARQAqqME89xZL3jKtX5MtQPMqPEDAV4PIFYZqviZstCQuXYb5sn5USbzZb9rjmsc7VzGDyndcKXd3Y9aXQSJNJDgY1MwJP+H1kABNH20AN9P2B0PhyNB5O2exSigfLWhUIKuuBIr5LzI3IeUuZWGhbO17KIrzZWGwk3o6oWrFWg5E9tTiJbsyRdftFg9Chh1HcdJ2nWcFyXFpRjwEMADVRgDAAxFoQzwDco23CVdzTUBPm8MJqBMDwQRMWIin1Y1b3vR9skiYsQVibIIibX8W3ZW0gIdS5nT7QUIMHYRoKIMcJynAQEMXAM4wABT9Pog0wiNCPMF4SNpA8vmvAJAlCIFfEKP58hLZJEDvB8QTY41UWKZ8PF4uQ-1bDkO2Ax1QLEt0JJWdsAFt0DEXAADNMHQUKcGaNYRF0aRmT4nEBNaXzhN5XsBSCohhSHNpwsinAYrihKeh0CgJH0J5zCI1MDPTL5Qj+ahfGRQIIhrd9XwSWyy1CDxszfQo-E4pEPL2DKbSyoTuX80T8upSSoJKiLoti+LErATBYswagbC4AwoqwUK0s8-j5sA+0lpEvLXTWkLNrKirduq3R6tpSwmv06UyM8MJYRhCJSnfE1iy8UsfBGsb4VKExlWPQEZtZf8205PzHv5Z6BxCvoIAgHAMCqxgkpoFKdmuuaAOxnKezx8DCsg6giZJsnmhquqDF+xrdJTAH91ay8TFB6JSkKXwzNM19Sy6h92thWIPEhrwyjKdGvMyu7O2JXGwPE1n1vZ4nSfQcnUH4fbDuO07UHOzBLubOmseyh7cuZ42iqkjmLatnm9D54wBbFHc3haoGEBCN9qHCQsixokIQVCBXkXjt9YjonNTXCWFtZu+mPa7ZanpZ32oLjGwIG2K3KdEWqpBp2brWLxbS8NwKXqHava8pbnvpDig-sFiO90MsWFUCQEQkyS862RTJYaifx9RGwsCjPUzKm-V22-djuDa9o2Csr6g+7rvaDqwe2zouq7W8xnyj5Alb8eC3ua6vr6m5+0OLBj2IpHQGbhgY-GNICfUhQXIrw1jCaI3hvBBFiDvQubsX73U7ryPoAB3AgjgKBQBwNgVAmAkj8GQkGFoc5-ogJFtHLe-gwhwkgSaP4Ktbzi3jlxHM1FfCBAmrEdBB9MH6zfngghHAiEkLAGQih3p-TBjDNpaM8ZEyjDoRPUWmZsy5hzEefIbFAilg4ZnaIPVCwlABCI5+gksHHydMwCAXABCKLXCozcsYExJiAc1UBnwfBdT0cEfM+oiw2QhBEbIvxYT5GVKaOUdFbHeXseI5atARwyRArBeSXpfQeIImonxmi-HC0MjkLMfDN7IhiMWXwpYVajQEQvTM4tQRmj3ulURaSca8kyTBfyuTpxaNImAsscJFR1l8DWOUZ4KyNNQdmAEZRpYmDogXLptMekLQcW-AZ2ShlyRGaKPS9DJ5eHfDCZ80RnxcSiGnIa6944eFNEUMocJ3wqxSbrBm3IQw2A4KFXgHARjONcfkpR65VHeI0aMqO4zXyXM6kqO8fU6KFlhs+LM0CuJ-GKLWWsPzbp-K7ACoFIKyABQFOSsgwLNhUv6OtBujJZiPwxqk3Z4jaX0tBe-XAPLKWFT6OteFAStQ1n8BkGi6p54awaUNS8PgAjlFVr1bifhOmYm2XYrlwFBUMupZSA1oKmUrEhYUmF6jfHh2Adoxh1kUU5B8MnI84RSwhFrAEbOXVIjRFmYEYl7c9kmqpfynAobhWmwOWOEV5qQwqSDMwPAzBkBJqXKpdSmkilioYeM0oo1UG1kLMebOlyPXrJiQI15ERrFFHakGw+IbAV0qFeGyNZqhwxs7Z6BNSaU1puYEhFC6FMI4Twjmsp5zRZBOzBraiz4-jlkvBW8snVgjcWKPKetWqfw6s5XrfVLbeVhvLhG49Qqe1QW7XG2kXoADSzAVLLloEmkMPpc2TyNFUnMRZfVdQMauqtG7a3bq6oGrZT8D2kt6JG6SY4O3HIEJ+1qyJRohB6vkGiQIMgw0VSNGJpQl0RATonRtYij0UsNfB89VHTVIf4EYU5Qtp2MNfAqfMHEPxdXhI8iEiDCO1jzNAwsszyO9MZkaiubNu1O3rihxhRp-AGORmEZEyMgSli4oEF5x5OL0VyA2yDHLfkl0cVJn2Mmsljjk4lJjtr-F5sCYiaEb4PwqzVLWZeTzlU1gKPO8WxY0HGZ1iSszb8z1nxk9gH+FN6RUybqlfeurD2SfDVF6NMWB6-15g1QBDnymi1NAqdZ+oPwFBojLbIWmeqKnKNioslygnCJC0XJt6Su6rQJl2rLuBr52xOvfZ27LQvBo6yfbu3WpK0F64HIeeWFPjLVgUagcp7xcSVAUOEcC16IM3ig0yX5tVQdM6-Mu3sMshW7QxxSS5rWYVTQGFCibaFTvtYiuEMT2r0UuR+UoxQ8P8YBJ1aIGt7n5GPBB78FB0AQDgC4ZLSgznvc+D1Qt0SS10SiJEtIRYOM+pGkUbwsJAvidQMjsZnxjwcYx-8MtOOECpEQZ1AnGQ9NxK4mTtQjhNB8ApwiwJ4toTZ2LDWGIlzeGllSMqGEPr6uq3atNVrGC0n8-FQgMyMSi1YdLdj0s7VfhvnlFDRE898hc5gyBNXTnEAZEI9xXI4tMxZ1hqZKZSo1btWlps47Jmwtnc6x-E2YzHOTxrAqb7ZW-t6kB54SZppNurPfBWCsFvwvndPj3ab1nhlgGt5PG52YYgCNVh+DImQbxDRNAqKWKskTPnLO5ZXOzUueyZpnqbG0wClW2pVZo+fWrIJ0zPPTZQlTFDVqYg3jefDliBDPNPAeJtdc-n7c2XMegD8YSNDjgI-jV5nnCSvEJF1UT+JctiZRy8Qd96N9rfT2+TdX1Xb+2XGBb8RXcmEMsVbFjogDhnU-GfOJUEcocDRfPZDPJ-YPIcW9YQHAeLD-ZzCveOQEDiVBYEGIWGS5HTXIARKIF1JBH3PdE7f3SAwPaTU2OAigHAW2OQCAJA4GAReOAofA18d8bAuJKif1c-M8DnG-Egv3MbB-EYSRQhYhUhchRgyENdeeCyaiKWPwQoUxNWcxDIVEeUfFLwCA8bJxFxPPFjFHLUS8B8YsI3GiZWP4UsI0BUIJTeWsVEeJFrW-NrCjNLG9e4JDaQwEB8HIT8J3LqF3J5OUX4CILeV5IIMXYgxHU7ZtOjKlaQtnMGYtOnPXRVGsYfeEARQReUXDJvFwlXPVc4ODcFAw8eSnLUcJVbWedqV5BOfUWGEaUw3hFyVEFEAQmIsg7lC9ajM9Dtag7w+iZInXLHctRVHIYXGWE0f4JTOUHQyjVtXo72fo6NHPAYwwior4JragI0fIMIHqLiZQxVbidDDIOEepbwIEeY4onovlPo24xlag9mdaBA9YaQ-zUGDeMXAReEAzD1QoHTS5GIPwbOI8QRa4-5B4kYbtRDOCMou1TY5UHTNbFEITEENWarRVDbKiLIxvY0HwHICE7BR-FfGA7PGCWzTfDYgXLUb9eOdZEEAlEnOEQaCED8VzI3aY7UWsXeAolvS3KA0k8+GbdoN-cnak9XV8FA+8QxGZOo-IRpeEd3CvE0CyXDJUKoKoIAA */
   id: 'Store Machine',
-  tsTypes: {} as import('./cartMachine.typegen.d.ts').Typegen0,
+  tsTypes: {} as import('./index.typegen.d.ts').Typegen0,
   schema: {
     events: {} as
       | {
@@ -43,19 +73,20 @@ export const cartMachine = createMachine({
       | ({ type: 'ASYNC_ADD_TO_CART' } & AddItemCartInput)
       | ({ type: 'ASYNC_UPDATE_CART' } & UpdateItemCartInput)
       | ({ type: 'ASYNC_REMOVE_FROM_CART' } & RemoveItemCartInput)
+      | { type: 'ASYNC_QUEUE_IS_EMPTY' }
       | { type: 'RETRY' }
       | { type: 'SKIP_ACTION' }
       | ({ type: 'OPTIMISTIC_UPDATE_CART' } & UpdateItemCartInput)
       | ({ type: 'OPTIMISTIC_REMOVE_FROM_CART' } & RemoveItemCartInput),
     services: {} as {
-      initialiseCart: { data: any };
-      checkAsyncQueue: { data: any };
-      asyncUpdateCart: { data: any };
-      asyncRemoveFromCart: { data: any };
-      checkOptimisticQueue: { data: any };
-      optimisticAddToCart: { data: any };
-      optimisticUpdateCart: { data: any };
-      optimisticRemoveFromCart: { data: any };
+      initialiseCart: any;
+      checkAsyncQueue: any;
+      asyncUpdateCart: any;
+      asyncRemoveFromCart: any;
+      checkOptimisticQueue: any;
+      optimisticAddToCart: any;
+      optimisticUpdateCart: any;
+      optimisticRemoveFromCart: any;
     },
   },
   context: {
@@ -95,7 +126,7 @@ export const cartMachine = createMachine({
               initial: 'Check Async Queue',
               states: {
                 'Execute async action': {
-                  initial: 'Check Queue',
+                  initial: 'Check for Cart',
                   states: {
                     'Check Queue': {
                       invoke: {
@@ -105,14 +136,21 @@ export const cartMachine = createMachine({
                         ASYNC_ADD_TO_CART: {
                           target: 'Add to Cart',
                         },
+
                         ASYNC_REMOVE_FROM_CART: {
                           target: 'Remove from Cart',
                         },
+
                         ASYNC_UPDATE_CART: {
                           target: 'Update Cart',
                         },
+
+                        ASYNC_QUEUE_IS_EMPTY: {
+                          target: 'Action done',
+                        },
                       },
                     },
+
                     'Remove from Cart': {
                       invoke: {
                         src: 'asyncRemoveFromCart',
@@ -128,6 +166,7 @@ export const cartMachine = createMachine({
                         ],
                       },
                     },
+
                     'Add to Cart': {
                       invoke: {
                         src: 'asyncAddToCart',
@@ -143,6 +182,7 @@ export const cartMachine = createMachine({
                         },
                       },
                     },
+
                     'Update Cart': {
                       invoke: {
                         src: 'asyncUpdateCart',
@@ -158,13 +198,36 @@ export const cartMachine = createMachine({
                         ],
                       },
                     },
+
                     'Action done': {
                       entry: ['removeOldestItemFromQueue', 'addSuccessMessage'],
                       type: 'final',
                     },
+
                     'Action errored': {
                       entry: 'assignError',
                       type: 'final',
+                    },
+
+                    'Check for Cart': {
+                      always: [
+                        {
+                          target: 'Check Queue',
+                          cond: 'cartExists',
+                        },
+                        'Create Cart',
+                      ],
+                    },
+
+                    'Create Cart': {
+                      invoke: {
+                        src: 'asyncCreateCart',
+                        onDone: {
+                          target: 'Check Queue',
+                          actions: 'assignCart',
+                        },
+                        onError: 'Action errored',
+                      },
                     },
                   },
                   on: {

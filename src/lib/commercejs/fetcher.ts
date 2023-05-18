@@ -10,6 +10,14 @@ const headers = {
   'Content-Type': 'application/json',
 };
 
+/**
+ * Commerce JS Fetcher
+ *
+ * @description Fetches data from the Commerce JS API type checked with Zod
+ *
+ * @param input : { path: string; method?: 'GET' | 'POST' | 'PUT' | 'DELETE'; params?: Record<string, string>; schema: ZodSchema<T>; }
+ * @returns : Promise<T | false>
+ */
 export async function commercejsFetcher<T>(input: {
   path: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';

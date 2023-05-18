@@ -12,3 +12,5 @@ export async function commercejsGetProduct({
     schema: productSchema,
   });
 }
+
+export default commercejsGetProduct;

@@ -1,12 +1,15 @@
-import { CartContext } from '@/components/providers/cart/CartProvider';
+import { StoreContext } from '@/components/providers/store/StoreProvider';
 import { useContext } from 'react';
 
-export function useRemoveItem(input: { itemId: string }) {
-  const cartService = useContext(CartContext);
+export function useRemoveItem(data: { itemId: string }) {
+  const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
     throw new Error('useRemoveItem must be used within a CartProvider');
   }
 
-  return cartService.send({ type: 'REMOVE_ITEM', input });
+  return cartService.send({
+    type: 'SEND_TO_CART_QUEUE',
+    data: { type: 'REMOVE_ITEM', data },
+  });
 }
