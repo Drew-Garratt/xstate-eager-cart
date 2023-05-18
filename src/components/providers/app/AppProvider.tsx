@@ -16,7 +16,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <CartProvider>{children}</CartProvider>
+      <StoreProvider>{children}</StoreProvider>
     </>
   );
 };
