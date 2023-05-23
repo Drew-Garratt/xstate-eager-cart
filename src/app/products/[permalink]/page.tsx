@@ -12,13 +12,18 @@ const ProductPage = async ({ params }: { params: { permalink: string } }) => {
 
   const variants = await commercejsGetVariants({ productId: product.id });
 
+  if (!variants) {
+    notFound();
+  }
+
   return (
     <div>
       <h1>{product.name}</h1>
+      <p>{product.id}</p>
+      <p>{variants[0]}</p>
       <AddToCart
         item={{
-          variantId: '',
-          productId: '',
+          variantId: product.id,
           quantity: 1,
         }}
       />

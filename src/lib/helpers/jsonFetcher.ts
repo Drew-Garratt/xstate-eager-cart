@@ -8,7 +8,7 @@ export async function jsonFetcher({
   baseUrl: string;
   path: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  params?: Record<string, string>;
+  params?: Record<string, unknown>;
   headers?: HeadersInit;
 }): Promise<unknown | false> {
   const url = new URL(path, baseUrl);

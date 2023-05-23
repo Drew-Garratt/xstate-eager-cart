@@ -53,12 +53,21 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions:
+      | 'addActionToAsyncQueue'
       | 'addActionToOptimisticQueue'
       | 'addSuccessMessage'
+      | 'addToCartContext'
       | 'assignCart'
       | 'assignError'
+      | 'assignOptimisticCart'
+      | 'clearOptimisticQueue'
+      | 'optimisticAddToCart'
+      | 'optimisticRemoveFromCart'
+      | 'optimisticUpdateCart'
+      | 'removeFromCartContext'
       | 'removeOldestFromOptQueue'
-      | 'removeOldestItemFromQueue';
+      | 'removeOldestItemFromAsyncQueue'
+      | 'updateCartContext';
     delays: never;
     guards:
       | 'cartExists'
@@ -75,27 +84,37 @@ export interface Typegen0 {
       | 'initialiseCart';
   };
   eventsCausingActions: {
+    addActionToAsyncQueue: 'SEND_TO_CART_QUEUE';
     addActionToOptimisticQueue: 'SEND_TO_CART_QUEUE';
     addSuccessMessage:
       | 'ASYNC_QUEUE_IS_EMPTY'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
+    addToCartContext: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]';
     assignCart: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]';
     assignError:
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Create Cart:invocation[0]'
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'error.platform.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
+    assignOptimisticCart: '';
+    clearOptimisticQueue: '';
+    optimisticAddToCart: 'OPTIMISTIC_ADD_TO_CART';
+    optimisticRemoveFromCart: 'OPTIMISTIC_REMOVE_FROM_CART';
+    optimisticUpdateCart: 'OPTIMISTIC_UPDATE_CART';
+    removeFromCartContext: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]';
     removeOldestFromOptQueue:
+      | 'OPTIMISTIC_ADD_TO_CART'
       | 'OPTIMISTIC_REMOVE_FROM_CART'
       | 'OPTIMISTIC_UPDATE_CART'
       | 'SKIP_ACTION';
-    removeOldestItemFromQueue:
+    removeOldestItemFromAsyncQueue:
       | 'ASYNC_QUEUE_IS_EMPTY'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
+    updateCartContext: 'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Update Cart:invocation[0]';
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {

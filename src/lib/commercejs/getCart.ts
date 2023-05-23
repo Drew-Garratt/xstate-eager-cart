@@ -11,7 +11,7 @@ import { commercejsFetcher } from './fetcher';
  */
 export async function commercejsGetCart(): Promise<CommercejsCart | false> {
   return commercejsFetcher<CommercejsCart>({
-    path: `cart`,
+    path: `carts`,
     schema: commercejsCartSchema,
   });
 }

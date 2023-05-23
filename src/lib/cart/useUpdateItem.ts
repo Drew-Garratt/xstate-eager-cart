@@ -6,7 +6,7 @@ export function useUpdateItem(data: { itemId: string; item: CartItemBody }) {
   const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
-    throw new Error('useAddItem must be used within a CartProvider');
+    throw new Error('useUpdateItem must be used within a CartProvider');
   }
   return cartService.send({
     type: 'SEND_TO_CART_QUEUE',

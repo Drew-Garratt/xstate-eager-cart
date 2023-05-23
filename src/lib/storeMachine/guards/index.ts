@@ -1,7 +1,7 @@
 import { StoreGuard } from '..';
 
-const ifThereAreErrors: StoreGuard = () => {
-  return false;
+const ifThereAreErrors: StoreGuard = (context) => {
+  return !!context.cartContext?.error;
 };
 
 const thereAreMoreOptimisticActionsInQueue: StoreGuard = (context) => {

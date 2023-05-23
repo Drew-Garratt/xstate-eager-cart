@@ -13,9 +13,16 @@ export const checkOptimisticQueue: StoreActor = (context) => (sendBack) => {
 
   switch (event.type) {
     case 'ADD_ITEM':
-      sendBack({
-        type: 'SKIP_ACTION',
-      });
+      if (context.cartContext.cart === null) {
+        sendBack({
+          type: 'SKIP_ACTION',
+        });
+      } else {
+        sendBack({
+          type: 'OPTIMISTIC_ADD_TO_CART',
+          data: event.data,
+        });
+      }
       break;
     case 'UPDATE_ITEM':
       sendBack({

@@ -5,7 +5,8 @@ const baseUrl = 'https://api.chec.io/v1/';
 
 const headers = {
   //TODO: Move this to an environment variable
-  'X-Authorization': 'pk_51391d6efbdda94868f4b6cbe6cbb47b804414b0408be',
+  'X-Authorization': 'pk_test_5139143700f37751d4f91173ec9b293017d5b2617d3b3',
+  Host: 'api.chec.io',
   Accept: 'application/json',
   'Content-Type': 'application/json',
 };
@@ -21,7 +22,7 @@ const headers = {
 export async function commercejsFetcher<T>(input: {
   path: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  params?: Record<string, string>;
+  params?: Record<string, unknown>;
   schema: ZodSchema<T>;
 }): Promise<T | false> {
   const json = await jsonFetcher({ ...input, baseUrl, headers });

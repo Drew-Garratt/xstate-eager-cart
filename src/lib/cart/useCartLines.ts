@@ -5,9 +5,9 @@ import type { LineItem } from 'types.d/cart';
 import { StoreState } from '@/lib/storeMachine';
 
 const selectLineItems = (state: StoreState) =>
-  state.context.cartContext.cart?.lineItems ?? [];
+  state.context.cartContext.cart?.lineItems ?? new Map();
 
-export function useCartLines(): LineItem[] {
+export function useCartLines(): Map<string, LineItem> {
   const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {

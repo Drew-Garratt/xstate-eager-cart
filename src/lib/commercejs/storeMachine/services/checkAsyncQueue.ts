@@ -11,7 +11,10 @@ export const checkAsyncQueue: StoreActor = (context) => (sendBack) => {
   /**
    * If the queue is empty return
    */
-  if (!cartQueue[0]) return;
+  if (!cartQueue[0]) {
+    sendBack({ type: 'ASYNC_QUEUE_IS_EMPTY' });
+    return;
+  }
 
   /**
    * Get the first event in the queue

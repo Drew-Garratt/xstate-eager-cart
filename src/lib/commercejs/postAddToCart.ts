@@ -1,6 +1,5 @@
 import { CommercejsCart, commercejsCartSchema } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
-import exp from 'constants';
 
 /**
  * Commmerce JS Add to Cart
@@ -23,11 +22,10 @@ export async function commercejsAddToCart({
   variantId?: string;
 }): Promise<CommercejsCart | false> {
   return commercejsFetcher<CommercejsCart>({
-    path: `cart/${cartId}`,
+    path: `carts/${cartId}`,
     method: 'POST',
     params: {
-      id: cartId,
-      productId,
+      id: productId,
       quantity: quantity.toString(),
     },
     schema: commercejsCartSchema,
