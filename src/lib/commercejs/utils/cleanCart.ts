@@ -1,6 +1,6 @@
 import { CommercejsCart } from '../zod/cart';
-import { Cart, LineItem } from 'types.d/cart';
-import { ProductVariant } from 'types.d/product';
+import { Cart, LineItem } from '@/lib/vercelCommerce/types/cart';
+import { ProductVariant } from '@/lib/vercelCommerce/types/product';
 
 export const commercejsCleanCart = (cart: CommercejsCart): Cart => {
   const lineItems = new Map<string, LineItem>();

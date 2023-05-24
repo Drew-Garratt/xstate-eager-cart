@@ -1,4 +1,4 @@
-import { LineItem } from 'types.d/cart';
+import { LineItem } from '@/lib/vercelCommerce/types/cart';
 
 export const findLineItem = ({
   productId,

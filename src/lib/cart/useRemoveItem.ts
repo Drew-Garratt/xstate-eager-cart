@@ -1,4 +1,4 @@
-import { StoreContext } from '@/components/providers/store/StoreProvider';
+import { StoreContext } from '_components/providers/store/StoreProvider';
 import { useContext } from 'react';
 
 export function useRemoveItem(data: { itemId: string }) {

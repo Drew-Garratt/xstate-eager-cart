@@ -1,50 +1,37 @@
-import styles from '../styles/Home.module.scss';
+import { Carousel } from 'components/carousel';
+import { ThreeItemGrid } from 'components/grid/three-items';
+import Footer from 'components/layout/footer';
+import { Suspense } from 'react';
 
-const Home = () => {
-  return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+export const runtime = 'edge';
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+export const metadata = {
+  description: 'High-performance ecommerce store built with Next.js, Vercel, and Saleor.',
+  openGraph: {
+    images: [
+      {
+        url: `/api/og?title=${encodeURIComponent(process.env.SITE_NAME || '')}`,
+        width: 1200,
+        height: 630
+      }
+    ],
+    type: 'website'
+  }
 };
 
-export default Home;
+export default async function HomePage() {
+  return (
+    <>
+      {/* @ts-expect-error Server Component */}
+      <ThreeItemGrid />
+      <Suspense>
+        {/* @ts-expect-error Server Component */}
+        <Carousel />
+        <Suspense>
+          {/* @ts-expect-error Server Component */}
+          <Footer />
+        </Suspense>
+      </Suspense>
+    </>
+  );
+}

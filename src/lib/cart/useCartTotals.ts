@@ -1,7 +1,7 @@
-import { StoreContext } from '@/components/providers/store/StoreProvider';
+import { StoreContext } from '_components/providers/store/StoreProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
-import { StoreState } from '@/lib/storeMachine';
+import { StoreState } from '@/lib/commerceMachine';
 
 const selectLineItemsSubtotalPrice = (state: StoreState) =>
   state.context.cartContext.cart?.lineItemsSubtotalPrice ?? 0;

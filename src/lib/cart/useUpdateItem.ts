@@ -1,6 +1,6 @@
-import { StoreContext } from '@/components/providers/store/StoreProvider';
+import { StoreContext } from '_components/providers/store/StoreProvider';
 import { useContext } from 'react';
-import { CartItemBody } from 'types.d/cart';
+import { CartItemBody } from '@/lib/vercelCommerce/types/cart';
 
 export function useUpdateItem(data: { itemId: string; item: CartItemBody }) {
   const cartService = useContext(StoreContext);
