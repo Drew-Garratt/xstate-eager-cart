@@ -24,6 +24,8 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
   if (!product) {
     return undefined;
   }
+
+  const featuredImage = 
   
   return {
     id: product.id,
@@ -38,6 +40,14 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
       minVariantPrice: { amount: product.price.raw, currencyCode: 'USD' },
     },
     variants: [],
-    
+    featuredImage: {
+      url: product.assets[0]?.url ?? '',
+    }
+    seo: {
+      title: product.seo.title ?? product.name,
+      description: product.seo.description ?? product.description,
+    },
+    tags: [],
+    updatedAt: new Date(product.updated).toISOString(),
   }
 };
