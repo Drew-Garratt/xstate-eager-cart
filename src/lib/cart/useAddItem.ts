@@ -1,8 +1,8 @@
-import { StoreContext } from '_components/providers/store/StoreProvider';
+import { StoreContext } from '@/components/providers/store/StoreProvider';
 import { useContext } from 'react';
 import { CartItemBody } from '@/lib/vercelCommerce/types/cart';
 
-export function useAddItem(item: CartItemBody) {
+export function useAddItem() {
   const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
@@ -11,10 +11,8 @@ export function useAddItem(item: CartItemBody) {
 
   const { send } = cartService;
 
-  return () => {
-    send({
-      type: 'SEND_TO_CART_QUEUE',
-      data: { type: 'ADD_ITEM', data: { item } },
-    });
-  };
+  return (item: CartItemBody) => send({
+    type: 'SEND_TO_CART_QUEUE',
+    data: { type: 'ADD_ITEM', data: { item } },
+  });
 }

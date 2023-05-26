@@ -3,7 +3,7 @@ import Link from 'next/link';
 import GitHubIcon from 'components/icons/github';
 import LogoIcon from 'components/icons/logo';
 import VercelIcon from 'components/icons/vercel';
-import { getMenu } from 'lib/saleor';
+// import { getMenu } from 'lib/saleor';
 import { Menu } from '@/lib/vercelCommerce/types';
 
 const { SITE_NAME } = process.env;
@@ -11,7 +11,7 @@ const { SITE_NAME } = process.env;
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
   const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  const menu = await getMenu('next-js-frontend-footer-menu');
+  // const menu = await getMenu('next-js-frontend-footer-menu');
 
   return (
     <footer className="border-t border-gray-700 bg-white text-black dark:bg-black dark:text-white">
@@ -25,7 +25,7 @@ export default async function Footer() {
               <span>{SITE_NAME}</span>
             </a>
           </div>
-          {menu.length ? (
+          {/* {menu.length ? (
             <nav className="col-span-1 lg:col-span-7">
               <ul className="grid md:grid-flow-col md:grid-cols-3 md:grid-rows-4">
                 {menu.map((item: Menu) => (
@@ -40,7 +40,7 @@ export default async function Footer() {
                 ))}
               </ul>
             </nav>
-          ) : null}
+          ) : null} */}
           <div className="col-span-1 text-black dark:text-white lg:col-span-2">
             <a aria-label="Github Repository" href="https://github.com/vercel/commerce">
               <GitHubIcon className="h-6" />

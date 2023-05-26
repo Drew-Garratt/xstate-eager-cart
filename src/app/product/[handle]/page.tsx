@@ -4,13 +4,12 @@ import { Suspense } from 'react';
 
 import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
-import ProductGridItems from 'components/layout/product-grid-items';
 import { AddToCart } from 'components/product/add-to-cart';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
-import { HIDDEN_PRODUCT_TAG } from 'lib/vercel/constants';
-import { getProduct, getProductRecommendations } from 'lib/commercejs';
+import { HIDDEN_PRODUCT_TAG } from 'lib/commercejs/constants';
+import { getProduct } from 'lib/adapter';
 import { Image } from '@/lib/vercelCommerce/types';
 
 export const runtime = 'edge';
@@ -64,7 +63,7 @@ export default async function ProductPage({ params }: { params: { handle: string
         <div className="lg:col-span-4">
           <Gallery
             title={product.title}
-            amount={product.priceRange.maxVariantPrice.amount}
+            amount={product.priceRange.maxVariantPrice.amount.toString()}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
             images={product.images.map((image: Image) => ({
               src: image.url,
@@ -86,7 +85,7 @@ export default async function ProductPage({ params }: { params: { handle: string
       </div>
       <Suspense>
         {/* @ts-expect-error Server Component */}
-        <RelatedProducts id={product.id} />
+        {/* <RelatedProducts id={product.id} /> */}
         <Suspense>
           {/* @ts-expect-error Server Component */}
           <Footer />
@@ -96,17 +95,17 @@ export default async function ProductPage({ params }: { params: { handle: string
   );
 }
 
-async function RelatedProducts({ id }: { id: string }) {
-  const relatedProducts = await getProductRecommendations(id);
+// async function RelatedProducts({ id }: { id: string }) {
+//   const relatedProducts = await getProductRecommendations(id);
 
-  if (!relatedProducts.length) return null;
+//   if (!relatedProducts.length) return null;
 
-  return (
-    <div className="px-4 py-8">
-      <div className="mb-4 text-3xl font-bold">Related Products</div>
-      <Grid className="grid-cols-2 lg:grid-cols-5">
-        <ProductGridItems products={relatedProducts} />
-      </Grid>
-    </div>
-  );
-}
+//   return (
+//     <div className="px-4 py-8">
+//       <div className="mb-4 text-3xl font-bold">Related Products</div>
+//       <Grid className="grid-cols-2 lg:grid-cols-5">
+//         <ProductGridItems products={relatedProducts} />
+//       </Grid>
+//     </div>
+//   );
+// }

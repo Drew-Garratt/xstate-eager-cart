@@ -57,7 +57,7 @@ export const productSchema = z.object({
   media: z.object({
     type: z.string(),
     source: z.string()
-  }),
+  }).or(z.undefined()),
   sku: z.string().nullable(),
   sort_order: z.number(),
   seo: z.object({
@@ -78,7 +78,7 @@ export const productSchema = z.object({
     collects_fullname: z.boolean(),
     collects_shipping_address: z.boolean(),
     collects_billing_address: z.boolean(),
-    collects_extra_fields: z.boolean()
+    collects_extra_fields: z.boolean().or(z.undefined())
   }),
   is: z.object({
     active: z.boolean(),
@@ -91,14 +91,14 @@ export const productSchema = z.object({
     digital_delivery: z.boolean(),
     physical_delivery: z.boolean(),
     images: z.boolean(),
-    video: z.boolean(),
-    rich_embed: z.boolean()
+    video: z.boolean().or(z.undefined()),
+    rich_embed: z.boolean().or(z.undefined())
   }),
   collects: z.object({
     fullname: z.boolean(),
     shipping_address: z.boolean(),
     billing_address: z.boolean(),
-    extra_fields: z.boolean()
+    extra_fields: z.boolean().or(z.undefined())
   }),
   checkout_url: z.object({
     checkout: z.string(),

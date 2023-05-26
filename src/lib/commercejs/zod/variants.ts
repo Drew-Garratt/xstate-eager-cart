@@ -1,28 +1,25 @@
-import { z } from 'zod';
+import { unknown, z } from 'zod';
 
 export const variantSchema = z.object({
   data: z
     .array(
       z.object({
         id: z.string(),
-        sku: z.string(),
-        description: z.string(),
-        inventory: z.number(),
+        sku: z.string().or(z.null()),
+        description: z.string().or(z.null()),
+        inventory: z.number().or(z.null()),
         price: z.object({
           raw: z.number(),
           formatted: z.string(),
           formatted_with_symbol: z.string(),
           formatted_with_code: z.string(),
-        }),
+        }).or(z.null()),
         is_valid: z.boolean(),
         invalid_reason_code: z.null(),
         meta: z.null(),
         created: z.number(),
         updated: z.number(),
-        options: z.object({
-          vgrp_bWZ3l83Ke5kpEQ: z.string(),
-          vgrp_QG375vPzLwrMOg: z.string(),
-        }),
+        options: z.unknown(),
         assets: z.array(z.unknown()),
       })
     )

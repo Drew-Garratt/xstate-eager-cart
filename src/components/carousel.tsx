@@ -1,17 +1,17 @@
-import { getCollectionProducts } from 'lib/saleor';
+// import { getCollectionProducts } from 'lib/saleor';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const products = await getCollectionProducts('hidden-homepage-carousel');
+  const products = [];
 
   if (!products?.length) return null;
 
   return (
     <div className="relative w-full overflow-hidden bg-black dark:bg-white">
       <div className="flex animate-carousel">
-        {[...products, ...products].map((product, i) => (
+        {/* {[...products, ...products].map((product, i) => (
           <Link
             key={`${product.handle}${i}`}
             href={`/product/${product.handle}`}
@@ -32,7 +32,7 @@ export async function Carousel() {
               </div>
             </div>
           </Link>
-        ))}
+        ))} */}
       </div>
     </div>
   );

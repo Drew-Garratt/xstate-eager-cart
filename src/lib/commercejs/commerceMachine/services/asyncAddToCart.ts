@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 import commercejsAddToCart from '../../postAddToCart';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 
@@ -8,7 +8,7 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
   /**
    * If there is no cart in the context return
    **/
-  if (!context.cartContext.cart) throw new Error('No cart in context');
+  if (!context.cartContext.cart)  throw new Error('No cart in context');
 
   let payload: {
     cartId: string;
@@ -16,26 +16,35 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
     quantity: number;
     options?: unknown;
     variantId?: string;
-  } | null = null;
+  } = {
+    cartId: context.cartContext.cart.id,
+    productId: event.data.item.productId ?? event.data.item.variantId,
+    quantity: event.data.item.quantity ?? 1,
+  };
+  
+  /**
+   * Commerce JS the product ID, variant ID, and option ID of a product in order to add it to the cart
+   * These are held as a single string and seperate by a ":" character
+   * 
+   * If the product has no variants, the product ID is used alone
+   */
+  const variantIds = event.data.item.variantId.split(':');
 
-  if (event.data.item.productId) {
+  if (variantIds.length === 3) {
+    const [productId, variantId, optionId] = variantIds;
     payload = {
       cartId: context.cartContext.cart.id,
-      productId: event.data.item.productId,
-      variantId: event.data.item.variantId,
-      quantity: event.data.item.quantity ?? 1,
-    };
-  } else {
-    payload = {
-      cartId: context.cartContext.cart.id,
-      productId: event.data.item.variantId,
+      productId,
+      options: {[variantId]: optionId},
       quantity: event.data.item.quantity ?? 1,
     };
   }
 
   const cart = await commercejsAddToCart(payload);
 
-  if (!cart) throw new Error('Cart is undefined');
+  if (!cart) throw new Error('No return from commercejsAddToCart');
 
-  return { type: 'ADD_TO_CART_DONE', cart: commercejsCleanCart(cart) };
+  if (!cart.success) throw new Error('Add to cart failed');
+
+  return { type: 'ADD_TO_CART_DONE', cart: commercejsCleanCart(cart.cart) };
 };

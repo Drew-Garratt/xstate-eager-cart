@@ -13,10 +13,21 @@ export async function jsonFetcher({
 }): Promise<unknown | false> {
   const url = new URL(path, baseUrl);
 
-  if (params) {
-    Object.keys(params).forEach((key) =>
-      url.searchParams.append(key, params[key])
-    );
+  /**
+   * If the method is GET, append the params to the URL
+   * 
+   * If the value is a string, append it as is (e.g. ?key=value)
+   * if the value is not a string we need to stringify it first
+   */
+  if (method === "GET" && params) {
+    Object.keys(params).forEach((key) => {
+      const value = params[key];
+      if (typeof value === 'string') {
+        url.searchParams.append(key, value)
+      } else {
+        url.searchParams.append(key, JSON.stringify(value))
+      }
+    });
   }
 
   let response;
@@ -27,13 +38,17 @@ export async function jsonFetcher({
       method,
       // Ensure content type is always set to JSON for this method
       headers: { ...headers, 'Content-Type': 'application/json' },
+      /**
+       * If the method is not GET, we need to stringify the params
+       */
+      body: method !== 'GET' ? JSON.stringify(params) : undefined,
     });
     json = await response.json();
   } catch (error) {
     if (error instanceof SyntaxError) {
-      console.log('There was a SyntaxError', error);
+      console.error('There was a SyntaxError', error);
     } else {
-      console.log('There was an error', error);
+      console.error('There was an error', error);
     }
     return false;
   }

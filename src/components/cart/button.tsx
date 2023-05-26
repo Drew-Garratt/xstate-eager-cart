@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useCookies } from 'react-cookie';
 
 import CartIcon from 'components/icons/cart';
 import CartModal from './modal';

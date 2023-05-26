@@ -1,4 +1,4 @@
-import { StoreContext } from '_components/providers/store/StoreProvider';
+import { StoreContext } from '@/components/providers/store/StoreProvider';
 import { useContext } from 'react';
 import { CartItemBody } from '@/lib/vercelCommerce/types/cart';
 

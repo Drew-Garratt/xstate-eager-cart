@@ -6,6 +6,8 @@ import { useEffect, useState, useTransition } from 'react';
 
 import LoadingDots from 'components/loading-dots';
 import { ProductVariant } from '@/lib/vercelCommerce/types';
+import { useAddItem } from '@/lib/cart/useAddItem';
+import { useCartLineStatus } from '@/lib/cart/useCartLineStatus';
 
 export function AddToCart({
   variants,
@@ -18,7 +20,8 @@ export function AddToCart({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [adding, setAdding] = useState(false);
+  const { isItemInAsyncQueue, isItemInOptimisticQueue } = useCartLineStatus({itemId: selectedVariantId});
+  const sendAddToCart = useAddItem();
 
   useEffect(() => {
     const variant = variants.find((variant: ProductVariant) =>
@@ -32,28 +35,12 @@ export function AddToCart({
     }
   }, [searchParams, variants, setSelectedVariantId]);
 
-  const isMutating = adding || isPending;
+  const isMutating = isItemInOptimisticQueue || isPending;
 
   async function handleAdd() {
     if (!availableForSale) return;
 
-    setAdding(true);
-
-    const response = await fetch(`/api/cart`, {
-      method: 'POST',
-      body: JSON.stringify({
-        merchandiseId: selectedVariantId
-      })
-    });
-
-    const data = await response.json();
-
-    if (data.error) {
-      alert(data.error);
-      return;
-    }
-
-    setAdding(false);
+    sendAddToCart({variantId: variants[0]?.id});
 
     startTransition(() => {
       router.refresh();

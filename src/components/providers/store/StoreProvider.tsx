@@ -1,6 +1,6 @@
 import { createContext, ReactNode } from 'react';
 import { useInterpret } from '@xstate/react';
-import { vercelCommerceMachine, StoreService } from '@/lib/commerceMachine';
+import { storeMachine, StoreService } from '@/lib/vercelCommerce/machine';
 
 /**
  * Service imports
@@ -8,7 +8,7 @@ import { vercelCommerceMachine, StoreService } from '@/lib/commerceMachine';
  * Service imports are API/Implementation spefecic functions and so
  * are imported from the relevant lib folder
  */
-import services from '@/lib/commercejs/vercelCommerceMachine/services';
+import services from '@/lib/adapter/commerceMachine/services';
 
 /**
  * Action and Guard imports
@@ -17,7 +17,7 @@ import services from '@/lib/commercejs/vercelCommerceMachine/services';
  * from the vercelCommerceMachine folder and assigned to the machine
  */
 import actions from '@/lib/vercelCommerce/machine/actions';
-import guards from '@/lib/commerceMachine/guards';
+import guards from '@/lib/vercelCommerce/machine/guards';
 
 /**
  * Type for the cart context value
@@ -53,7 +53,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
    * useSelector can be used to subscribe to the specific values in state without triggering a re-render for every state change.
    */
   const storeService = useInterpret(
-    vercelCommerceMachine,
+    storeMachine,
     {
       // Enable devTools in development
       devTools: process.env.NODE_ENV === 'development',

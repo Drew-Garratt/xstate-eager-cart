@@ -19,7 +19,7 @@ export const commercejsCleanCart = (cart: CommercejsCart): Cart => {
      */
     if (lineItem.variant) {
       variant = {
-        id: lineItem.product_id,
+        id: [lineItem.product_id, lineItem.selected_options[0].group_id, lineItem.selected_options[0].option_id].join(":") ,
         options: [],
         price: {
           value: lineItem.price.raw,

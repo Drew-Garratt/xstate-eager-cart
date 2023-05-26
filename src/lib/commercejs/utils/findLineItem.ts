@@ -14,6 +14,8 @@ export const findLineItem = ({
    */
   const lineItemWalker = lineItems.entries();
 
+  console.log(productId);
+
   /**
    * Line Item ID
    *
@@ -27,12 +29,15 @@ export const findLineItem = ({
    */
   while (!lineItemId) {
     const line = lineItemWalker.next().value;
-    if (line[1].productId === productId) {
+
+    if (!line) break;
+
+    if (line[1].productId === productId || line[1].variantId === productId) {
       lineItemId = line[0];
     }
   }
 
   if (!lineItemId) return null;
 
-  return { lineItemId, lineItem: lineItems.get(lineItemId) };
+  return { lineItemId, lineItem: lineItems.get(lineItemId)! };
 };

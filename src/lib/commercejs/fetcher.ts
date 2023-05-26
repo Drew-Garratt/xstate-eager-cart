@@ -5,7 +5,7 @@ const baseUrl = 'https://api.chec.io/v1/';
 
 const headers = {
   //TODO: Move this to an environment variable
-  'X-Authorization': 'pk_test_5139143700f37751d4f91173ec9b293017d5b2617d3b3',
+  'X-Authorization': 'pk_178511bb808cdcaa54deba073eefe51688eb9cf470dfe',
   Host: 'api.chec.io',
   Accept: 'application/json',
   'Content-Type': 'application/json',
@@ -29,7 +29,11 @@ export async function commercejsFetcher<T>(input: {
   if (!json) return false;
 
   const parsed = input.schema.safeParse(json);
-  if (!parsed.success) return false;
+
+  if (!parsed.success) {
+    console.error(`Fetch error at ${input.path}`, parsed.error);
+    return false;
+  }
 
   return parsed.data;
 }
