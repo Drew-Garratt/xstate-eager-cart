@@ -70,7 +70,7 @@ export type CommercejsCart = z.infer<typeof commercejsCartSchema>;
 
 export const addUpdateResponseSchema = z.object({
   success: z.boolean(),
-  event: z.string(),
+  event: z.literal('Cart.Item.Added').or(z.literal('Cart.Item.Updated')),
   line_item_id: z.string(),
   product_id: z.string(),
   product_name: z.string(),
@@ -83,7 +83,7 @@ export type CommercejsAddUpdateResponse = z.infer<typeof addUpdateResponseSchema
 
 export const removeResponseSchema = z.object({
   success: z.boolean(),
-  event: z.string(),
+  event: z.literal('Cart.Item.Removed'),
   line_item_id: z.string(),
   cart: commercejsCartSchema
 })

@@ -1,6 +1,6 @@
 import { StoreActor } from '@/lib/vercelCommerce/machine';
 import commercejsAddToCart from '../../postAddToCart';
-import { commercejsCleanCart } from '../../utils/cleanCart';
+import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 
 export const asyncAddToCart: StoreActor = async (context, event) => {
   if (event.type !== 'ASYNC_ADD_TO_CART') return;
@@ -40,11 +40,11 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
     };
   }
 
-  const cart = await commercejsAddToCart(payload);
+  const responce = await commercejsAddToCart(payload);
 
-  if (!cart) throw new Error('No return from commercejsAddToCart');
+  if (!responce) throw new Error('No return from commercejsAddToCart');
 
-  if (!cart.success) throw new Error('Add to cart failed');
+  if (!responce.success) throw new Error('Add to cart failed');
 
-  return { type: 'ADD_TO_CART_DONE', cart: commercejsCleanCart(cart.cart) };
+  return { type: 'ADD_TO_CART_DONE', cart: commercejsCleanCartResponse(responce) };
 };

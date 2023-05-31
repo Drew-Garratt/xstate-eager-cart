@@ -63,7 +63,7 @@ export type StoreAction<T = void> = ActionFunction<
 >;
 
 export const storeMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgGEDNVqBJCs1MggGzNjAGII6KtUoA3dAGsaaLLkKlKNeoxZsO3XmATj0RAh2EBtAAwBdU2cSgADuljsyw6yAAeiAEwBGEwE5qXgCsHiYAbIG+Jl6h0QAsADQgAJ6IALSh-gDsABw52V5esb6xmb4eoQC+FYmy2PjE5CIqTABKYAQQSXQMqDgAgrBJFETUAKKuYEQArqi4BIPDOMSGFILCNLCoBjIYdQqNyj3UbR1dzf0LI+OTM3OXS0Qrli52Disu7gg++dTZ5VGZWIxDy+MqJFIIYqxaixADM0VCpUyoVh3kyVRqu3kDSU3VUJ06eN6AyGVwm01mS3uyycqyEIk222otWxiiaRwJZx6F1JY3JtyppIeTy8ViQIFejmc4s+mUyJmosMywURuT+yPBiB80V+oNiBXhgRMgWy2QxIBZ9TZh3x7UJ5xJwz5N0p8yFNOE-GQowAcgARAD6ABUAPIB2h9FpBgMARQAqqME89xZL3jKtX5MtQPMqPEDAV4PIFYZqviZstCQuXYb5sn5USbzZb9rjmsc7VzGDyndcKXd3Y9aXQSJNJDgY1MwJP+H1kABNH20AN9P2B0PhyNB5O2exSigfLWArNFUKI8o+VXZUuZIvUZGwkwmIHFf6BJtYq0HInt05E7tkl1+0WD0KGHUdx0nadZwXJcWlGPAQwANVGAMADEWhDPANyjbcJV3NNQE+bwyjvQoTByWt5V8TJr1ve8nw8CsTFhNV3zkT9Ww5Ds-0dAC+0FYDB2EMCiDHCcpwEaDFwDOMAAU-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-bR2sPma616wthWQ2ymVNmdKmVG3pRuiPB6XhsU-eYq9+Ut0NNkvniDv8B2Idg7g32-gA7HtiaNa9MtRp+4+zKD01buVMdVhXdEDHcrzQUHQBAOALg8lKFqbDxA4doQ5BNOpzMvn7oQlSBJkqfgguwlCBWcxwOeii+LZ8G6ZGRG5GYrLnFD1UjRC9sUFXFvGIlSBFr1QrBHCaD4Dr69ZZe4wmNJR-KBobmllSPD5XZR1d93V0iB3Yy3fEcQCLO8huZch1NxCXSIrcgFDen3XwkeO2bKINHrSGQUpS6Nw+JP8utSlT0iXi8Jicw583UU2RqTDUGrfku1KTEv1+EN6+yjioSga9C2rv4pL-1ab29mgzJSevgT7QX6b76dLwkYjeYWpoaMPXMQqIsNaa2JqiA3oDEzm87JWqTNaEMNo2wX+Jn22YzzMRMvWCvCARFZmKpwlimUjyvSP3Ak-bZM2XyOuLObXIdIrQ8ciJTG6R8EEXIXuZbCEd-agT-HMEWTKPUf-QpQAlJM-K+FBfZVAW-I1RNAIXIM6aiKgyjMVcxVAoEdAo0TA4obApVZJRBYAocc7CgHALJEg5FD+fwVhdKaee9cOZPLUEEBUYIHwYsYoDHCOVgqfRxGfEA5aHABZbACAfgrueHYqcOJ8aIR8XzDpdHB8enbwH2V7EqHpP9YXNjHA5ePAzg+RXrNxZoHQr4CISsHpEoS5G6TKONaENPHSG8AoR8URcfFrRVZQyZFvOgWZG-CAsXbSVFY0IJFiJhNfEJEIavYWKjIsStIsJQztJWQFYFUFcFSFTwpbUiHpH2UoPKQoMVfuQqfIDIVEeUP4HpEovPFgVVMATwgoRTcIfUIoM6cibzK1B8RUBTEyGeIEJUXoqlLtcCfNAKTwwEAqEvRPHICQhAEoLMERHpIILhOQlEZYrdMnfPZI3XcyPwGEYoMqD2KjV-IIaeBNKjdXCY40DwS4wzdrLDI9QY2493QoW8CtZidpKdUwiEDHXIz9GsVEJUKTP45rQnGI84A7OLa4k7TYug7zZ4-zJ8WjVFD2LnGsFHOsNNewqLUHQE8DQ7Bk7rMzM7ZaIYyjL2B8QsXuaOfuYoV9J8AqRECkq3dXcsf47Ek2SHbgpWdQvg0EmPL4TAmENEMobmYscxPvYoQqJ4wJFFHSSU64vyAEvTY7efRUrSZEJ5csfUFNfuQoOTLUREY8L4kRXpYIKoKoIAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgGEDNVqBJCs1MggGzNjAGII6KtUoA3dAGsaaLLkKlKNeoxZsO3XmATj0RAh2EBtAAwBdU2cSgADuljsyw6yAAeiAEwBGEwE5qXgCsHiYAbIG+Jl6h0QAsADQgAJ6IALSh-gDsABw52V5esb6xmb4eoQC+FYmy2PjE5CIqTABKYAQQSXQMqDgAgrBJFETUAKKuYEQArqi4BIPDOMSGFILCNLCoBjIYdQqNyj3UbR1dzf0LI+OTM3OXS0Qrli52Disu7gg++dTZ5VGZWIxDy+MqJFIIYqxaixADM0VCpUyoVh3kyVRqu3kDSU3VUJ06eN6AyGVwm01mS3uyycqyEIk222otWxiiaRwJZx6F1JY3JtyppIeTy8ViQIFejmc4s+mUyJmosMywURuT+yPBiB80V+oNiBXhgRMgWy2QxIBZ9TZh3x7UJ5xJwz5N0p8yFNOE-GQowAcgARAD6ABUAPIB2h9FpBgMARQAqqME89xZL3jKtX5MtQPMqPEDAV4PIFYZqviZstCQuXYb5sn5USbzZb9rjmsc7VzGDyndcKXd3Y9aXQSJNJDgY1MwJP+H1kABNH20AN9P2B0PhyNB5O2exSigfLWArNFUKI8o+VXZUuZIvUZGwkwmIHFf6BJtYq0HInt05E7tkl1+0WD0KGHUdx0nadZwXJcWlGPAQwANVGAMADEWhDPANyjbcJV3NNQE+bwyjvQoTByWt5V8TJr1ve8nw8CsTFhNV3zkT9Ww5Ds-0dAC+0FYDB2EMCiDHCcpwEaDFwDOMAAU-T6IMUIjHDzBefDaQPL5fBNX4SlCOEDMLTIS2SRAb0CO8UQYpiWLNaoLQ-Ft2VtX8HUuZ1+LdQSVhEsTIMk+dpPjRMUOYZAA3g2SgznXDU009MviKbI7xNWJH1hI1axNUsfF8UJqCMwJYliE1UWYti9hxFzWm49zeV7AVvKIYUhzaABbdAxFwAAzTB0HanBmjWERdGkZknOqm1arc7leM8prqSE0COq63r+sG5odAoCR9Cecw4o06VCMPQIvF+TLEQyJUlRzXKvEiagwnS7JQkYit4VhSrWS-NtOR4jzGtdJbfNW7qcD6gahp6fgwEwfrMGoGwuAMHqsHaib2Oc6af3tObAf5YGB1BsBOvByHNp6bbdoMWlLEOt4EpOhBvCNAIstVM7gnKXLjXOo94XCV6stib6OJq3HO2JAnAIElqQOoPoIAgHAMGhxgRpoMadixqbv3++qe0JoD5eWxXldV9B1dQam9Fp4wDrUlMjv3RKvDlDwnpzctciLLxDVLaiUsywJiwrWt9S+hzmz1v66vxhrjbl1rhKVlW1eGuGEaRlHUDRzAMZj619fjrt5qBk2U9AtPLet229rpx2xR3RnjrcTx3YVWFYg8GtqKCExvED08AhKYr3eyaizzF7GS9msuZa8kGhzjGwIG2a3NdEHapB1qri7j+fpcT2Xmqr6hV-Xyktt0BuHYsJ2W73LT3YyGFYQ--3SsBXJfF53xzofzOqEXIJVmKAhnrHLiR9-wLSJj5Fea8N6Z3hlgHOqN0aY33r9aBeMF4nyXsTRBV9cA3x3nfCg9NH54Vbq7Zm3hER3liK9IIKI3r5FCLzcsvw6zd3yuUTK2Q3zR0mgfXBUtYEV2TgrWgI5RIQywJvBmz83YREsvlG8pVoiRFPB4UsY8nqRARDpQIcpXrohEbrMRrk8HHyNqfZewlZHgXzko0U6laEv2ROdYIJR6yZAejkThZkEB91+KHIs4RChwmVKLSx2DOI2IkeXJOZ8ZHYGQTDekWsd7jSLjgpJAMCGLSIU4jJ18qa33tpQpuHiVHMweiPDIxY-ChGNO9QI+iSp3gAY+fSHhvCMUgdYmatjJGpMcaBWg5TSEwyzmg5GGCC5YJ+ok0ZyTF4lIQWU9oFTGD12qVQ5uND6ntxZjWFKQJmEDNepHUqXCUqmmYieARJpKjxNWRLA23IQw2A4O1XgHA+ICl+f8wFZAWp9DNr8sAFAlHUPim3T4QRsiwl1MUQe3dyKBHCKWAZN5Cp-AGaYoIJlhGYisQU9ZRSnR9AAO4EEcBQKAOBsCoEwEkfgcEgwtFigil2L8gj+Geg+UxJo-jd2vMxQq1z5QgjOulOJFKElfNLnYkY9LGUcGZaysA7LOXen9MGMMKlowhSTPyzxbtMzZlzMaQy3cTKljrAqeUZ1-jkSESxYZVLJY0pGMwCAXABCGrXCazcsYEwWuOYiuhZy8pZhzL4xE+oiymQhBER5LF3birlE+H1ay-WGxGM4+RvEIISS9L6MN2EzVRtGMogiZyciJvlIWV+MRix-xCd3T2OkJ6ZmYqCeyyrPk42+fgp0paxzlvEtORtTN41PjRSxes1FYkVlLN3SyIR3ZlEKJEZdBbVUwPmtO-8Fb53uOdlahpBRoRPnLGSyIod3b6MHtQCIT4jQGSfPqXwUdR3i3HWqnAoKyAAs2BClgQaQ3VuNbWyNoUF1Is8EWBU38p5tqiHdEJIQSgBB0sxUOapIgWKA7PQ+YzwOQaBXA3ANHwWQuWlvRkswVnAbntRv5EGmP0bAzx2jEL+jLRQ3G5Fqa7ze2LFiiIuVIjQmCEI16eZt1KscpSwtE7eiMag8CykumgUiZWFWo165TVIejXUptRF0MwlMVhqIOGaJ4e9gEDIqaHphHlIBjTKqQMwMM9BqRQXmO+XPVCkzIZorMDwOFIMzAlxyQUkpWtYmtJ1kskUUqqL3ZYoSK56VIcojruKvqY9AXuNgr0-x0LxmhwRZY9FhLcXkAJdgvBJCKF0KYTS5a05yLCyezTaUMoCqbzBIhAMorocStyjK14CrXGJGhdq4Jpj9WnFyJnSx5AABpZgslly0ASyGH06W3bUU9p-Y0LFGKFnynigZBVP6h28TJgyS2qMrfWzVkLv2jORYa9tzbqxmuxfi4l5cq4EOmouw0oo-gSi5gGSCJUwQnszaKO01ExRfP5K06B1b566tzoEPD5typszpUynu9KbSvC5QldmDKuj5TGhRF98Rf5icg9JwFfgRhr1Pxs1qB6aKjS90HmUABz2me9xZ4+kq0QvCopHX5sdy2-x+kwAQOl1AiBcHsJAfg0XfSIb9C0PoAB1Cnnw1SpVKMENtpRyx4osoqNhRpxXFE5x8zj33te6-1+gGwsL+C0AADIhm9Bbq3tv+ui4QKA6gAD8jljCP3RieLUUFRV-CbxAz4RVAchQdAEA4AuAJ1Qazi7Pih2hDkE0PnMyooKxCVIdmwEAJRJlEqod3kUagYwWvqGEBtM9k33IzFW+SpCakaIfb0oAa-SA13HgueqFYI4TQfBR-iYzN3GEt2awxC-n8UsqQqfd-KBWW-SJN-rP31pcIrrlMt6DnPjNwcSi5BI+lZiV6QfDXAPbnYtZ-RKDIFKKfD-HIL-LUUqPSFtZiB8O7cIR-ItBOexQhbZONWNF+UqV1NKDKLKZTPFD+RUX-V-ZEbxHuDA7TcZBxUpKZEHMnCAhpYoLMHSeERiG8V6U0btDNeUbMBvIRZhftKIeg0DFJJg3A9sMmdaKGZodgs5abYbM8cBB8ADdvRAIRLMYqN6FiTKI8B6KQ09TZeBU2XyGuDOHoFQ5FeULMBER8aXXIbuK8EJPQz9IEHMV-TKPUMwsZGQnAqw4hTJEfG9AbLUftAIP-QJaiADdNXQ0xbwt6ZEI0fw4oQIjZYpSw8+IHYQHAbJeww8EIQxX2AfGIU-XKB8aEFiLRRiEOVXclEAyjMArA-TSuBWAouFeZbACAEolmHNbw2bfUNpasTpEJf2aVYIHwcoN6EqABcjVo4falYtfjNJM2c9VxZQyIpPIVSsABEoC5NpTKLdbpR1SeUxbwHwY0bI-1DYyZOgGZa2QYh6CIJ6UxV6O7aIPgrdMoisIJLFIsADIse484Vbf7arQHaFMPOFXYkXOvU6fwXuabQoEybwD+THT2XLE0ABHSeVcEjoxWBlJlFlNlDlQYyIaAh6OY0oPKQoZ1BXEBbRVEeUP4ABIkydANWDN4zuQqceIoM6cibLUsFpRUfFEyKeIEJULk9VPyC9NgvYpEhAQEAqGAmfT-HQhAZHcJABIIe7LtP3IfEZTArsULQYqiGEYoMqPLRVXKPE1PLFJ5fIZhYIOUgTaE6DQNYNN4nuSyOsSIOyUOF9eXBUIjGsVEdHUoDff3NowpCEgHYLJOOrHoy0lI7LW0kye0qYnSfwd2aIJ8XIAySeZY6vSrH7L0zoz03jPTUHBUtM5Usff2VERUHDbuSOXuYoPFJ8AqREfPDFEBcsD0yElMpMsLIcHooo9YN4-wmENEMbYlYw8g4oQqG0wJAoNREc8chU-nCSS0kBX4csfUIdXudE3KREY8LFEBYU9pD0nXPXS07hPpXuREKIO7JIlmFELMb4t8wspUfKe84PA3I3PgAYpsg-VUnFJ6BiWEP8j893W8OCuC73AQmUoCvXagUPWFN4vwfwE0OIdKNEYlRCyyZC1-H3dCkvIAA */
   id: 'Store Machine',
   tsTypes: {} as import('./index.typegen.d.ts').Typegen0,
   schema: {
@@ -80,7 +80,9 @@ export const storeMachine = createMachine({
       | { type: 'SKIP_ACTION' }
       | ({ type: 'OPTIMISTIC_ADD_TO_CART' } & AddItemCartInput)
       | ({ type: 'OPTIMISTIC_UPDATE_CART' } & UpdateItemCartInput)
-      | ({ type: 'OPTIMISTIC_REMOVE_FROM_CART' } & RemoveItemCartInput),
+      | ({ type: 'OPTIMISTIC_REMOVE_FROM_CART' } & RemoveItemCartInput)
+      | { type: 'OPEN_CART_DRAW' }
+      | { type: 'CLOSE_CART_DRAW' },
     services: {} as {
       initialiseCart: any;
       checkAsyncQueue: any;
@@ -97,6 +99,7 @@ export const storeMachine = createMachine({
       status: 'idle',
       asyncQueue: [],
       cart: null,
+      successMessage: [],
       optimisticQueue: [],
       optimisticCart: null,
       error: null,
@@ -105,6 +108,7 @@ export const storeMachine = createMachine({
     cartContext: {
       cart: Cart | null;
       optimisticCart: Cart | null;
+      successMessage: string[];
       status: 'idle' | 'working' | 'error';
       asyncQueue: Array<CartEvents>;
       optimisticQueue: Array<CartEvents>;
@@ -184,8 +188,8 @@ export const storeMachine = createMachine({
                         ],
 
                         onDone: {
-                          target: 'Action done',
-                          actions: 'addToCartContext',
+                          target: "Action done",
+                          actions: ['addToCartContext'],
                         },
                       },
                     },
@@ -239,12 +243,12 @@ export const storeMachine = createMachine({
                         },
                         onError: 'Action errored',
                       },
-                    },
+                    }
                   },
                   on: {
                     SEND_TO_CART_QUEUE: {
                       actions: 'addActionToAsyncQueue',
-                    },
+                    }
                   },
                   onDone: [
                     {
@@ -256,6 +260,7 @@ export const storeMachine = createMachine({
                     },
                   ],
                 },
+
                 'Awaiting retry': {
                   on: {
                     RETRY: {
@@ -267,6 +272,7 @@ export const storeMachine = createMachine({
                     },
                   },
                 },
+
                 Idle: {
                   on: {
                     SEND_TO_CART_QUEUE: {
@@ -275,6 +281,7 @@ export const storeMachine = createMachine({
                     },
                   },
                 },
+
                 'Check Async Queue': {
                   description:
                     'Check if there are any actions in the async queue',
@@ -295,9 +302,10 @@ export const storeMachine = createMachine({
                       actions: 'addActionToAsyncQueue',
                     },
                   },
-                },
+                }
               },
             },
+
             'Cart Optimistic': {
               initial: 'Check Optimistic Queue',
               states: {
@@ -324,7 +332,7 @@ export const storeMachine = createMachine({
                         },
                         SKIP_ACTION: 'Action done',
                         OPTIMISTIC_ADD_TO_CART: {
-                          target: 'Action done',
+                          target: "Open Cart",
                           actions: 'optimisticAddToCart',
                         },
                       },
@@ -338,6 +346,14 @@ export const storeMachine = createMachine({
                       type: 'final',
                       entry: 'removeOldestFromOptQueue',
                     },
+
+                    "Open Cart": {
+                      always: "#Store Machine.Cart.Ready.Cart Optimistic.Execute Optimistic Action.Action done",
+
+                      invoke: {
+                        src: "openCart"
+                      }
+                    }
                   },
                   on: {
                     SEND_TO_CART_QUEUE: {
@@ -363,6 +379,23 @@ export const storeMachine = createMachine({
                 },
               },
             },
+
+            "Cart Draw": {
+              states: {
+                closed: {
+                  on: {
+                    OPEN_CART_DRAW: "open"
+                  }
+                },
+                open: {
+                  on: {
+                    CLOSE_CART_DRAW: "closed"
+                  }
+                }
+              },
+
+              initial: "closed"
+            }
           },
           type: 'parallel',
         },

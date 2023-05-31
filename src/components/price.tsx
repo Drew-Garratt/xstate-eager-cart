@@ -3,7 +3,7 @@ const Price = ({
   currencyCode = 'USD',
   ...props
 }: {
-  amount: string;
+  amount: number;
   currencyCode: string;
 } & React.ComponentProps<'p'>) => (
   <p suppressHydrationWarning={true} {...props}>
@@ -11,7 +11,7 @@ const Price = ({
       style: 'currency',
       currency: currencyCode,
       currencyDisplay: 'narrowSymbol'
-    }).format(parseFloat(amount))} ${currencyCode}`}
+    }).format(amount)} ${currencyCode}`}
   </p>
 );
 

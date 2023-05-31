@@ -1,3 +1,5 @@
+import { Simplify } from "type-fest";
+
 export type Maybe<T> = T | null;
 
 export type Connection<T> = {
@@ -9,7 +11,7 @@ export type Edge<T> = {
 };
 
 export type Cart = Omit<VercelCommerceCart, 'lines'> & {
-  lines: CartItem[];
+  lines: Map<string, CartItem>;
 };
 
 export type CartItem = {
@@ -61,10 +63,10 @@ export type Page = {
   updatedAt: string;
 };
 
-export type Product = Omit<VercelCommerceProduct, 'variants' | 'images'> & {
+export type Product = Simplify<Omit<VercelCommerceProduct, 'variants' | 'images'> & {
   variants: ProductVariant[];
   images: Image[];
-};
+}>;
 
 export type ProductOption = {
   id: string;

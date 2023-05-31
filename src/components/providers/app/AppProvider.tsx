@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { StoreProvider } from '../store/StoreProvider';
+import { CommerceProvider } from '../commerce/CommerceProvider';
 // import { inspect } from '@xstate/inspect';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
@@ -15,7 +15,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
   // }
 
   return (
-    <StoreProvider>{children}</StoreProvider>
+    <CommerceProvider>{children}</CommerceProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 import commercejsGetCart from '../../getCart';
 import { Cart } from '@/lib/vercelCommerce/types/cart';

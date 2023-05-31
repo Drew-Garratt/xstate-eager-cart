@@ -1,16 +1,19 @@
-import { StoreContext } from '@/components/providers/store/StoreProvider';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
-import { StoreState } from '@/lib/commerceMachine';
+import { StoreState } from '@/lib/vercelCommerce/machine';
 
-const selectLineItemsSubtotalPrice = (state: StoreState) =>
-  state.context.cartContext.cart?.lineItemsSubtotalPrice ?? 0;
-const selectSubtotalPrice = (state: StoreState) =>
-  state.context.cartContext.cart?.subtotalPrice ?? 0;
-const selectTotalPrice = (state: StoreState) =>
-  state.context.cartContext.cart?.totalPrice ?? 0;
+const selectCart = (state: StoreState) =>
+state.context.cartContext.cart;
+
+const selectOptamisticCart = (state: StoreState) =>
+state.context.cartContext.optimisticCart;
+
+const selectCartStatus = (state: StoreState) =>
+state.matches('Cart.Ready.Cart Async.Idle')
 
 export function useCartTotals(): {
+  currencyCode: string;
   lineItemsSubtotalPrice: number;
   subtotalPrice: number;
   totalPrice: number;
@@ -21,12 +24,16 @@ export function useCartTotals(): {
     throw new Error('useAddItem must be used within a CartProvider');
   }
 
+  const cartStatus = useSelector(cartService, selectCartStatus);
+
+  const cart = useSelector(cartService, cartStatus ? selectCart : selectOptamisticCart, (prev, next) => {
+    return prev?.totalPrice === next?.totalPrice;
+  });
+
   return {
-    lineItemsSubtotalPrice: useSelector(
-      cartService,
-      selectLineItemsSubtotalPrice
-    ),
-    subtotalPrice: useSelector(cartService, selectSubtotalPrice),
-    totalPrice: useSelector(cartService, selectTotalPrice),
+    currencyCode: cart?.currency.code ?? 'USD',
+    lineItemsSubtotalPrice: cart?.lineItemsSubtotalPrice ?? 0,
+    subtotalPrice: cart?.subtotalPrice ?? 0,
+    totalPrice: cart?.totalPrice ?? 0,
   };
 }

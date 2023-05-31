@@ -1,4 +1,4 @@
-import { CommercejsCart, commercejsCartSchema } from './zod/cart';
+import { CommercejsAddUpdateResponse, CommercejsCart, addUpdateResponseSchema, commercejsCartSchema } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
 
 /**
@@ -22,18 +22,18 @@ export async function commercejsUpdateToCart({
   quantity?: number;
   options?: unknown;
   variantId?: string;
-}): Promise<CommercejsCart | false> {
+}): Promise<CommercejsAddUpdateResponse | false> {
   const params: Record<string, unknown> = {};
 
   if (quantity) params.quantity = quantity;
   if (options) params.options = options;
   if (variantId) params.variant_id = variantId;
 
-  return commercejsFetcher<CommercejsCart>({
+  return commercejsFetcher<CommercejsAddUpdateResponse>({
     path: `carts/${cartId}/items/${lineItemId}`,
-    method: 'POST',
+    method: 'PUT',
     params,
-    schema: commercejsCartSchema,
+    schema: addUpdateResponseSchema,
   });
 }
 

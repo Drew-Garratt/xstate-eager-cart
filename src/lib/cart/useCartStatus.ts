@@ -1,4 +1,4 @@
-import { StoreContext } from '@/components/providers/store/StoreProvider';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import type { LineItem } from '@/lib/vercelCommerce/types/cart';

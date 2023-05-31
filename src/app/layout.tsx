@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <html lang="en" className={inter.variable}>
         <body className="bg-white text-black selection:bg-teal-300 dark:bg-black dark:text-white dark:selection:bg-fuchsia-600 dark:selection:text-white">
           {/* @ts-expect-error Server Component */}
-          {/* <Navbar /> */}
+          <Navbar />
           <Suspense>
             <main>{children}</main>
           </Suspense>

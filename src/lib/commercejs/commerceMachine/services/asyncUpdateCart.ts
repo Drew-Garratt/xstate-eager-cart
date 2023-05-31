@@ -1,7 +1,7 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 import { findLineItem } from '../../utils/findLineItem';
 import commercejsUpdateToCart from '../../postUpdateToCart';
-import { commercejsCleanCart } from '../../utils/cleanCart';
+import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 
 export const asyncUpdateCart: StoreActor = async (context, event) => {
   if (event.type !== 'ASYNC_UPDATE_CART') return;
@@ -20,16 +20,18 @@ export const asyncUpdateCart: StoreActor = async (context, event) => {
     productId: event.data.itemId,
     lineItems: context.cartContext.cart.lineItems,
   });
+  
   if (!cartLineItem) return context;
-  const { lineItemId, lineItem } = cartLineItem;
 
-  const cart = await commercejsUpdateToCart({
+  const { lineItem } = cartLineItem;
+
+  const responce = await commercejsUpdateToCart({
     cartId: context.cartContext.cart.id,
-    lineItemId,
+    lineItemId: lineItem.id,
     quantity: event.data.item.quantity,
   });
 
-  if (!cart) throw new Error('Cart is undefined');
+  if (!responce) throw new Error('Cart is undefined');
 
-  return { type: 'REMOVE_FROM_CART_DONE', cart: commercejsCleanCart(cart) };
+  return { type: 'UPDATE_CART_DONE', cart: commercejsCleanCartResponse(responce) };
 };

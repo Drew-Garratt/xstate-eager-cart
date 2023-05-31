@@ -1,4 +1,5 @@
 import type { Discount, Image, Measurement } from './common';
+import type { Product } from '../types';
 import type { ProductVariant } from './product';
 
 export interface SelectedOption {
@@ -14,6 +15,16 @@ export interface SelectedOption {
    * The product option’s value, such as "Red" or "XL".
    */
   value: string;
+}
+
+export interface Merchandise {
+  id: string;
+  title: string;
+  selectedOptions: {
+    name: string;
+    value: string;
+  }[];
+  product: Product;
 }
 
 export interface LineItem {
@@ -53,6 +64,10 @@ export interface LineItem {
    * List of selected options, to be used when displaying the line item, such as Color: Red, Size: XL.
    */
   options?: SelectedOption[];
+  /**
+   * The associated product of the line item
+   */
+  merchandise?: Merchandise;
 }
 
 /**
@@ -130,6 +145,11 @@ export interface CartItemBody {
    * The product variant's selected options.
    */
   optionsSelected?: SelectedOption[];
+
+  /**
+   * The product being added to the cart (optional)
+   */
+  merchandise?: Merchandise;
 }
 
 /**

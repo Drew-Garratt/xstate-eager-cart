@@ -5,22 +5,24 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 
 import LoadingDots from 'components/loading-dots';
-import { ProductVariant } from '@/lib/vercelCommerce/types';
+import { Product, ProductVariant } from '@/lib/vercelCommerce/types';
 import { useAddItem } from '@/lib/cart/useAddItem';
 import { useCartLineStatus } from '@/lib/cart/useCartLineStatus';
 
 export function AddToCart({
   variants,
-  availableForSale
+  availableForSale,
+  product
 }: {
   variants: ProductVariant[];
   availableForSale: boolean;
+  product: Product;
 }) {
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const { isItemInAsyncQueue, isItemInOptimisticQueue } = useCartLineStatus({itemId: selectedVariantId});
+  const { isItemInOptimisticQueue } = useCartLineStatus({itemId: selectedVariantId});
   const sendAddToCart = useAddItem();
 
   useEffect(() => {
@@ -40,7 +42,16 @@ export function AddToCart({
   async function handleAdd() {
     if (!availableForSale) return;
 
-    sendAddToCart({variantId: variants[0]?.id});
+    sendAddToCart({
+      variantId: variants[0]?.id,
+      quantity: 1,
+      merchandise: {
+        id: product.id,
+        title: product.title,
+        product,
+        selectedOptions: variants[0]?.selectedOptions ?? []
+      }
+    });
 
     startTransition(() => {
       router.refresh();

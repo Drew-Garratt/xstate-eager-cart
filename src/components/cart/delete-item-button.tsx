@@ -5,28 +5,18 @@ import { startTransition, useState } from 'react';
 
 import clsx from 'clsx';
 import type { CartItem } from '@/lib/vercelCommerce/types';
+import { LineItem } from '@/lib/vercelCommerce/types/cart';
+import { useRemoveItem } from '@/lib/cart/useRemoveItem';
+import { useCartLineStatus } from '@/lib/cart/useCartLineStatus';
 
-export default function DeleteItemButton({ item }: { item: CartItem }) {
+export default function DeleteItemButton({ item }: { item: LineItem }) {
   const router = useRouter();
-  const [removing, setRemoving] = useState(false);
+  const removeItem = useRemoveItem();
+
+  const { isItemInOptimisticQueue } = useCartLineStatus({itemId: item.id});
 
   async function handleRemove() {
-    setRemoving(true);
-
-    const response = await fetch(`/api/cart`, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        lineId: item.id
-      })
-    });
-    const data = await response.json();
-
-    if (data.error) {
-      alert(data.error);
-      return;
-    }
-
-    setRemoving(false);
+    removeItem({itemId: item.id});
 
     startTransition(() => {
       router.refresh();
@@ -36,15 +26,15 @@ export default function DeleteItemButton({ item }: { item: CartItem }) {
     <button
       aria-label="Remove cart item"
       onClick={handleRemove}
-      disabled={removing}
+      disabled={isItemInOptimisticQueue}
       className={clsx(
         'ease flex min-w-[36px] max-w-[36px] items-center justify-center border px-2 transition-all duration-200 hover:border-gray-800 hover:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-gray-900',
         {
-          'cursor-not-allowed px-0': removing
+          'cursor-not-allowed px-0': isItemInOptimisticQueue
         }
       )}
     >
-      {removing ? (
+      {isItemInOptimisticQueue ? (
         <LoadingDots className="bg-black dark:bg-white" />
       ) : (
         <CloseIcon className="hover:text-accent-3 mx-[1px] h-4 w-4" />

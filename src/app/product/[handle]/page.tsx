@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: { params: { handle: string
             <Prose className="mb-6 text-sm leading-tight" html={product.descriptionHtml} />
           ) : null}
 
-          <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+          <AddToCart variants={product.variants} availableForSale={product.availableForSale} product={product} />
         </div>
       </div>
       <Suspense>

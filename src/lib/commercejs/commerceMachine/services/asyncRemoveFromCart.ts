@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 import commercejsRemoveFromCart from '../../deleteCartItem';
 import { findLineItem } from '../../utils/findLineItem';
@@ -21,11 +21,11 @@ export const asyncRemoveFromCart: StoreActor = async (context, event) => {
     lineItems: context.cartContext.cart.lineItems,
   });
   if (!cartLineItem) return context;
-  const { lineItemId, lineItem } = cartLineItem;
+  const { lineItem } = cartLineItem;
 
   const cart = await commercejsRemoveFromCart({
     cartId: context.cartContext.cart.id,
-    lineItemId,
+    lineItemId: lineItem.id,
   });
 
   if (!cart) throw new Error('Cart is undefined');

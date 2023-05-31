@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 
 export const checkOptimisticQueue: StoreActor = (context) => (sendBack) => {
   if (context.cartContext.optimisticQueue.length < 1) return;
@@ -13,16 +13,10 @@ export const checkOptimisticQueue: StoreActor = (context) => (sendBack) => {
 
   switch (event.type) {
     case 'ADD_ITEM':
-      if (context.cartContext.cart === null) {
-        sendBack({
-          type: 'SKIP_ACTION',
-        });
-      } else {
-        sendBack({
-          type: 'OPTIMISTIC_ADD_TO_CART',
-          data: event.data,
-        });
-      }
+      sendBack({
+        type: 'OPTIMISTIC_ADD_TO_CART',
+        data: event.data,
+      });
       break;
     case 'UPDATE_ITEM':
       sendBack({

@@ -6,6 +6,8 @@ import { checkAsyncQueue } from './checkAsyncQueue';
 import { checkOptimisticQueue } from './checkOptimisticQueue';
 import { initialiseCart } from './initialiseCart';
 
+import services from '@/lib/vercelCommerce/machine/services'
+
 export {
   asyncAddToCart,
   asyncCreateCart,
@@ -17,6 +19,7 @@ export {
 };
 
 export default {
+  ...services,
   asyncAddToCart,
   asyncCreateCart,
   asyncRemoveFromCart,

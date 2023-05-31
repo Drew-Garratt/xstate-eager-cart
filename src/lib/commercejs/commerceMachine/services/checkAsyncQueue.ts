@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 
 export const checkAsyncQueue: StoreActor = (context) => (sendBack) => {
   /**

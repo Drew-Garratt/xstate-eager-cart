@@ -42,7 +42,7 @@ export const StoreContext = createContext<StoreContextType>(undefined);
  * @param input: { children: ReactNode }
  * @returns
  */
-export const StoreProvider = ({ children }: { children: ReactNode }) => {
+export const CommerceProvider = ({ children }: { children: ReactNode }) => {
   /**
    * Create a cart machine using the useInterpret hook
    * The useInterpret hook will create a machine and start it

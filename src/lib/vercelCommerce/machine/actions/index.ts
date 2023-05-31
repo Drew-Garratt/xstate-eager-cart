@@ -2,16 +2,16 @@ import { Cart } from '../../types/cart';
 import type { StoreAction } from '..';
 import { assign } from 'xstate';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
+import { defaultCart } from '../../utils';
 
-const addSuccessMessage: StoreAction = () => {};
+const addSuccessMessage: StoreAction = () => {
+};
 
 // Assign the error to the context
-const assignError: StoreAction = assign((context) => {
+const assignError: StoreAction = assign((context, event) => {
   const errorArray = context.cartContext.error
-    ? ['There was an error', ...context.cartContext.error]
-    : ['There was an error'];
-
-  console.log('assignError', context.cartContext.error);
+    ? [event ?? 'There was an error', ...context.cartContext.error]
+    : [event ?? 'There was an error'];
 
   return {
     ...context,
@@ -29,7 +29,7 @@ const addActionToOptimisticQueue: StoreAction = assign((context, event) => {
     ...context,
     cartContext: {
       ...context.cartContext,
-      optimisticQueue: [event.data, ...context.cartContext.optimisticQueue],
+      optimisticQueue: [...context.cartContext.optimisticQueue, event.data],
     },
   };
 });
@@ -41,7 +41,7 @@ const addActionToAsyncQueue: StoreAction = assign((context, event) => {
     ...context,
     cartContext: {
       ...context.cartContext,
-      asyncQueue: [event.data, ...context.cartContext.asyncQueue],
+      asyncQueue: [...context.cartContext.asyncQueue, event.data],
     },
   };
 });
@@ -117,6 +117,8 @@ const updateCartContext: StoreAction<{
     cart: Cart;
   };
 }> = assign((context, event) => {
+  if (event.data.type !== 'UPDATE_CART_DONE') return context;
+
   const cartContext = context.cartContext;
   const cart = event.data.cart;
 
@@ -167,14 +169,47 @@ const optimisticAddToCart: StoreAction = assign((context, event) => {
   const cartContext = context.cartContext;
 
   /**
-   * If there is no cart in the context return early
+   * If a optimistic cart already exists use this otherwise use the default cart
    */
-  if (!cartContext.optimisticCart) return context;
+  const optimisticCart = cartContext.optimisticCart ? { ...cartContext.optimisticCart } : defaultCart;
 
-  /**
-   * Shallow copy of the optimistic cart
-   */
-  const optimisticCart = { ...cartContext.optimisticCart };
+  if (optimisticCart.lineItems.size === 0) {
+    const merchandise = event.data.item.merchandise;
+
+    if (!merchandise) return context;
+
+    const variant = merchandise.product.variants.find((variant) => variant.id === event.data.item.variantId);
+
+    if (!variant) return context;
+
+    optimisticCart.lineItems.set(merchandise.id, {
+      id: merchandise.id,
+      productId: merchandise.id,
+      variantId: event.data.item.variantId,
+      quantity: event.data.item.quantity ?? 1,
+      name: merchandise.title,
+      merchandise,
+      variant: {
+        id: variant.id,
+        name: variant.title,
+        price: {value: variant.price.amount},
+        options: [],
+      },
+      discounts: [],
+      path: '',
+    });
+    optimisticCart.lineItemsSubtotalPrice = variant.price.amount;
+    optimisticCart.subtotalPrice = variant.price.amount;
+    optimisticCart.totalPrice = variant.price.amount;
+
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticCart,
+      },
+    };
+  }
 
   /**
    * Product ID
@@ -213,6 +248,8 @@ const optimisticAddToCart: StoreAction = assign((context, event) => {
   });
 
   const lineItemPrice = lineItem.variant.price.value * eventQuantity;
+
+  console.log('lineItemPrice', lineItemPrice);
 
   optimisticCart.lineItemsSubtotalPrice =
     optimisticCart.lineItemsSubtotalPrice + lineItemPrice;
@@ -272,7 +309,7 @@ const optimisticRemoveFromCart: StoreAction = assign((context, event) => {
 
   optimisticCart.lineItems.delete(lineItemId);
 
-  const lineItemPrice = lineItem.variant.price.value * lineItem.quantity;
+  const lineItemPrice = lineItem.variant.price.value * lineItem.quantity * -1;
 
   optimisticCart.lineItemsSubtotalPrice =
     optimisticCart.lineItemsSubtotalPrice - lineItemPrice;
@@ -311,8 +348,6 @@ const optimisticUpdateCart: StoreAction = assign((context, event) => {
    */
   const optimisticCart = { ...cartContext.optimisticCart };
 
-  optimisticCart.lineItems.delete(event.data.itemId);
-
   /**
    * Product ID
    *
@@ -329,10 +364,13 @@ const optimisticUpdateCart: StoreAction = assign((context, event) => {
     productId,
     lineItems: optimisticCart.lineItems,
   });
+
   if (!cartLineItem) return context;
+
   const { lineItemId, lineItem } = cartLineItem;
 
   if (!lineItem) return context;
+
   if (!lineItem.variant?.price) return context;
 
   optimisticCart.lineItems.set(lineItemId, {
@@ -340,9 +378,9 @@ const optimisticUpdateCart: StoreAction = assign((context, event) => {
     quantity: event.data.item.quantity,
   });
 
-  const lineItemPriceAdjustment =
-    lineItem.variant.price.value * lineItem.quantity * -1 +
-    lineItem.variant.price.value * event.data.item.quantity;
+  const lineItemPriceAdjustment = 
+    lineItem.variant.price.value * lineItem.quantity * -1 
+    + lineItem.variant.price.value * event.data.item.quantity;
 
   optimisticCart.lineItemsSubtotalPrice =
     optimisticCart.lineItemsSubtotalPrice + lineItemPriceAdjustment;
@@ -350,6 +388,14 @@ const optimisticUpdateCart: StoreAction = assign((context, event) => {
     optimisticCart.subtotalPrice + lineItemPriceAdjustment;
   optimisticCart.totalPrice =
     optimisticCart.totalPrice + lineItemPriceAdjustment;
+
+  console.log('optimisticCart', {
+    ...context,
+    cartContext: {
+      ...cartContext,
+      optimisticCart,
+    },
+  });
 
   return {
     ...context,
