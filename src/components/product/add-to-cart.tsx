@@ -19,6 +19,7 @@ export function AddToCart({
   product: Product;
 }) {
   const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -26,14 +27,15 @@ export function AddToCart({
   const sendAddToCart = useAddItem();
 
   useEffect(() => {
-    const variant = variants.find((variant: ProductVariant) =>
+    const variantIndex = variants.findIndex((variant: ProductVariant) =>
       variant.selectedOptions.every(
         (option) => option.value === searchParams.get(option.name.toLowerCase())
       )
     );
 
-    if (variant) {
-      setSelectedVariantId(variant.id);
+    if (variantIndex) {
+      setSelectedVariantIndex(variantIndex);
+      setSelectedVariantId(variants[variantIndex].id);
     }
   }, [searchParams, variants, setSelectedVariantId]);
 
@@ -43,13 +45,13 @@ export function AddToCart({
     if (!availableForSale) return;
 
     sendAddToCart({
-      variantId: variants[0]?.id,
+      variantId: selectedVariantId,
       quantity: 1,
       merchandise: {
         id: product.id,
         title: product.title,
         product,
-        selectedOptions: variants[0]?.selectedOptions ?? []
+        selectedOptions: variants[selectedVariantIndex]?.selectedOptions ?? []
       }
     });
 

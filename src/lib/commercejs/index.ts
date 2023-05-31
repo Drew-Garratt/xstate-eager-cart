@@ -71,6 +71,11 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
       group.options.forEach(option => {
         productOption.values.push(option.name)
 
+        const variantPrice = option.price?.raw ?? product.price.raw;
+        const priceValue = product.price.raw === variantPrice
+          ? variantPrice
+          : variantPrice + product.price.raw;
+
         variants.push({
           /**
            * This is a unique identifier for the variant, composed of the product ID, variant ID, and option ID.
@@ -79,7 +84,7 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
           title: option.name,
           availableForSale: true,
           price: {
-            amount: option.price?.raw ?? product.price.raw,
+            amount: priceValue,
             currencyCode: 'USD',
           },
           selectedOptions: [

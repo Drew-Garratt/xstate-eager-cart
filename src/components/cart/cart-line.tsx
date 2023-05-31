@@ -40,7 +40,7 @@ const CartLine = ({
           <span className="font-semibold">
             {item.name}
           </span>
-          {(item.merchandise?.selectedOptions.length ?? 0) > 1 ? (
+          {item.merchandise && item.merchandise.selectedOptions.length > 0 ? (
             <p className="text-sm" data-testid="cart-product-variant">
               {item.merchandise?.selectedOptions[0].name} {item.merchandise?.selectedOptions[0].value}
             </p>
@@ -48,7 +48,7 @@ const CartLine = ({
         </div>
         <Price
           className="flex flex-col justify-between space-y-2 text-sm"
-          amount={(item.merchandise?.product.priceRange.minVariantPrice.amount ?? 0).toString()}
+          amount={item.variant.price?.value ?? 0}
           currencyCode={item.merchandise?.product.priceRange.minVariantPrice.currencyCode ?? 'USD'}
         />
       </Link>

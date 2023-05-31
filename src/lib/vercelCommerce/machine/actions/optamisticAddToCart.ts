@@ -49,8 +49,6 @@ export const optimisticAddToCart: StoreAction = assign((context, event) => {
     optimisticCart.subtotalPrice = variant.price.amount;
     optimisticCart.totalPrice = variant.price.amount;
 
-    console.log(optimisticCart.totalPrice)
-
     return {
       ...context,
       cartContext: {
