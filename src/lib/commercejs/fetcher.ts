@@ -5,7 +5,7 @@ const baseUrl = 'https://api.chec.io/v1/';
 
 const headers = {
   //TODO: Move this to an environment variable
-  'X-Authorization': 'pk_178511bb808cdcaa54deba073eefe51688eb9cf470dfe',
+  'X-Authorization': process.env.NEXT_PUBLIC_COMMERCEJS_PUBLIC_KEY ?? '',
   Host: 'api.chec.io',
   Accept: 'application/json',
   'Content-Type': 'application/json',
