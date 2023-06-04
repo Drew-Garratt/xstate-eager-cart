@@ -60,7 +60,7 @@ export function GridTileImage({
           </h3>
           <Price
             className="w-fit bg-white px-5 py-3 text-sm font-semibold dark:bg-black dark:text-white"
-            amount={labels.amount}
+            amount={Number(labels.amount)}
             currencyCode={labels.currencyCode}
           />
         </div>

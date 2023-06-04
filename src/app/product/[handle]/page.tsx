@@ -84,7 +84,6 @@ export default async function ProductPage({ params }: { params: { handle: string
         </div>
       </div>
       <Suspense>
-        {/* @ts-expect-error Server Component */}
         {/* <RelatedProducts id={product.id} /> */}
         <Suspense>
           {/* @ts-expect-error Server Component */}

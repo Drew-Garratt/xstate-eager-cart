@@ -1,4 +1,4 @@
-import { Cart, Collection, Menu, Page, Product } from 'lib/types';
+import { Cart, Collection, Menu, Page, Product } from './types';
 import {
   CheckoutAddLineDocument,
   CheckoutDeleteLineDocument,

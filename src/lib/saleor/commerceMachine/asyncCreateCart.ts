@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/commerceMachine';
+import { StoreActor } from '@/lib/vercelCommerce/machine';
 
 export const asyncCreateCart: StoreActor = async () => {
   return { data: null };
