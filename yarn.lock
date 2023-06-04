@@ -3778,15 +3778,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bindings@npm:^1.3.1":
-  version: 1.5.0
-  resolution: "bindings@npm:1.5.0"
-  dependencies:
-    file-uri-to-path: "npm:1.0.0"
-  checksum: 17581455207d7f731dfef93e18aebe1f4402e760a45e7fa02585ba6ccaf7bd0e91723d5587e01e222d5d890cd1c7958c69050b9d86d4256a5b7e4f108aebb669
-  languageName: node
-  linkType: hard
-
 "bl@npm:^4.1.0":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -4478,17 +4469,6 @@ __metadata:
   version: 1.1.0
   resolution: "detect-node-es@npm:1.1.0"
   checksum: 1b6b1d458e726d595ffa8938d80f1e5e4e079297beeb1ceb77d3640d92cfabafe4ce21a794a9c5127e96cc8302b54cbd6bbd21766b36b86d3b59ddd52647198d
-  languageName: node
-  linkType: hard
-
-"dev@npm:0.1.3":
-  version: 0.1.3
-  resolution: "dev@npm:0.1.3"
-  dependencies:
-    inotify: "npm:>= 0.1.6"
-  bin:
-    node-dev: ./node-dev.sh
-  checksum: 89c0b8ca860571726198d23b37c3206dda39b6bece61e3310830decdeed5d0315bfe60e2e67b7e080f6aa0780605af4a3597df18931a777e9a5738f4eadf0a0e
   languageName: node
   linkType: hard
 
@@ -5364,13 +5344,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-uri-to-path@npm:1.0.0":
-  version: 1.0.0
-  resolution: "file-uri-to-path@npm:1.0.0"
-  checksum: 38ecb8791c47805252036ab44cf946719e55b879548d2fe7305cc02a6b492b6ff37e0b92db42d9ba3fcc95a82d3fd5ef99b03b9289019ca4c0a067126467075b
-  languageName: node
-  linkType: hard
-
 "fill-range@npm:^7.0.1":
   version: 7.0.1
   resolution: "fill-range@npm:7.0.1"
@@ -6034,18 +6007,6 @@ __metadata:
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: ca76c7e45ec715bfe6c1dd67b780b9a15068f37b37ab56cf8b773537b2654238469a42950f5f4d301212755e7512be888f627752e778e1863d95cfedefc8b8bd
-  languageName: node
-  linkType: hard
-
-"inotify@npm:>= 0.1.6":
-  version: 1.4.6
-  resolution: "inotify@npm:1.4.6"
-  dependencies:
-    bindings: "npm:^1.3.1"
-    nan: "npm:^2.12.1"
-    node-gyp: "npm:latest"
-  checksum: 34b7da9873dcb418bfc036c96eb5c84706af42f127327ad1464555535f8deea2b1c743bea1a4b7feb60ec57d117868671bea7d4ec4cca39e8ea1a711f0fb3818
-  conditions: os=linux
   languageName: node
   linkType: hard
 
@@ -7074,15 +7035,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.12.1":
-  version: 2.17.0
-  resolution: "nan@npm:2.17.0"
-  dependencies:
-    node-gyp: "npm:latest"
-  checksum: d424a730ee926fd928545c29ba19609bc1af03f8210c4465c825ba87070b83c546da2964a14d6acdacca847798184f48d5b8585f061dcb59459b300f2aff09c8
-  languageName: node
-  linkType: hard
-
 "nanoid@npm:^3.3.4, nanoid@npm:^3.3.6":
   version: 3.3.6
   resolution: "nanoid@npm:3.3.6"
@@ -7147,7 +7099,6 @@ __metadata:
     autoprefixer: "npm:10.4.14"
     clsx: "npm:1.2.1"
     cross-env: "npm:7.0.3"
-    dev: "npm:0.1.3"
     eslint: "npm:8.41.0"
     eslint-config-next: "npm:13.4.4"
     eslint-config-prettier: "npm:^8.8.0"
