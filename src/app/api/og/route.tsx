@@ -50,12 +50,12 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
             style: 'normal',
             weight: 400,
           },
-          {
-            name: 'Inter',
-            data: boldFont,
-            style: 'normal',
-            weight: 700,
-          },
+          // {
+          //   name: 'Inter',
+          //   data: boldFont,
+          //   style: 'normal',
+          //   weight: 700,
+          // },
         ],
       }
     );
