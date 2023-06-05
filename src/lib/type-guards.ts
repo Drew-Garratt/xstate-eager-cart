@@ -3,11 +3,17 @@ export interface VercelCommerceErrorLike {
   message: Error;
 }
 
-export const isObject = (object: unknown): object is Record<string, unknown> => {
-  return typeof object === 'object' && object !== null && !Array.isArray(object);
+export const isObject = (
+  object: unknown
+): object is Record<string, unknown> => {
+  return (
+    typeof object === 'object' && object !== null && !Array.isArray(object)
+  );
 };
 
-export const isVercelCommerceError = (error: unknown): error is VercelCommerceErrorLike => {
+export const isVercelCommerceError = (
+  error: unknown
+): error is VercelCommerceErrorLike => {
   if (!isObject(error)) return false;
 
   if (error instanceof Error) return true;

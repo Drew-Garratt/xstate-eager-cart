@@ -1,11 +1,12 @@
-import { StoreActor } from "..";
+import { type StoreMachineOptions } from '..';
 
-const openCart: StoreActor = () => (sendBack) => {
-  sendBack({ type: 'OPEN_CART_DRAW' });
-}
+const openCart: StoreMachineOptions['services']['openCart'] =
+  () => (sendBack) => {
+    sendBack({ type: 'OPEN_CART_DRAW' });
+  };
 
 const services = {
-  openCart
-}
+  openCart,
+};
 
 export default services;

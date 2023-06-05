@@ -1,4 +1,4 @@
-import { StoreGuard } from '..';
+import { type StoreGuard } from '..';
 
 const ifThereAreErrors: StoreGuard = (context) => {
   return !!context.cartContext?.error;

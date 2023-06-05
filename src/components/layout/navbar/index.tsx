@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
+import { type Menu } from '@/lib/vercelCommerce/types';
 import Cart from 'components/cart';
 import CartIcon from 'components/icons/cart';
 import LogoIcon from 'components/icons/logo';
 // import { getMenu } from 'lib/saleor';
-import { Menu } from '@/lib/vercelCommerce/types';
 import MobileMenu from './mobile-menu';
 import Search from './search';
 

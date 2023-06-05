@@ -1,16 +1,15 @@
-import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
-import { StoreState } from '@/lib/vercelCommerce/machine';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
+import { type StoreState } from '@/lib/vercelCommerce/machine';
 
-const selectCart = (state: StoreState) =>
-state.context.cartContext.cart;
+const selectCart = (state: StoreState) => state.context.cartContext.cart;
 
 const selectOptamisticCart = (state: StoreState) =>
-state.context.cartContext.optimisticCart;
+  state.context.cartContext.optimisticCart;
 
 const selectCartStatus = (state: StoreState) =>
-state.matches('Cart.Ready.Cart Async.Idle')
+  state.matches('Cart.Ready.Cart Async.Idle');
 
 export function useCartTotals(): {
   currencyCode: string;
@@ -26,9 +25,13 @@ export function useCartTotals(): {
 
   const cartStatus = useSelector(cartService, selectCartStatus);
 
-  const cart = useSelector(cartService, cartStatus ? selectCart : selectOptamisticCart, (prev, next) => {
-    return prev?.totalPrice === next?.totalPrice;
-  });
+  const cart = useSelector(
+    cartService,
+    cartStatus ? selectCart : selectOptamisticCart,
+    (prev, next) => {
+      return prev?.totalPrice === next?.totalPrice;
+    }
+  );
 
   return {
     currencyCode: cart?.currency.code ?? 'USD',

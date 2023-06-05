@@ -4,8 +4,9 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import Caret from 'components/icons/caret-right';
-import type { ListItem } from '.';
+// eslint-disable-next-line import/no-cycle
 import { FilterItem } from './item';
+import type { ListItem } from '.';
 
 export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
   const pathname = usePathname();
@@ -38,7 +39,8 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
 
   return (
     <div className="relative" ref={ref}>
-      <div
+      <button
+        type="button"
         onClick={() => {
           setOpenSelect(!openSelect);
         }}
@@ -46,9 +48,10 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
       >
         <div>{active}</div>
         <Caret className="h-4 rotate-90" />
-      </div>
+      </button>
       {openSelect && (
-        <div
+        <button
+          type="button"
           onClick={() => {
             setOpenSelect(false);
           }}
@@ -57,7 +60,7 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
           {list.map((item: ListItem, i) => (
             <FilterItem key={i} item={item} />
           ))}
-        </div>
+        </button>
       )}
     </div>
   );

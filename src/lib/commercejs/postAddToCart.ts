@@ -1,5 +1,8 @@
-import { addUpdateResponseSchema, CommercejsAddUpdateResponse } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
+import {
+  addUpdateResponseSchema,
+  type CommercejsAddUpdateResponse,
+} from './zod/cart';
 
 /**
  * Commmerce JS Add to Cart
@@ -15,7 +18,7 @@ export async function commercejsAddToCart({
   productId,
   quantity,
   variantId,
-  options
+  options,
 }: {
   cartId: string;
   productId: string;
@@ -29,7 +32,7 @@ export async function commercejsAddToCart({
     params: {
       id: variantId ?? productId,
       quantity: quantity.toString(),
-      options
+      options,
     },
     schema: addUpdateResponseSchema,
   });

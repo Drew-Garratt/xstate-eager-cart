@@ -1,5 +1,10 @@
-import { CommercejsAddUpdateResponse, CommercejsCart, addUpdateResponseSchema, commercejsCartSchema } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
+import {
+  type CommercejsAddUpdateResponse,
+  CommercejsCart,
+  addUpdateResponseSchema,
+  commercejsCartSchema,
+} from './zod/cart';
 
 /**
  * Commmerce JS Update item in cart

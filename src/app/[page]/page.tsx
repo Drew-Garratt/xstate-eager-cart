@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-import Prose from 'components/prose';
 import { notFound } from 'next/navigation';
+import Prose from 'components/prose';
 
 export const runtime = 'edge';
 

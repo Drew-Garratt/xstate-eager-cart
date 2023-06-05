@@ -1,8 +1,8 @@
 'use client';
 
+import clsx from 'clsx';
 import { useState } from 'react';
 
-import clsx from 'clsx';
 import { GridTileImage } from 'components/grid/tile';
 import ArrowLeftIcon from 'components/icons/arrow-left';
 
@@ -10,7 +10,7 @@ export function Gallery({
   title,
   amount,
   currencyCode,
-  images
+  images,
 }: {
   title: string;
   amount: string;
@@ -23,7 +23,9 @@ export function Gallery({
     if (direction === 'next') {
       setCurrentImage(currentImage + 1 < images.length ? currentImage + 1 : 0);
     } else {
-      setCurrentImage(currentImage === 0 ? images.length - 1 : currentImage - 1);
+      setCurrentImage(
+        currentImage === 0 ? images.length - 1 : currentImage - 1
+      );
     }
   }
 
@@ -45,7 +47,7 @@ export function Gallery({
             labels={{
               title,
               amount,
-              currencyCode
+              currencyCode,
             }}
           />
         )}
@@ -54,7 +56,10 @@ export function Gallery({
           <div className="absolute bottom-10 right-10 flex h-12 flex-row border border-white text-white shadow-xl dark:border-black dark:text-black">
             <button
               aria-label="Previous product image"
-              className={clsx(buttonClassName, 'border-r border-white dark:border-black')}
+              className={clsx(
+                buttonClassName,
+                'border-r border-white dark:border-black'
+              )}
               onClick={() => handleNavigate('previous')}
             >
               <ArrowLeftIcon className="h-6" />

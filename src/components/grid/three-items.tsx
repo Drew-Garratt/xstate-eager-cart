@@ -1,7 +1,7 @@
+import Link from 'next/link';
+import type { Product } from '@/lib/vercelCommerce/types';
 import { GridTileImage } from 'components/grid/tile';
 import { getCollectionProducts } from 'lib/saleor';
-import type { Product } from '@/lib/vercelCommerce/types';
-import Link from 'next/link';
 
 // function ThreeItemGridItem({
 //   item,
@@ -37,14 +37,19 @@ import Link from 'next/link';
 
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const homepageItems = await getCollectionProducts('hidden-homepage-featured-items');
+  const homepageItems = await getCollectionProducts(
+    'hidden-homepage-featured-items'
+  );
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 
   const [firstProduct, secondProduct, thirdProduct] = homepageItems;
 
   return (
-    <section className="lg:grid lg:grid-cols-6 lg:grid-rows-2" data-testid="homepage-products">
+    <section
+      className="lg:grid lg:grid-cols-6 lg:grid-rows-2"
+      data-testid="homepage-products"
+    >
       {/* <ThreeItemGridItem size="full" item={firstProduct} background="purple" />
       <ThreeItemGridItem size="half" item={secondProduct} background="black" />
       <ThreeItemGridItem size="half" item={thirdProduct} background="pink" /> */}

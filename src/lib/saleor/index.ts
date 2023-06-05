@@ -1,4 +1,3 @@
-import { Cart, Collection, Menu, Page, Product } from './types';
 import {
   CheckoutAddLineDocument,
   CheckoutDeleteLineDocument,
@@ -14,13 +13,23 @@ import {
   GetPageBySlugDocument,
   GetPagesDocument,
   GetProductBySlugDocument,
-  MenuItemFragment,
+  type MenuItemFragment,
   OrderDirection,
   ProductOrderField,
   SearchProductsDocument,
-  TypedDocumentString
+  type TypedDocumentString,
 } from './generated/graphql';
-import { saleorCheckoutToVercelCart, saleorProductToVercelProduct } from './mappers';
+import {
+  saleorCheckoutToVercelCart,
+  saleorProductToVercelProduct,
+} from './mappers';
+import {
+  type Cart,
+  type Collection,
+  type Menu,
+  type Page,
+  type Product,
+} from './types';
 import { invariant } from './utils';
 
 const endpoint = process.env.SALEOR_INSTANCE_URL;
@@ -35,7 +44,7 @@ export async function saleorFetch<Result, Variables>({
   query,
   variables,
   headers,
-  cache = 'force-cache'
+  cache = 'force-cache',
 }: {
   query: TypedDocumentString<Result, Variables>;
   variables: Variables;
@@ -47,15 +56,15 @@ export async function saleorFetch<Result, Variables>({
   const result = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...headers
+      ['Content-Type']: 'application/json',
+      ...headers,
     },
     body: JSON.stringify({
       query: query.toString(),
-      ...(variables && { variables })
+      ...(variables && { variables }),
     }),
     cache,
-    next: { revalidate: 900 } // 15 minutes
+    next: { revalidate: 900 }, // 15 minutes
   });
 
   const body = (await result.json()) as GraphQlErrorRespone<Result>;
@@ -70,7 +79,7 @@ export async function saleorFetch<Result, Variables>({
 export async function getCollections(): Promise<Collection[]> {
   const saleorCollections = await saleorFetch({
     query: GetCollectionsDocument,
-    variables: {}
+    variables: {},
   });
 
   return (
@@ -82,10 +91,10 @@ export async function getCollections(): Promise<Collection[]> {
           description: edge.node.description as string,
           seo: {
             title: edge.node.seoTitle || edge.node.name,
-            description: edge.node.seoDescription || ''
+            description: edge.node.seoDescription || '',
           },
           updatedAt: edge.node.products?.edges?.[0]?.node.updatedAt || '',
-          path: `/search/${edge.node.slug}`
+          path: `/search/${edge.node.slug}`,
         };
       })
       .filter((el) => !el.handle.startsWith(`hidden-`)) ?? []
@@ -96,8 +105,8 @@ export async function getPage(handle: string): Promise<Page> {
   const saleorPage = await saleorFetch({
     query: GetPageBySlugDocument,
     variables: {
-      slug: handle
-    }
+      slug: handle,
+    },
   });
 
   if (!saleorPage.page) {
@@ -112,10 +121,10 @@ export async function getPage(handle: string): Promise<Page> {
     bodySummary: saleorPage.page.seoDescription || '',
     seo: {
       title: saleorPage.page.seoTitle || saleorPage.page.title,
-      description: saleorPage.page.seoDescription || ''
+      description: saleorPage.page.seoDescription || '',
     },
     createdAt: saleorPage.page.created,
-    updatedAt: saleorPage.page.created
+    updatedAt: saleorPage.page.created,
   };
 }
 
@@ -123,8 +132,8 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   const saleorProduct = await saleorFetch({
     query: GetProductBySlugDocument,
     variables: {
-      slug: handle
-    }
+      slug: handle,
+    },
   });
 
   if (!saleorProduct.product) {
@@ -139,8 +148,8 @@ const _getCollection = async (handle: string) =>
     await saleorFetch({
       query: GetCollectionBySlugDocument,
       variables: {
-        slug: handle
-      }
+        slug: handle,
+      },
     })
   ).collection;
 const _getCategory = async (handle: string) =>
@@ -148,13 +157,16 @@ const _getCategory = async (handle: string) =>
     await saleorFetch({
       query: GetCategoryBySlugDocument,
       variables: {
-        slug: handle
-      }
+        slug: handle,
+      },
     })
   ).category;
 
-export async function getCollection(handle: string): Promise<Collection | undefined> {
-  const saleorCollection = (await _getCollection(handle)) || (await _getCategory(handle));
+export async function getCollection(
+  handle: string
+): Promise<Collection | undefined> {
+  const saleorCollection =
+    (await _getCollection(handle)) || (await _getCategory(handle));
 
   if (!saleorCollection) {
     throw new Error(`Collection not found: ${handle}`);
@@ -166,10 +178,10 @@ export async function getCollection(handle: string): Promise<Collection | undefi
     description: saleorCollection.description as string,
     seo: {
       title: saleorCollection.seoTitle || saleorCollection.name,
-      description: saleorCollection.seoDescription || ''
+      description: saleorCollection.seoDescription || '',
     },
     updatedAt: saleorCollection.products?.edges?.[0]?.node.updatedAt || '',
-    path: `/search/${saleorCollection.slug}`
+    path: `/search/${saleorCollection.slug}`,
   };
 }
 
@@ -178,8 +190,8 @@ const _getCollectionProducts = async (handle: string) =>
     await saleorFetch({
       query: GetCollectionProductsBySlugDocument,
       variables: {
-        slug: handle
-      }
+        slug: handle,
+      },
     })
   ).collection;
 const _getCategoryProducts = async (handle: string) =>
@@ -187,14 +199,17 @@ const _getCategoryProducts = async (handle: string) =>
     await saleorFetch({
       query: GetCategoryProductsBySlugDocument,
       variables: {
-        slug: handle
-      }
+        slug: handle,
+      },
     })
   ).category;
 
-export async function getCollectionProducts(handle: string): Promise<Product[]> {
+export async function getCollectionProducts(
+  handle: string
+): Promise<Product[]> {
   const saleorCollectionProducts =
-    (await _getCollectionProducts(handle)) || (await _getCategoryProducts(handle));
+    (await _getCollectionProducts(handle)) ||
+    (await _getCategoryProducts(handle));
 
   if (!saleorCollectionProducts) {
     throw new Error(`Collection not found: ${handle}`);
@@ -209,15 +224,15 @@ export async function getCollectionProducts(handle: string): Promise<Product[]> 
 
 export async function getMenu(handle: string): Promise<Menu[]> {
   const handleToSlug: Record<string, string> = {
-    'next-js-frontend-footer-menu': 'footer',
-    'next-js-frontend-header-menu': 'navbar'
+    ['next-js-frontend-footer-menu']: 'footer',
+    ['next-js-frontend-header-menu']: 'navbar',
   };
 
   const saleorMenu = await saleorFetch({
     query: GetMenuBySlugDocument,
     variables: {
-      slug: handleToSlug[handle] || handle
-    }
+      slug: handleToSlug[handle] || handle,
+    },
   });
 
   if (!saleorMenu.menu) {
@@ -226,7 +241,8 @@ export async function getMenu(handle: string): Promise<Menu[]> {
 
   const result = flattenMenuItems(saleorMenu.menu.items).filter(
     // unique by path
-    (item1, idx, arr) => arr.findIndex((item2) => item2.path === item1.path) === idx
+    (item1, idx, arr) =>
+      arr.findIndex((item2) => item2.path === item1.path) === idx
   );
 
   if (handle === 'next-js-frontend-header-menu') {
@@ -239,7 +255,9 @@ export async function getMenu(handle: string): Promise<Menu[]> {
 type MenuItemWithChildren = MenuItemFragment & {
   children?: null | undefined | MenuItemWithChildren[];
 };
-function flattenMenuItems(menuItems: null | undefined | MenuItemWithChildren[]): Menu[] {
+function flattenMenuItems(
+  menuItems: null | undefined | MenuItemWithChildren[]
+): Menu[] {
   return (
     menuItems?.flatMap((item) => {
       // Remove empty categories and collections from menu
@@ -263,11 +281,11 @@ function flattenMenuItems(menuItems: null | undefined | MenuItemWithChildren[]):
           ? [
               {
                 path: path,
-                title: item.name
-              }
+                title: item.name,
+              },
             ]
           : []),
-        ...flattenMenuItems(item.children)
+        ...flattenMenuItems(item.children),
       ];
     }) || []
   );
@@ -276,7 +294,7 @@ function flattenMenuItems(menuItems: null | undefined | MenuItemWithChildren[]):
 export async function getProducts({
   query,
   reverse,
-  sortKey
+  sortKey,
 }: {
   query?: string;
   reverse?: boolean;
@@ -286,21 +304,23 @@ export async function getProducts({
     query: SearchProductsDocument,
     variables: {
       search: query || '',
-      sortBy: sortKey || (query ? ProductOrderField.Rank : ProductOrderField.Rating),
-      sortDirection: reverse ? OrderDirection.Desc : OrderDirection.Asc
-    }
+      sortBy:
+        sortKey || (query ? ProductOrderField.Rank : ProductOrderField.Rating),
+      sortDirection: reverse ? OrderDirection.Desc : OrderDirection.Asc,
+    },
   });
 
   return (
-    saleorProducts.products?.edges.map((product) => saleorProductToVercelProduct(product.node)) ||
-    []
+    saleorProducts.products?.edges.map((product) =>
+      saleorProductToVercelProduct(product.node)
+    ) || []
   );
 }
 
 export async function getPages(): Promise<Page[]> {
   const saleorPages = await saleorFetch({
     query: GetPagesDocument,
-    variables: {}
+    variables: {},
   });
 
   return (
@@ -313,10 +333,10 @@ export async function getPages(): Promise<Page[]> {
         bodySummary: page.node.seoDescription || '',
         seo: {
           title: page.node.seoTitle || page.node.title,
-          description: page.node.seoDescription || ''
+          description: page.node.seoDescription || '',
         },
         createdAt: page.node.created,
-        updatedAt: page.node.created
+        updatedAt: page.node.created,
       };
     }) || []
   );
@@ -326,9 +346,9 @@ export async function getCart(cartId: string): Promise<Cart | null> {
   const saleorCheckout = await saleorFetch({
     query: GetCheckoutByIdDocument,
     variables: {
-      id: cartId
+      id: cartId,
     },
-    cache: 'no-store'
+    cache: 'no-store',
   });
 
   if (!saleorCheckout.checkout) {
@@ -344,10 +364,10 @@ export async function createCart(): Promise<Cart> {
     variables: {
       input: {
         channel: 'default-channel',
-        lines: []
-      }
+        lines: [],
+      },
     },
-    cache: 'no-store'
+    cache: 'no-store',
   });
 
   if (!saleorCheckout.checkoutCreate?.checkout) {
@@ -366,9 +386,12 @@ export async function addToCart(
     query: CheckoutAddLineDocument,
     variables: {
       checkoutId: cartId,
-      lines: lines.map(({ merchandiseId, quantity }) => ({ variantId: merchandiseId, quantity }))
+      lines: lines.map(({ merchandiseId, quantity }) => ({
+        variantId: merchandiseId,
+        quantity,
+      })),
     },
-    cache: 'no-store'
+    cache: 'no-store',
   });
 
   if (!saleorCheckout.checkoutLinesAdd?.checkout) {
@@ -387,9 +410,9 @@ export async function updateCart(
     query: CheckoutUpdateLineDocument,
     variables: {
       checkoutId: cartId,
-      lines: lines.map(({ id, quantity }) => ({ lineId: id, quantity }))
+      lines: lines.map(({ id, quantity }) => ({ lineId: id, quantity })),
     },
-    cache: 'no-store'
+    cache: 'no-store',
   });
 
   if (!saleorCheckout.checkoutLinesUpdate?.checkout) {
@@ -397,28 +420,35 @@ export async function updateCart(
     throw new Error(`Couldn't update lines in checkout.`);
   }
 
-  return saleorCheckoutToVercelCart(saleorCheckout.checkoutLinesUpdate.checkout);
+  return saleorCheckoutToVercelCart(
+    saleorCheckout.checkoutLinesUpdate.checkout
+  );
 }
 
-export async function removeFromCart(cartId: string, lineIds: string[]): Promise<Cart> {
+export async function removeFromCart(
+  cartId: string,
+  lineIds: string[]
+): Promise<Cart> {
   const saleorCheckout = await saleorFetch({
     query: CheckoutDeleteLineDocument,
     variables: {
       checkoutId: cartId,
-      lineIds
+      lineIds,
     },
-    cache: 'no-store'
+    cache: 'no-store',
   });
 
   if (!saleorCheckout.checkoutLinesDelete?.checkout) {
     console.error(saleorCheckout.checkoutLinesDelete?.errors);
-    throw new Error(`Couldn't remove lines from checkout.`);
+    throw new Error(`Couldn't remove lines from checkout.`);
   }
 
-  return saleorCheckoutToVercelCart(saleorCheckout.checkoutLinesDelete.checkout);
+  return saleorCheckoutToVercelCart(
+    saleorCheckout.checkoutLinesDelete.checkout
+  );
 }
 
-export async function getProductRecommendations(productId: string): Promise<Product[]> {
+export async function getProductRecommendations(): Promise<Product[]> {
   // @todo
   return [];
 }

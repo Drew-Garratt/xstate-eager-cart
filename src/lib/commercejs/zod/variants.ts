@@ -8,12 +8,14 @@ export const variantSchema = z.object({
         sku: z.string().or(z.null()),
         description: z.string().or(z.null()),
         inventory: z.number().or(z.null()),
-        price: z.object({
-          raw: z.number(),
-          formatted: z.string(),
-          formatted_with_symbol: z.string(),
-          formatted_with_code: z.string(),
-        }).or(z.null()),
+        price: z
+          .object({
+            raw: z.number(),
+            formatted: z.string(),
+            formatted_with_symbol: z.string(),
+            formatted_with_code: z.string(),
+          })
+          .or(z.null()),
         is_valid: z.boolean(),
         invalid_reason_code: z.null(),
         meta: z.null(),

@@ -1,7 +1,7 @@
-import { assign } from "xstate";
-import { StoreAction } from "..";
-import { defaultCart } from "../../utils";
-import { findLineItem } from "@/lib/commercejs/utils/findLineItem";
+import { assign } from 'xstate';
+import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
+import { type StoreAction } from '..';
+import { defaultCart } from '../../utils';
 
 export const optimisticAddToCart: StoreAction = assign((context, event) => {
   if (event.type !== 'OPTIMISTIC_ADD_TO_CART') return context;
@@ -14,7 +14,9 @@ export const optimisticAddToCart: StoreAction = assign((context, event) => {
   /**
    * If a optimistic cart already exists use this otherwise use the default cart
    */
-  const optimisticCart = cartContext.optimisticCart ? { ...cartContext.optimisticCart } : defaultCart;
+  const optimisticCart = cartContext.optimisticCart
+    ? { ...cartContext.optimisticCart }
+    : defaultCart;
 
   /**
    * If there are no line items in the cart create a new line item
@@ -24,7 +26,9 @@ export const optimisticAddToCart: StoreAction = assign((context, event) => {
 
     if (!merchandise) return context;
 
-    const variant = merchandise.product.variants.find((variant) => variant.id === event.data.item.variantId);
+    const variant = merchandise.product.variants.find(
+      (variant) => variant.id === event.data.item.variantId
+    );
 
     if (!variant) return context;
 
@@ -38,13 +42,13 @@ export const optimisticAddToCart: StoreAction = assign((context, event) => {
       variant: {
         id: variant.id,
         name: variant.title,
-        price: {value: variant.price.amount},
+        price: { value: variant.price.amount },
         options: [],
       },
       discounts: [],
       path: '',
     });
-  
+
     optimisticCart.lineItemsSubtotalPrice = variant.price.amount;
     optimisticCart.subtotalPrice = variant.price.amount;
     optimisticCart.totalPrice = variant.price.amount;

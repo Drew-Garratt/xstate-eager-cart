@@ -1,4 +1,4 @@
-import { StoreActor } from '@/lib/vercelCommerce/machine';
+import { type StoreActor } from '@/lib/vercelCommerce/machine';
 import commercejsAddToCart from '../../postAddToCart';
 import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 
@@ -8,7 +8,7 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
   /**
    * If there is no cart in the context return
    **/
-  if (!context.cartContext.cart)  throw new Error('No cart in context');
+  if (!context.cartContext.cart) throw new Error('No cart in context');
 
   let payload: {
     cartId: string;
@@ -21,11 +21,11 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
     productId: event.data.item.productId ?? event.data.item.variantId,
     quantity: event.data.item.quantity ?? 1,
   };
-  
+
   /**
    * Commerce JS the product ID, variant ID, and option ID of a product in order to add it to the cart
    * These are held as a single string and seperate by a ":" character
-   * 
+   *
    * If the product has no variants, the product ID is used alone
    */
   const variantIds = event.data.item.variantId.split(':');
@@ -35,7 +35,7 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
     payload = {
       cartId: context.cartContext.cart.id,
       productId,
-      options: {[variantId]: optionId},
+      options: { [variantId]: optionId },
       quantity: event.data.item.quantity ?? 1,
     };
   }
@@ -46,5 +46,8 @@ export const asyncAddToCart: StoreActor = async (context, event) => {
 
   if (!responce.success) throw new Error('Add to cart failed');
 
-  return { type: 'ADD_TO_CART_DONE', cart: commercejsCleanCartResponse(responce) };
+  return {
+    type: 'ADD_TO_CART_DONE',
+    cart: commercejsCleanCartResponse(responce),
+  };
 };

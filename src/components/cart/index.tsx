@@ -1,8 +1,8 @@
 // import { createCart, getCart } from 'lib/saleor';
 import { cookies } from 'next/headers';
-import CartButton from './button';
 import { use } from 'react';
+import CartButton from './button';
 
 export default async function Cart() {
-  return <CartButton/>;
+  return <CartButton />;
 }

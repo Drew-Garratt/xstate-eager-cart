@@ -1,8 +1,8 @@
-import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
+import { type StoreState } from '@/lib/vercelCommerce/machine';
 import type { LineItem } from '@/lib/vercelCommerce/types/cart';
-import { StoreState } from '@/lib/vercelCommerce/machine';
 
 const selectLineItems = (state: StoreState) =>
   state.context.cartContext.cart?.lineItems;
@@ -11,7 +11,7 @@ const selectOptamisticLineItems = (state: StoreState) =>
   state.context.cartContext.optimisticCart?.lineItems;
 
 const selectCartStatus = (state: StoreState) =>
-  state.matches('Cart.Ready.Cart Async.Idle')
+  state.matches('Cart.Ready.Cart Async.Idle');
 
 export function useCartLinesIds() {
   const cartService = useContext(StoreContext);
@@ -21,15 +21,17 @@ export function useCartLinesIds() {
   }
 
   const cartStatus = useSelector(cartService, selectCartStatus);
-  
-  const cartLines = useSelector(cartService, cartStatus ? selectLineItems : selectOptamisticLineItems, (prev, next) => {
-    const prevIds = prev ? Array.from(prev.keys()) : [];
-    const nextIds = next ? Array.from(next.keys()) : [];
-    
-    return prevIds.join() === nextIds.join();
-  });
 
-  const cartLineIds = cartLines ? Array.from(cartLines.keys()) : []
+  const cartLines = useSelector(
+    cartService,
+    cartStatus ? selectLineItems : selectOptamisticLineItems,
+    (prev, next) => {
+      const prevIds = prev ? Array.from(prev.keys()) : [];
+      const nextIds = next ? Array.from(next.keys()) : [];
 
-  return cartLineIds;
+      return prevIds.join() === nextIds.join();
+    }
+  );
+
+  return cartLines ? Array.from(cartLines.keys()) : [];
 }

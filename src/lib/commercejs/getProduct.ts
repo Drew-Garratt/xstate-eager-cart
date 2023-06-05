@@ -1,5 +1,5 @@
-import { CommercejsProduct, productSchema } from './zod/product';
 import { commercejsFetcher } from './fetcher';
+import { type CommercejsProduct, productSchema } from './zod/product';
 
 export async function commercejsGetProduct({
   permalink,

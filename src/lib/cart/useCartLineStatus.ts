@@ -1,9 +1,12 @@
-import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
-import { CartEvents, StoreState } from '@/lib/vercelCommerce/machine';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
+import { type CartEvents, type StoreState } from '@/lib/vercelCommerce/machine';
 
-export function useCartLineStatus({itemId} : {itemId: string}) : {isItemInAsyncQueue: boolean, isItemInOptimisticQueue: boolean} {
+export function useCartLineStatus({ itemId }: { itemId: string }): {
+  isItemInAsyncQueue: boolean;
+  isItemInOptimisticQueue: boolean;
+} {
   const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
@@ -20,13 +23,19 @@ export function useCartLineStatus({itemId} : {itemId: string}) : {isItemInAsyncQ
         return event.data.itemId === itemId;
       default:
         return false;
-  }};
+    }
+  };
 
-  const itemInAsyncQueue = (state: StoreState) => state.context.cartContext.asyncQueue.some(containsProductId);
-  const itemInOptimisticQueue = (state: StoreState) => state.context.cartContext.optimisticQueue.some(containsProductId);
-  
+  const itemInAsyncQueue = (state: StoreState) =>
+    state.context.cartContext.asyncQueue.some(containsProductId);
+  const itemInOptimisticQueue = (state: StoreState) =>
+    state.context.cartContext.optimisticQueue.some(containsProductId);
+
   const isItemInAsyncQueue = useSelector(cartService, itemInAsyncQueue);
-  const isItemInOptimisticQueue = useSelector(cartService, itemInOptimisticQueue);
+  const isItemInOptimisticQueue = useSelector(
+    cartService,
+    itemInOptimisticQueue
+  );
 
   return { isItemInAsyncQueue, isItemInOptimisticQueue };
 }

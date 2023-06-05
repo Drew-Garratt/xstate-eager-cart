@@ -1,5 +1,5 @@
-import type { Discount, Image, Measurement } from './common';
 import type { Product } from '../types';
+import type { Discount } from './common';
 import type { ProductVariant } from './product';
 
 export interface SelectedOption {
@@ -111,7 +111,7 @@ export interface Cart {
    */
   lineItemsSubtotalPrice: number;
   /**
-   * Price of the cart before duties, shipping and taxes.*/
+   * Price of the cart before duties, shipping and taxes. */
   subtotalPrice: number;
   /**
    * The sum of all the prices of all the items in the cart.
@@ -164,7 +164,7 @@ export type CartHooks = {
 
 export type GetCartHook = {
   data: Cart | null | undefined;
-  input: {};
+  input: unknown;
   fetcherInput: { cartId?: string };
   swrState: { isEmpty: boolean };
 };
@@ -198,7 +198,7 @@ export type RemoveItemHook = {
  */
 export type CartSchema = {
   endpoint: {
-    options: {};
+    options: unknown;
     handlers: CartHandlers;
   };
 };

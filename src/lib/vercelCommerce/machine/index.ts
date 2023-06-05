@@ -1,15 +1,19 @@
-import { Cart, CartItemBody } from '../types/cart';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+/* eslint-disable sonarjs/no-duplicate-string */
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
-  ActionFunction,
-  AnyStateMachine,
-  ConditionPredicate,
-  ContextFrom,
+  type ActionFunction,
+  type AnyStateMachine,
+  type ConditionPredicate,
+  type ContextFrom,
   createMachine,
-  EventFrom,
-  InterpreterFrom,
-  InvokeCreator,
-  StateFrom,
+  type EventFrom,
+  type InterpreterFrom,
+  type InvokeCreator,
+  type StateFrom,
+  MachineOptionsFrom,
 } from 'xstate';
+import { type Cart, type CartItemBody } from '../types/cart';
 
 export interface AddItemCartInput {
   data: { item: CartItemBody };
@@ -53,6 +57,8 @@ export type StoreMachineContext = ContextFrom<StoreMachineType>;
 export type StoreState = StateFrom<StoreMachineType>;
 export type StoreEvents = EventFrom<StoreMachineType>;
 
+export type StoreMachineOptions = MachineOptionsFrom<StoreMachineType, true>;
+
 export type StoreActor =
   | AnyStateMachine
   | InvokeCreator<StoreMachineContext, StoreEvents>;
@@ -84,14 +90,13 @@ export const storeMachine = createMachine({
       | { type: 'OPEN_CART_DRAW' }
       | { type: 'CLOSE_CART_DRAW' },
     services: {} as {
-      initialiseCart: any;
-      checkAsyncQueue: any;
-      asyncUpdateCart: any;
-      asyncRemoveFromCart: any;
-      checkOptimisticQueue: any;
-      optimisticAddToCart: any;
-      optimisticUpdateCart: any;
-      optimisticRemoveFromCart: any;
+      asyncAddToCart: { data: unknown };
+      asyncCreateCart: { data: unknown };
+      asyncRemoveFromCart: { data: { cart: Cart } };
+      asyncUpdateCart: { data: unknown };
+      checkAsyncQueue: { data: unknown };
+      checkOptimisticQueue: { data: unknown };
+      initialiseCart: { data: unknown };
     },
   },
   context: {
@@ -188,7 +193,7 @@ export const storeMachine = createMachine({
                         ],
 
                         onDone: {
-                          target: "Action done",
+                          target: 'Action done',
                           actions: ['addToCartContext'],
                         },
                       },
@@ -243,12 +248,12 @@ export const storeMachine = createMachine({
                         },
                         onError: 'Action errored',
                       },
-                    }
+                    },
                   },
                   on: {
                     SEND_TO_CART_QUEUE: {
                       actions: 'addActionToAsyncQueue',
-                    }
+                    },
                   },
                   onDone: [
                     {
@@ -302,7 +307,7 @@ export const storeMachine = createMachine({
                       actions: 'addActionToAsyncQueue',
                     },
                   },
-                }
+                },
               },
             },
 
@@ -332,7 +337,7 @@ export const storeMachine = createMachine({
                         },
                         SKIP_ACTION: 'Action done',
                         OPTIMISTIC_ADD_TO_CART: {
-                          target: "Open Cart",
+                          target: 'Open Cart',
                           actions: 'optimisticAddToCart',
                         },
                       },
@@ -347,13 +352,14 @@ export const storeMachine = createMachine({
                       entry: 'removeOldestFromOptQueue',
                     },
 
-                    "Open Cart": {
-                      always: "#Store Machine.Cart.Ready.Cart Optimistic.Execute Optimistic Action.Action done",
+                    'Open Cart': {
+                      always:
+                        '#Store Machine.Cart.Ready.Cart Optimistic.Execute Optimistic Action.Action done',
 
                       invoke: {
-                        src: "openCart"
-                      }
-                    }
+                        src: 'openCart',
+                      },
+                    },
                   },
                   on: {
                     SEND_TO_CART_QUEUE: {
@@ -380,22 +386,22 @@ export const storeMachine = createMachine({
               },
             },
 
-            "Cart Draw": {
+            'Cart Draw': {
               states: {
                 closed: {
                   on: {
-                    OPEN_CART_DRAW: "open"
-                  }
+                    OPEN_CART_DRAW: 'open',
+                  },
                 },
                 open: {
                   on: {
-                    CLOSE_CART_DRAW: "closed"
-                  }
-                }
+                    CLOSE_CART_DRAW: 'closed',
+                  },
+                },
               },
 
-              initial: "closed"
-            }
+              initial: 'closed',
+            },
           },
           type: 'parallel',
         },

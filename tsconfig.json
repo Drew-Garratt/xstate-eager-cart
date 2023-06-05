@@ -61,8 +61,7 @@
   ],
   "exclude": [
     "**/node_modules",
-    "**/.*/",
-    "**/typegen.ts"
+    "**/.*/"
   ],
   "include": [
     ".next/types/**/*.ts",

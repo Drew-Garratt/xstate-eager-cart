@@ -9,10 +9,10 @@ export const assetSchema = z.object({
   file_extension: z.string(),
   image_dimensions: z.object({
     width: z.number(),
-    height: z.number()
+    height: z.number(),
   }),
   file_size: z.union([z.number(), z.undefined()]).optional(),
   meta: z.any(),
   created_at: z.number(),
-  updated_at: z.number()
-})
+  updated_at: z.number(),
+});

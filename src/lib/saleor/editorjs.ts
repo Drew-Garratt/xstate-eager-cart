@@ -52,7 +52,7 @@ export const parseEditorJsToHtml = (content: string) => {
     return '';
   }
 
-  const html = data.blocks
+  return data.blocks
     .map((block) => {
       switch (block.type) {
         case 'header':
@@ -69,8 +69,6 @@ export const parseEditorJsToHtml = (content: string) => {
       }
     })
     .join('');
-
-  return html;
 };
 
 function list(data: EditorJsListBlock['data']): string {
@@ -87,6 +85,10 @@ function header({ level, text }: EditorJsHeaderBlock['data']): string {
   return `<h${level}>${text}</h${level}>`;
 }
 
-function quote({ text, caption, alignment }: EditorJsQuoteBlock['data']): string {
+function quote({
+  text,
+  caption,
+  alignment,
+}: EditorJsQuoteBlock['data']): string {
   return `<blockquote><p>${text}</p> - <cite>${caption}</cite></blockquote>`;
 }

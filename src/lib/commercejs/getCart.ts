@@ -1,5 +1,5 @@
-import { CommercejsCart, commercejsCartSchema } from './zod/cart';
 import { commercejsFetcher } from './fetcher';
+import { type CommercejsCart, commercejsCartSchema } from './zod/cart';
 
 /**
  * Commmerce JS Get Cart

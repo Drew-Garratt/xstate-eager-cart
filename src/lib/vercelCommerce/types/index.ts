@@ -1,4 +1,4 @@
-import { Simplify } from "type-fest";
+import { type Simplify } from 'type-fest';
 
 export type Maybe<T> = T | null;
 
@@ -63,10 +63,12 @@ export type Page = {
   updatedAt: string;
 };
 
-export type Product = Simplify<Omit<VercelCommerceProduct, 'variants' | 'images'> & {
-  variants: ProductVariant[];
-  images: Image[];
-}>;
+export type Product = Simplify<
+  Omit<VercelCommerceProduct, 'variants' | 'images'> & {
+    variants: ProductVariant[];
+    images: Image[];
+  }
+>;
 
 export type ProductOption = {
   id: string;

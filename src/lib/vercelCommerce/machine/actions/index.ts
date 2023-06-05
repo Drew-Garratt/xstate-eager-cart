@@ -1,11 +1,11 @@
-import { Cart } from '../../types/cart';
-import type { StoreAction } from '..';
 import { assign } from 'xstate';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
-import { defaultCart } from '../../utils';
+import type { StoreAction, StoreMachineOptions } from '..';
+import { type Cart } from '../../types/cart';
 import { optimisticAddToCart } from './optamisticAddToCart';
 
 const addSuccessMessage: StoreAction = () => {
+  return null;
 };
 
 // Assign the error to the context
@@ -137,29 +137,29 @@ const updateCartContext: StoreAction<{
   };
 });
 
-const removeFromCartContext: StoreAction<{
-  event: string;
-  data: {
-    type: 'REMOVE_FROM_CART_DONE';
-    cart: Cart;
-  };
-}> = assign((context, event) => {
-  const cartContext = context.cartContext;
-  const cart = event.data.cart;
+const removeFromCartContext: StoreMachineOptions['actions']['removeFromCartContext'] =
+  assign((context, event) => {
+    if (
+      event.type !==
+      'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
+    )
+      return context;
+    const cartContext = context.cartContext;
+    const cart = event.data.cart;
 
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.cart) return context;
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.cart) return context;
 
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      cart,
-    },
-  };
-});
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        cart,
+      },
+    };
+  });
 
 const optimisticRemoveFromCart: StoreAction = assign((context, event) => {
   if (event.type !== 'OPTIMISTIC_REMOVE_FROM_CART') return context;
@@ -274,9 +274,9 @@ const optimisticUpdateCart: StoreAction = assign((context, event) => {
     quantity: event.data.item.quantity,
   });
 
-  const lineItemPriceAdjustment = 
-    lineItem.variant.price.value * lineItem.quantity * -1 
-    + lineItem.variant.price.value * event.data.item.quantity;
+  const lineItemPriceAdjustment =
+    lineItem.variant.price.value * lineItem.quantity * -1 +
+    lineItem.variant.price.value * event.data.item.quantity;
 
   optimisticCart.lineItemsSubtotalPrice =
     optimisticCart.lineItemsSubtotalPrice + lineItemPriceAdjustment;
@@ -331,7 +331,7 @@ const clearOptimisticQueue: StoreAction = assign((context) => {
   };
 });
 
-const actions = {
+const actions: StoreMachineOptions['actions'] = {
   removeFromCartContext,
   addToCartContext,
   updateCartContext,

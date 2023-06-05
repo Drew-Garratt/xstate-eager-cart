@@ -1,6 +1,10 @@
-import { Cart, Product } from './types';
 import { parseEditorJsToHtml } from './editorjs';
-import { CheckoutFragment, GetProductBySlugQuery, VariantFragment } from './generated/graphql';
+import {
+  type CheckoutFragment,
+  type GetProductBySlugQuery,
+  type VariantFragment,
+} from './generated/graphql';
+import { type Cart, type Product } from './types';
 
 export function saleorProductToVercelProduct(
   product: Exclude<GetProductBySlugQuery['product'], null | undefined>
@@ -13,7 +17,7 @@ export function saleorProductToVercelProduct(
           url: media.url,
           altText: media.alt,
           width: 2048,
-          height: 2048
+          height: 2048,
         };
       }) || [];
 
@@ -23,31 +27,40 @@ export function saleorProductToVercelProduct(
     availableForSale: product.isAvailableForPurchase || true,
     title: product.name,
     description: product.description || '',
-    descriptionHtml: product.description ? parseEditorJsToHtml(product.description) : '',
+    descriptionHtml: product.description
+      ? parseEditorJsToHtml(product.description)
+      : '',
     options: saleorVariantsToVercelOptions(product.variants),
     priceRange: {
       maxVariantPrice: {
-        amount: product.pricing?.priceRange?.stop?.gross.amount.toString() || '0',
-        currencyCode: product.pricing?.priceRange?.stop?.gross.currency || ''
+        amount:
+          product.pricing?.priceRange?.stop?.gross.amount.toString() || '0',
+        currencyCode: product.pricing?.priceRange?.stop?.gross.currency || '',
       },
       minVariantPrice: {
-        amount: product.pricing?.priceRange?.start?.gross.amount.toString() || '0',
-        currencyCode: product.pricing?.priceRange?.start?.gross.currency || ''
-      }
+        amount:
+          product.pricing?.priceRange?.start?.gross.amount.toString() || '0',
+        currencyCode: product.pricing?.priceRange?.start?.gross.currency || '',
+      },
     },
-    variants: saleorVariantsToVercelVariants(product.variants, product.isAvailableForPurchase),
+    variants: saleorVariantsToVercelVariants(
+      product.variants,
+      product.isAvailableForPurchase
+    ),
     images: images,
     featuredImage: images[0]!,
     seo: {
       title: product.seoTitle || product.name,
-      description: product.seoDescription || ''
+      description: product.seoDescription || '',
     },
     tags: product.collections?.map((c) => c.name) || [],
-    updatedAt: product.updatedAt
+    updatedAt: product.updatedAt,
   };
 }
 
-export function saleorVariantsToVercelOptions(variants: VariantFragment[] | null | undefined) {
+export function saleorVariantsToVercelOptions(
+  variants: VariantFragment[] | null | undefined
+) {
   return (
     variants
       ?.flatMap((variant) => {
@@ -55,7 +68,10 @@ export function saleorVariantsToVercelOptions(variants: VariantFragment[] | null
           return {
             id: attribute.attribute.slug || '',
             name: attribute.attribute.name || '',
-            values: attribute.attribute.choices?.edges.map((choice) => choice.node.name || '') || []
+            values:
+              attribute.attribute.choices?.edges.map(
+                (choice) => choice.node.name || ''
+              ) || [],
           };
         });
       })
@@ -81,14 +97,14 @@ export function saleorVariantsToVercelVariants(
           return attribute.values.map((value) => {
             return {
               name: attribute.attribute.name || '',
-              value: value.name || ''
+              value: value.name || '',
             };
           });
         }),
         price: {
           amount: variant.pricing?.price?.gross.amount.toString() || '0',
-          currencyCode: variant.pricing?.price?.gross.currency || ''
-        }
+          currencyCode: variant.pricing?.price?.gross.currency || '',
+        },
       };
     }) || []
   );
@@ -100,7 +116,10 @@ export function saleorCheckoutToVercelCart(checkout: CheckoutFragment): Cart {
   checkoutUrl.searchParams.append('checkout', checkout.id);
   checkoutUrl.searchParams.append('locale', `en-US`);
   checkoutUrl.searchParams.append('channel', `default-channel`);
-  checkoutUrl.searchParams.append('saleorApiUrl', process.env.SALEOR_INSTANCE_URL!);
+  checkoutUrl.searchParams.append(
+    'saleorApiUrl',
+    process.env.SALEOR_INSTANCE_URL!
+  );
   checkoutUrl.searchParams.append('domain', domain);
 
   return {
@@ -109,16 +128,16 @@ export function saleorCheckoutToVercelCart(checkout: CheckoutFragment): Cart {
     cost: {
       subtotalAmount: {
         amount: checkout.subtotalPrice.gross.amount.toString(),
-        currencyCode: checkout.subtotalPrice.gross.currency
+        currencyCode: checkout.subtotalPrice.gross.currency,
       },
       totalAmount: {
         amount: checkout.totalPrice.gross.amount.toString(),
-        currencyCode: checkout.totalPrice.gross.currency
+        currencyCode: checkout.totalPrice.gross.currency,
       },
       totalTaxAmount: {
         amount: checkout.totalPrice.tax.amount.toString(),
-        currencyCode: checkout.totalPrice.tax.currency
-      }
+        currencyCode: checkout.totalPrice.tax.currency,
+      },
     },
     lines: checkout.lines.map((line) => {
       return {
@@ -127,8 +146,8 @@ export function saleorCheckoutToVercelCart(checkout: CheckoutFragment): Cart {
         cost: {
           totalAmount: {
             amount: line.variant.pricing?.price?.gross.amount.toString() || '0',
-            currencyCode: line.variant.pricing?.price?.gross.currency || ''
-          }
+            currencyCode: line.variant.pricing?.price?.gross.currency || '',
+          },
         },
         merchandise: {
           id: line.variant.id,
@@ -137,14 +156,14 @@ export function saleorCheckoutToVercelCart(checkout: CheckoutFragment): Cart {
             return attribute.values.map((value) => {
               return {
                 name: attribute.attribute.name || '',
-                value: value.name || ''
+                value: value.name || '',
               };
             });
           }),
-          product: saleorProductToVercelProduct(line.variant.product)
-        }
+          product: saleorProductToVercelProduct(line.variant.product),
+        },
       };
     }),
-    totalQuantity: checkout.quantity
+    totalQuantity: checkout.quantity,
   };
 }

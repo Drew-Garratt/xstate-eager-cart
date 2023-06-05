@@ -1,19 +1,22 @@
 import { ImageResponse } from '@vercel/og';
-import { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 export const runtime = 'edge';
 
-const interRegular = fetch(new URL('./Inter-Regular.ttf', import.meta.url)).then((res) =>
-  res.arrayBuffer()
-);
+const interRegular = fetch(
+  new URL('./Inter-Regular.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
 
-const interBold = fetch(new URL('./Inter-Bold.ttf', import.meta.url)).then((res) =>
-  res.arrayBuffer()
+const interBold = fetch(new URL('./Inter-Bold.ttf', import.meta.url)).then(
+  (res) => res.arrayBuffer()
 );
 
 export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
   try {
-    const [regularFont, boldFont] = await Promise.all([interRegular, interBold]);
+    const [regularFont, boldFont] = await Promise.all([
+      interRegular,
+      interBold,
+    ]);
 
     const { searchParams } = new URL(req.url);
 
@@ -23,7 +26,7 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
 
     return new ImageResponse(
       (
-        <div tw="flex h-full w-full flex-col items-center justify-center bg-black">
+        <div className="flex h-full w-full flex-col items-center justify-center bg-black">
           <svg viewBox="0 0 32 32" width="140">
             <rect width="100%" height="100%" rx="16" fill="white" />
             <path
@@ -34,7 +37,7 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
             />
           </svg>
 
-          <div tw="mt-12 text-6xl text-white font-bold">{title}</div>
+          <div className="mt-12 text-6xl font-bold text-white">{title}</div>
         </div>
       ),
       {
@@ -45,15 +48,15 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
             name: 'Inter',
             data: regularFont,
             style: 'normal',
-            weight: 400
+            weight: 400,
           },
           {
             name: 'Inter',
             data: boldFont,
             style: 'normal',
-            weight: 700
-          }
-        ]
+            weight: 700,
+          },
+        ],
       }
     );
   } catch (e) {
@@ -61,7 +64,7 @@ export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
 
     console.error(e.message);
     return new Response(`Failed to generate the image`, {
-      status: 500
+      status: 500,
     });
   }
 }

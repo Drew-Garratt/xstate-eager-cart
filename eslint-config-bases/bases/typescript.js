@@ -111,7 +111,7 @@ module.exports = {
       },
       {
         selector: 'variable',
-        format: ['camelCase'],
+        format: null,
         leadingUnderscore: 'allow',
       },
       {

@@ -4,13 +4,13 @@ export { commercejsGetVariants } from './getVariants';
 export { commercejsAddToCart } from './postAddToCart';
 
 import {
-  Image,
-  Product,
-  ProductVariant,
-  ProductOption
+  type Image,
+  type Product,
+  type ProductVariant,
+  type ProductOption,
 } from '../vercelCommerce/types/index';
 import { commercejsGetProduct } from './getProduct';
-import { CommercejsProduct } from './zod/product';
+import { type CommercejsProduct } from './zod/product';
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
   const product = await commercejsGetProduct({ permalink: handle });
@@ -20,6 +20,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   return reshapeProduct(product);
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
   if (!product) {
     return undefined;
@@ -30,9 +31,10 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
     altText: '',
     width: 100,
     height: 100,
-  }
+  };
 
   if (product.conditionals.has_images) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const image = product.image!;
     if (image) {
       featuredImage.url = image.url;
@@ -42,39 +44,41 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
     }
   }
 
-  const images: Image[] = []
+  const images: Image[] = [];
 
-  product.assets.filter(asset => asset.is_image).forEach(asset => 
-    {
+  product.assets
+    .filter((asset) => asset.is_image)
+    .forEach((asset) => {
       /**
        * Ensure no duplicate images are added.
        */
-      if (!images.some(image => image.url === asset.url)) images.push({
-        url: asset.url,
-        altText: asset.description ?? '',
-        width: asset.image_dimensions.width,
-        height: asset.image_dimensions.height,
-      })
-    }
-  )
+      if (!images.some((image) => image.url === asset.url))
+        images.push({
+          url: asset.url,
+          altText: asset.description ?? '',
+          width: asset.image_dimensions.width,
+          height: asset.image_dimensions.height,
+        });
+    });
 
   const options: ProductOption[] = [];
   const variants: ProductVariant[] = [];
 
   if (product.variant_groups.length > 0) {
-    product.variant_groups.forEach(group => {
+    product.variant_groups.forEach((group) => {
       const productOption: ProductOption = {
         id: group.id,
         name: group.name,
         values: [],
-      }
-      group.options.forEach(option => {
-        productOption.values.push(option.name)
+      };
+      group.options.forEach((option) => {
+        productOption.values.push(option.name);
 
         const variantPrice = option.price?.raw ?? product.price.raw;
-        const priceValue = product.price.raw === variantPrice
-          ? variantPrice
-          : variantPrice + product.price.raw;
+        const priceValue =
+          product.price.raw === variantPrice
+            ? variantPrice
+            : variantPrice + product.price.raw;
 
         variants.push({
           /**
@@ -91,15 +95,15 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
             {
               name: group.name,
               value: option.name,
-            }
+            },
           ],
-        })
-      })
+        });
+      });
 
       options.push(productOption);
-    })
+    });
   }
-    
+
   return {
     id: product.id,
     handle: `/products/${product.permalink}`,
@@ -121,5 +125,5 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
     },
     tags: [],
     updatedAt: new Date(product.updated).toISOString(),
-  }
+  };
 };

@@ -172,7 +172,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.chec.io',
-      }
+      },
     ],
     unoptimized: false,
   },

@@ -15,17 +15,17 @@ export async function jsonFetcher({
 
   /**
    * If the method is GET, append the params to the URL
-   * 
+   *
    * If the value is a string, append it as is (e.g. ?key=value)
    * if the value is not a string we need to stringify it first
    */
-  if (method === "GET" && params) {
+  if (method === 'GET' && params) {
     Object.keys(params).forEach((key) => {
       const value = params[key];
       if (typeof value === 'string') {
-        url.searchParams.append(key, value)
+        url.searchParams.append(key, value);
       } else {
-        url.searchParams.append(key, JSON.stringify(value))
+        url.searchParams.append(key, JSON.stringify(value));
       }
     });
   }
@@ -37,7 +37,7 @@ export async function jsonFetcher({
     response = await fetch(url, {
       method,
       // Ensure content type is always set to JSON for this method
-      headers: { ...headers, 'Content-Type': 'application/json' },
+      headers: { ...headers, ['Content-Type']: 'application/json' },
       /**
        * If the method is not GET, we need to stringify the params
        */

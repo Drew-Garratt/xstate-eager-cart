@@ -1,12 +1,14 @@
 'use client';
 
 import clsx from 'clsx';
-import { SortFilterItem } from 'lib/constants';
-import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import type { ListItem, PathFilterItem } from '.';
+import { SortFilterItem } from '@/lib/constants';
+import { createUrl } from 'lib/utils';
+// eslint-disable-next-line import/no-cycle
+import { PathFilterItem } from '.';
+import type { ListItem } from '.';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
@@ -23,7 +25,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
         href={createUrl(item.path, searchParams)}
         className={clsx('w-full hover:text-gray-800 dark:hover:text-gray-100', {
           'text-gray-600 dark:text-gray-400': !active,
-          'font-semibold text-black dark:text-white': active
+          'font-semibold text-black dark:text-white': active,
         })}
       >
         {item.title}
@@ -53,7 +55,7 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
         href={href}
         className={clsx('w-full hover:text-gray-800 dark:hover:text-gray-100', {
           'text-gray-600 dark:text-gray-400': !active,
-          'font-semibold text-black dark:text-white': active
+          'font-semibold text-black dark:text-white': active,
         })}
       >
         {item.title}
@@ -63,5 +65,9 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
 }
 
 export function FilterItem({ item }: { item: ListItem }) {
-  return 'path' in item ? <PathFilterItem item={item} /> : <SortFilterItem item={item} />;
+  return 'path' in item ? (
+    <PathFilterItem item={item} />
+  ) : (
+    <SortFilterItem item={item} />
+  );
 }

@@ -1,6 +1,7 @@
-import { createContext, ReactNode } from 'react';
 import { useInterpret } from '@xstate/react';
-import { storeMachine, StoreService } from '@/lib/vercelCommerce/machine';
+import { createContext, type ReactNode } from 'react';
+import services from '@/lib/adapter/commerceMachine/services';
+import { storeMachine, type StoreService } from '@/lib/vercelCommerce/machine';
 
 /**
  * Service imports
@@ -8,7 +9,6 @@ import { storeMachine, StoreService } from '@/lib/vercelCommerce/machine';
  * Service imports are API/Implementation spefecic functions and so
  * are imported from the relevant lib folder
  */
-import services from '@/lib/adapter/commerceMachine/services';
 
 /**
  * Action and Guard imports
@@ -78,7 +78,7 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
        * Guards are functions that are executed when a transition occurs.
        * They are used to determine if a transition should occur
        */
-      guards,
+      guards
     },
     (state) => {
       // subscribes to state changes

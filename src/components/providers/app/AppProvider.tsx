@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { CommerceProvider } from '../commerce/CommerceProvider';
 // import { inspect } from '@xstate/inspect';
 
@@ -14,9 +14,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
   //   }
   // }
 
-  return (
-    <CommerceProvider>{children}</CommerceProvider>
-  );
+  return <CommerceProvider>{children}</CommerceProvider>;
 };
 
 export default AppProvider;

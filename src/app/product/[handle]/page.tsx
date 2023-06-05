@@ -2,20 +2,20 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { type Image } from '@/lib/vercelCommerce/types';
 import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
 import { AddToCart } from 'components/product/add-to-cart';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
-import { HIDDEN_PRODUCT_TAG } from 'lib/commercejs/constants';
 import { getProduct } from 'lib/adapter';
-import { Image } from '@/lib/vercelCommerce/types';
+import { HIDDEN_PRODUCT_TAG } from 'lib/commercejs/constants';
 
 export const runtime = 'edge';
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: { handle: string };
 }): Promise<Metadata> {
@@ -34,8 +34,8 @@ export async function generateMetadata({
       follow: hide,
       googleBot: {
         index: hide,
-        follow: hide
-      }
+        follow: hide,
+      },
     },
     openGraph: url
       ? {
@@ -44,15 +44,19 @@ export async function generateMetadata({
               url,
               width,
               height,
-              alt
-            }
-          ]
+              alt,
+            },
+          ],
         }
-      : null
+      : null,
   };
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: { handle: string };
+}) {
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
@@ -67,20 +71,30 @@ export default async function ProductPage({ params }: { params: { handle: string
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
             images={product.images.map((image: Image) => ({
               src: image.url,
-              altText: image.altText
+              altText: image.altText,
             }))}
           />
         </div>
 
         <div className="p-6 lg:col-span-2">
           {/* @ts-expect-error Server Component */}
-          <VariantSelector options={product.options} variants={product.variants} />
+          <VariantSelector
+            options={product.options}
+            variants={product.variants}
+          />
 
           {product.descriptionHtml ? (
-            <Prose className="mb-6 text-sm leading-tight" html={product.descriptionHtml} />
+            <Prose
+              className="mb-6 text-sm leading-tight"
+              html={product.descriptionHtml}
+            />
           ) : null}
 
-          <AddToCart variants={product.variants} availableForSale={product.availableForSale} product={product} />
+          <AddToCart
+            variants={product.variants}
+            availableForSale={product.availableForSale}
+            product={product}
+          />
         </div>
       </div>
       <Suspense>

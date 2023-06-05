@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { type Menu } from '@/lib/vercelCommerce/types';
 import CloseIcon from 'components/icons/close';
 import MenuIcon from 'components/icons/menu';
-import { Menu } from '@/lib/vercelCommerce/types';
 import Search from './search';
 
 export default function MobileMenu({ menu }: { menu: Menu[] }) {
@@ -49,11 +49,14 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
         }}
         className="relative z-50"
       >
-        <div className="fixed inset-0 flex justify-end" data-testid="mobile-menu">
+        <div
+          className="fixed inset-0 flex justify-end"
+          data-testid="mobile-menu"
+        >
           <Dialog.Panel
             as={motion.div}
             variants={{
-              open: { opacity: 1 }
+              open: { opacity: 1 },
             }}
             className="flex w-full flex-col bg-white pb-6 dark:bg-black"
           >
