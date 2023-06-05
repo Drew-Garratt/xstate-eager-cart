@@ -8,11 +8,6 @@ import { withSentryConfig } from '@sentry/nextjs'; // https://docs.sentry.io/pla
 import { createSecureHeaders } from 'next-secure-headers';
 import pc from 'picocolors';
 
-const workspaceRoot = path.resolve(
-  path.dirname(url.fileURLToPath(import.meta.url)),
-  '..',
-  '..'
-);
 /**
  * Once supported replace by node / eslint / ts and out of experimental, replace by
  * `import packageJson from './package.json' assert { type: 'json' };`
@@ -207,9 +202,6 @@ const nextConfig = {
   },
 
   experimental: {
-    // @link https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
-    outputFileTracingRoot: workspaceRoot,
-
     // Prefer loading of ES Modules over CommonJS
     // @link {https://nextjs.org/blog/next-11-1#es-modules-support|Blog 11.1.0}
     // @link {https://github.com/vercel/next.js/discussions/27876|Discussion}
