@@ -7,15 +7,15 @@ const interRegular = fetch(
   new URL('./Inter-Regular.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
-const interBold = fetch(new URL('./Inter-Bold.ttf', import.meta.url)).then(
-  (res) => res.arrayBuffer()
-);
+// const interBold = fetch(new URL('./Inter-Bold.ttf', import.meta.url)).then(
+//   (res) => res.arrayBuffer()
+// );
 
 export async function GET(req: NextRequest): Promise<Response | ImageResponse> {
   try {
-    const [regularFont, boldFont] = await Promise.all([
+    const [regularFont] = await Promise.all([
       interRegular,
-      interBold,
+      // interBold,
     ]);
 
     const { searchParams } = new URL(req.url);
