@@ -90,13 +90,13 @@ export const storeMachine = createMachine({
       | { type: 'OPEN_CART_DRAW' }
       | { type: 'CLOSE_CART_DRAW' },
     services: {} as {
-      asyncAddToCart: { data: unknown };
-      asyncCreateCart: { data: unknown };
+      asyncAddToCart: { data: { cart: Cart } };
+      asyncCreateCart: { data: { cart: Cart } };
       asyncRemoveFromCart: { data: { cart: Cart } };
-      asyncUpdateCart: { data: unknown };
+      asyncUpdateCart: { data: { cart: Cart } };
       checkAsyncQueue: { data: unknown };
       checkOptimisticQueue: { data: unknown };
-      initialiseCart: { data: unknown };
+      initialiseCart: { data: null };
     },
   },
   context: {
@@ -117,7 +117,7 @@ export const storeMachine = createMachine({
       status: 'idle' | 'working' | 'error';
       asyncQueue: Array<CartEvents>;
       optimisticQueue: Array<CartEvents>;
-      error: string[] | null;
+      error: unknown[] | null;
     };
   },
   states: {

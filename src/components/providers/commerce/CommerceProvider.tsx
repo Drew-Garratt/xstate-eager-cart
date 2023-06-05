@@ -78,7 +78,7 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
        * Guards are functions that are executed when a transition occurs.
        * They are used to determine if a transition should occur
        */
-      guards
+      guards,
     },
     (state) => {
       // subscribes to state changes

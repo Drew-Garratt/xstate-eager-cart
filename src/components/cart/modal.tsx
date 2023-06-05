@@ -8,10 +8,6 @@ import ShoppingBagIcon from 'components/icons/shopping-bag';
 import Price from 'components/price';
 import CartLine from './cart-line';
 
-type MerchandiseSearchParams = {
-  [key: string]: string;
-};
-
 export default function CartModal({
   isOpen,
   onClose,

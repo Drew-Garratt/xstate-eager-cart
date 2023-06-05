@@ -1,24 +1,30 @@
-import { type StoreGuard } from '..';
+import { type StoreMachineOptions } from '..';
 
-const ifThereAreErrors: StoreGuard = (context) => {
+const ifThereAreErrors: StoreMachineOptions['guards']['ifThereAreErrors'] = (
+  context
+) => {
   return !!context.cartContext?.error;
 };
 
-const thereAreMoreOptimisticActionsInQueue: StoreGuard = (context) => {
-  return context.cartContext.optimisticQueue.length > 0;
-};
+const thereAreMoreOptimisticActionsInQueue: StoreMachineOptions['guards']['thereAreMoreOptimisticActionsInQueue'] =
+  (context) => {
+    return context.cartContext.optimisticQueue.length > 0;
+  };
 
-const thereAreMoreAsyncActionsInQueue: StoreGuard = (context) => {
-  return context.cartContext.asyncQueue.length > 0;
-};
+const thereAreMoreAsyncActionsInQueue: StoreMachineOptions['guards']['thereAreMoreAsyncActionsInQueue'] =
+  (context) => {
+    return context.cartContext.asyncQueue.length > 0;
+  };
 
-const cartExists: StoreGuard = (context) => {
+const cartExists: StoreMachineOptions['guards']['cartExists'] = (context) => {
   return context.cartContext.cart !== null;
 };
 
-export default {
+const guards: StoreMachineOptions['guards'] = {
   ifThereAreErrors,
   thereAreMoreOptimisticActionsInQueue,
   thereAreMoreAsyncActionsInQueue,
   cartExists,
 };
+
+export default guards;

@@ -1,149 +1,88 @@
 import { assign } from 'xstate';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
-import type { StoreAction, StoreMachineOptions } from '..';
-import { type Cart } from '../../types/cart';
+import type { StoreMachineOptions } from '..';
 import { optimisticAddToCart } from './optamisticAddToCart';
 
-const addSuccessMessage: StoreAction = () => {
-  return null;
-};
+const addSuccessMessage: StoreMachineOptions['actions']['addSuccessMessage'] =
+  () => {
+    return null;
+  };
 
 // Assign the error to the context
-const assignError: StoreAction = assign((context, event) => {
-  const errorArray = context.cartContext.error
-    ? [event ?? 'There was an error', ...context.cartContext.error]
-    : [event ?? 'There was an error'];
+const assignError: StoreMachineOptions['actions']['assignError'] = assign(
+  (context, event) => {
+    const errorArray = context.cartContext.error
+      ? [event ?? 'There was an error', ...context.cartContext.error]
+      : [event ?? 'There was an error'];
 
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      error: errorArray,
-    },
-  };
-});
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        error: errorArray,
+      },
+    };
+  }
+);
 
-const addActionToOptimisticQueue: StoreAction = assign((context, event) => {
-  if (event.type !== 'SEND_TO_CART_QUEUE') return context;
-
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      optimisticQueue: [...context.cartContext.optimisticQueue, event.data],
-    },
-  };
-});
-
-const addActionToAsyncQueue: StoreAction = assign((context, event) => {
-  if (event.type !== 'SEND_TO_CART_QUEUE') return context;
-
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      asyncQueue: [...context.cartContext.asyncQueue, event.data],
-    },
-  };
-});
-
-const removeOldestFromOptQueue: StoreAction = assign((context, event) => {
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      optimisticQueue: context.cartContext.optimisticQueue.slice(1),
-    },
-  };
-});
-
-const removeOldestItemFromAsyncQueue: StoreAction = assign((context, event) => {
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      asyncQueue: context.cartContext.asyncQueue.slice(1),
-    },
-  };
-});
-
-const assignCart: StoreAction<{
-  event: string;
-  data: {
-    type: 'CREATE_CART_DONE';
-    cart: Cart;
-  };
-}> = assign((context, event) => {
-  if (event.data.type !== 'CREATE_CART_DONE') return context;
-
-  return {
-    ...context,
-    cartContext: {
-      ...context.cartContext,
-      cart: event.data.cart,
-    },
-  };
-});
-
-const addToCartContext: StoreAction<{
-  event: string;
-  data: {
-    type: 'ADD_TO_CART_DONE';
-    cart: Cart;
-  };
-}> = assign((context, event) => {
-  if (event.data.type !== 'ADD_TO_CART_DONE') return context;
-
-  const cartContext = context.cartContext;
-  const cart = event.data.cart;
-
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.cart) return context;
-
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      cart,
-    },
-  };
-});
-
-const updateCartContext: StoreAction<{
-  event: string;
-  data: {
-    type: 'UPDATE_CART_DONE';
-    cart: Cart;
-  };
-}> = assign((context, event) => {
-  if (event.data.type !== 'UPDATE_CART_DONE') return context;
-
-  const cartContext = context.cartContext;
-  const cart = event.data.cart;
-
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.cart) return context;
-
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      cart,
-    },
-  };
-});
-
-const removeFromCartContext: StoreMachineOptions['actions']['removeFromCartContext'] =
+const addActionToOptimisticQueue: StoreMachineOptions['actions']['addActionToOptimisticQueue'] =
   assign((context, event) => {
-    if (
-      event.type !==
-      'done.invoke.Store Machine.Cart.Ready.Cart Async.Execute async action.Remove from Cart:invocation[0]'
-    )
-      return context;
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        optimisticQueue: [...context.cartContext.optimisticQueue, event.data],
+      },
+    };
+  });
+
+const addActionToAsyncQueue: StoreMachineOptions['actions']['addActionToAsyncQueue'] =
+  assign((context, event) => {
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        asyncQueue: [...context.cartContext.asyncQueue, event.data],
+      },
+    };
+  });
+
+const removeOldestFromOptQueue: StoreMachineOptions['actions']['removeOldestFromOptQueue'] =
+  assign((context) => {
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        optimisticQueue: context.cartContext.optimisticQueue.slice(1),
+      },
+    };
+  });
+
+const removeOldestItemFromAsyncQueue: StoreMachineOptions['actions']['removeOldestItemFromAsyncQueue'] =
+  assign((context) => {
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        asyncQueue: context.cartContext.asyncQueue.slice(1),
+      },
+    };
+  });
+
+const assignCart: StoreMachineOptions['actions']['assignCart'] = assign(
+  (context, event) => {
+    return {
+      ...context,
+      cartContext: {
+        ...context.cartContext,
+        cart: event.data.cart,
+      },
+    };
+  }
+);
+
+const addToCartContext: StoreMachineOptions['actions']['addToCartContext'] =
+  assign((context, event) => {
     const cartContext = context.cartContext;
     const cart = event.data.cart;
 
@@ -161,175 +100,213 @@ const removeFromCartContext: StoreMachineOptions['actions']['removeFromCartConte
     };
   });
 
-const optimisticRemoveFromCart: StoreAction = assign((context, event) => {
-  if (event.type !== 'OPTIMISTIC_REMOVE_FROM_CART') return context;
+const updateCartContext: StoreMachineOptions['actions']['updateCartContext'] =
+  assign((context, event) => {
+    const cartContext = context.cartContext;
+    const cart = event.data.cart;
 
-  /**
-   * Cart Context
-   */
-  const cartContext = context.cartContext;
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.cart) return context;
 
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.optimisticCart) return context;
-
-  /**
-   * Shallow copy of the optimistic cart
-   */
-  const optimisticCart = { ...cartContext.optimisticCart };
-
-  optimisticCart.lineItems.delete(event.data.itemId);
-
-  /**
-   * Product ID
-   *
-   * This is the product ID of the product that was added to the cart
-   */
-  const productId = event.data.itemId;
-
-  /**
-   * Find the line item in the cart
-   * If there is no line item return early
-   * Otherwise destructure the line item and the line item ID
-   */
-  const cartLineItem = findLineItem({
-    productId,
-    lineItems: optimisticCart.lineItems,
-  });
-  if (!cartLineItem) return context;
-  const { lineItemId, lineItem } = cartLineItem;
-
-  if (!lineItem) return context;
-  if (!lineItem.variant?.price) return context;
-
-  optimisticCart.lineItems.delete(lineItemId);
-
-  const lineItemPrice = lineItem.variant.price.value * lineItem.quantity * -1;
-
-  optimisticCart.lineItemsSubtotalPrice =
-    optimisticCart.lineItemsSubtotalPrice - lineItemPrice;
-  optimisticCart.subtotalPrice = optimisticCart.subtotalPrice - lineItemPrice;
-  optimisticCart.totalPrice = optimisticCart.totalPrice - lineItemPrice;
-
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      optimisticCart,
-    },
-  };
-});
-
-const optimisticUpdateCart: StoreAction = assign((context, event) => {
-  if (event.type !== 'OPTIMISTIC_UPDATE_CART') return context;
-
-  /**
-   * If there is no quantity on the item return early
-   */
-  if (!event.data.item.quantity) return context;
-
-  /**
-   * Cart Context
-   */
-  const cartContext = context.cartContext;
-
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.optimisticCart) return context;
-
-  /**
-   * Shallow copy of the optimistic cart
-   */
-  const optimisticCart = { ...cartContext.optimisticCart };
-
-  /**
-   * Product ID
-   *
-   * This is the product ID of the product that was added to the cart
-   */
-  const productId = event.data.itemId;
-
-  /**
-   * Find the line item in the cart
-   * If there is no line item return early
-   * Otherwise destructure the line item and the line item ID
-   */
-  const cartLineItem = findLineItem({
-    productId,
-    lineItems: optimisticCart.lineItems,
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        cart,
+      },
+    };
   });
 
-  if (!cartLineItem) return context;
+const removeFromCartContext: StoreMachineOptions['actions']['removeFromCartContext'] =
+  assign((context, event) => {
+    const cartContext = context.cartContext;
+    const cart = event.data.cart;
 
-  const { lineItemId, lineItem } = cartLineItem;
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.cart) return context;
 
-  if (!lineItem) return context;
-
-  if (!lineItem.variant?.price) return context;
-
-  optimisticCart.lineItems.set(lineItemId, {
-    ...lineItem,
-    quantity: event.data.item.quantity,
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        cart,
+      },
+    };
   });
 
-  const lineItemPriceAdjustment =
-    lineItem.variant.price.value * lineItem.quantity * -1 +
-    lineItem.variant.price.value * event.data.item.quantity;
+const optimisticRemoveFromCart: StoreMachineOptions['actions']['optimisticRemoveFromCart'] =
+  assign((context, event) => {
+    /**
+     * Cart Context
+     */
+    const cartContext = context.cartContext;
 
-  optimisticCart.lineItemsSubtotalPrice =
-    optimisticCart.lineItemsSubtotalPrice + lineItemPriceAdjustment;
-  optimisticCart.subtotalPrice =
-    optimisticCart.subtotalPrice + lineItemPriceAdjustment;
-  optimisticCart.totalPrice =
-    optimisticCart.totalPrice + lineItemPriceAdjustment;
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.optimisticCart) return context;
 
-  console.log('optimisticCart', {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      optimisticCart,
-    },
+    /**
+     * Shallow copy of the optimistic cart
+     */
+    const optimisticCart = { ...cartContext.optimisticCart };
+
+    optimisticCart.lineItems.delete(event.data.itemId);
+
+    /**
+     * Product ID
+     *
+     * This is the product ID of the product that was added to the cart
+     */
+    const productId = event.data.itemId;
+
+    /**
+     * Find the line item in the cart
+     * If there is no line item return early
+     * Otherwise destructure the line item and the line item ID
+     */
+    const cartLineItem = findLineItem({
+      productId,
+      lineItems: optimisticCart.lineItems,
+    });
+    if (!cartLineItem) return context;
+    const { lineItemId, lineItem } = cartLineItem;
+
+    if (!lineItem) return context;
+    if (!lineItem.variant?.price) return context;
+
+    optimisticCart.lineItems.delete(lineItemId);
+
+    const lineItemPrice = lineItem.variant.price.value * lineItem.quantity * -1;
+
+    optimisticCart.lineItemsSubtotalPrice =
+      optimisticCart.lineItemsSubtotalPrice - lineItemPrice;
+    optimisticCart.subtotalPrice = optimisticCart.subtotalPrice - lineItemPrice;
+    optimisticCart.totalPrice = optimisticCart.totalPrice - lineItemPrice;
+
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticCart,
+      },
+    };
   });
 
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      optimisticCart,
-    },
-  };
-});
+const optimisticUpdateCart: StoreMachineOptions['actions']['optimisticUpdateCart'] =
+  assign((context, event) => {
+    /**
+     * If there is no quantity on the item return early
+     */
+    if (!event.data.item.quantity) return context;
 
-const assignOptimisticCart: StoreAction = assign((context) => {
-  const cartContext = context.cartContext;
+    /**
+     * Cart Context
+     */
+    const cartContext = context.cartContext;
 
-  /**
-   * If there is no cart in the context return early
-   */
-  if (!cartContext.cart) return context;
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.optimisticCart) return context;
 
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      optimisticCart: cartContext.cart,
-    },
-  };
-});
+    /**
+     * Shallow copy of the optimistic cart
+     */
+    const optimisticCart = { ...cartContext.optimisticCart };
 
-const clearOptimisticQueue: StoreAction = assign((context) => {
-  const cartContext = context.cartContext;
+    /**
+     * Product ID
+     *
+     * This is the product ID of the product that was added to the cart
+     */
+    const productId = event.data.itemId;
 
-  return {
-    ...context,
-    cartContext: {
-      ...cartContext,
-      optimisticQueue: [],
-    },
-  };
-});
+    /**
+     * Find the line item in the cart
+     * If there is no line item return early
+     * Otherwise destructure the line item and the line item ID
+     */
+    const cartLineItem = findLineItem({
+      productId,
+      lineItems: optimisticCart.lineItems,
+    });
+
+    if (!cartLineItem) return context;
+
+    const { lineItemId, lineItem } = cartLineItem;
+
+    if (!lineItem) return context;
+
+    if (!lineItem.variant?.price) return context;
+
+    optimisticCart.lineItems.set(lineItemId, {
+      ...lineItem,
+      quantity: event.data.item.quantity,
+    });
+
+    const lineItemPriceAdjustment =
+      lineItem.variant.price.value * lineItem.quantity * -1 +
+      lineItem.variant.price.value * event.data.item.quantity;
+
+    optimisticCart.lineItemsSubtotalPrice =
+      optimisticCart.lineItemsSubtotalPrice + lineItemPriceAdjustment;
+    optimisticCart.subtotalPrice =
+      optimisticCart.subtotalPrice + lineItemPriceAdjustment;
+    optimisticCart.totalPrice =
+      optimisticCart.totalPrice + lineItemPriceAdjustment;
+
+    console.log('optimisticCart', {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticCart,
+      },
+    });
+
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticCart,
+      },
+    };
+  });
+
+const assignOptimisticCart: StoreMachineOptions['actions']['assignOptimisticCart'] =
+  assign((context) => {
+    const cartContext = context.cartContext;
+
+    /**
+     * If there is no cart in the context return early
+     */
+    if (!cartContext.cart) return context;
+
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticCart: cartContext.cart,
+      },
+    };
+  });
+
+const clearOptimisticQueue: StoreMachineOptions['actions']['clearOptimisticQueue'] =
+  assign((context) => {
+    const cartContext = context.cartContext;
+
+    return {
+      ...context,
+      cartContext: {
+        ...cartContext,
+        optimisticQueue: [],
+      },
+    };
+  });
 
 const actions: StoreMachineOptions['actions'] = {
   removeFromCartContext,
