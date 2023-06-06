@@ -1,9 +1,9 @@
-import { CartContext } from '@/components/providers/cart/CartProvider';
 import { useContext } from 'react';
-import { CartItemBody } from 'types.d/cart';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
+import { type CartItemBody } from '@/lib/vercelCommerce/types/cart';
 
-export function useAddItem(item: CartItemBody) {
-  const cartService = useContext(CartContext);
+export function useAddItem() {
+  const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
     throw new Error('useAddItem must be used within a CartProvider');
@@ -11,10 +11,9 @@ export function useAddItem(item: CartItemBody) {
 
   const { send } = cartService;
 
-  return () => {
+  return (item: CartItemBody) =>
     send({
       type: 'SEND_TO_CART_QUEUE',
       data: { type: 'ADD_ITEM', data: { item } },
     });
-  };
 }

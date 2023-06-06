@@ -8,6 +8,10 @@ const getDefaultIgnorePatterns = () => {
     '**/dist',
     '**/.storybook',
     '**/storybook-static',
+    '**/coverage',
+    '**/typegen.ts',
+    '**/index.typegen.d.ts',
+    '**/*.graphql',
   ];
 };
 

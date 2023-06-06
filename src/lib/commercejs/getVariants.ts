@@ -1,5 +1,5 @@
-import { CommercejsVariant, variantSchema } from './zod/variants';
 import { commercejsFetcher } from './fetcher';
+import { type CommercejsVariant, variantSchema } from './zod/variants';
 
 export async function commercejsGetVariants({
   productId,
@@ -11,3 +11,5 @@ export async function commercejsGetVariants({
     schema: variantSchema,
   });
 }
+
+export default commercejsGetVariants;

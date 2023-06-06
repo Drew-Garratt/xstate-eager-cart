@@ -8,11 +8,6 @@ import { withSentryConfig } from '@sentry/nextjs'; // https://docs.sentry.io/pla
 import { createSecureHeaders } from 'next-secure-headers';
 import pc from 'picocolors';
 
-const workspaceRoot = path.resolve(
-  path.dirname(url.fileURLToPath(import.meta.url)),
-  '..',
-  '..'
-);
 /**
  * Once supported replace by node / eslint / ts and out of experimental, replace by
  * `import packageJson from './package.json' assert { type: 'json' };`
@@ -169,6 +164,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.chec.io',
+      },
     ],
     unoptimized: false,
   },
@@ -203,9 +202,6 @@ const nextConfig = {
   },
 
   experimental: {
-    // @link https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
-    outputFileTracingRoot: workspaceRoot,
-
     // Prefer loading of ES Modules over CommonJS
     // @link {https://nextjs.org/blog/next-11-1#es-modules-support|Blog 11.1.0}
     // @link {https://github.com/vercel/next.js/discussions/27876|Discussion}
@@ -292,22 +288,22 @@ const nextConfig = {
 
 let config = nextConfig;
 
-if (!NEXTJS_DISABLE_SENTRY) {
-  config = withSentryConfig(config, {
-    // Additional config options for the Sentry Webpack plugin. Keep in mind that
-    // the following options are set automatically, and overriding them is not
-    // recommended:
-    //   release, url, org, project, authToken, configFile, stripPrefix,
-    //   urlPrefix, include, ignore
-    // For all available options, see:
-    // https://github.com/getsentry/sentry-webpack-plugin#options.
-    // silent: isProd, // Suppresses all logs
-    dryRun: NEXTJS_SENTRY_UPLOAD_DRY_RUN,
-  });
-} else {
-  const { sentry, ...rest } = config;
-  config = rest;
-}
+// if (!NEXTJS_DISABLE_SENTRY) {
+//   config = withSentryConfig(config, {
+//     // Additional config options for the Sentry Webpack plugin. Keep in mind that
+//     // the following options are set automatically, and overriding them is not
+//     // recommended:
+//     //   release, url, org, project, authToken, configFile, stripPrefix,
+//     //   urlPrefix, include, ignore
+//     // For all available options, see:
+//     // https://github.com/getsentry/sentry-webpack-plugin#options.
+//     // silent: isProd, // Suppresses all logs
+//     dryRun: NEXTJS_SENTRY_UPLOAD_DRY_RUN,
+//   });
+// } else {
+//   const { sentry, ...rest } = config;
+//   config = rest;
+// }
 
 if (process.env.ANALYZE === 'true') {
   config = withBundleAnalyzer({

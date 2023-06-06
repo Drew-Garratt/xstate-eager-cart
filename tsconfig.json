@@ -32,10 +32,10 @@
         "./features/*"
       ],
       "@/app/*": [
-        "src/app/*"
+        "src/_app/*"
       ],
       "@/types/*": [
-        "src/types.d/*"
+        "src/lib/vercelCommerce/types/*"
       ],
       "@/styles/*": [
         "./styles/*"
@@ -61,8 +61,7 @@
   ],
   "exclude": [
     "**/node_modules",
-    "**/.*/",
-    "**/typegen.ts"
+    "**/.*/"
   ],
   "include": [
     ".next/types/**/*.ts",

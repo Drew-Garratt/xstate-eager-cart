@@ -1,24 +1,20 @@
 'use client';
 
-import { ReactNode, useRef } from 'react';
-import { CartProvider } from '../cart/CartProvider';
-import { inspect } from '@xstate/inspect';
+import { type ReactNode } from 'react';
+import { CommerceProvider } from '../commerce/CommerceProvider';
+// import { inspect } from '@xstate/inspect';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
-  if (process.env.NODE_ENV === 'development') {
-    const inspectCalled = useRef(false);
+  // if (process.env.NODE_ENV === 'development') {
+  //   const inspectCalled = useRef(false);
 
-    if (inspectCalled.current === false) {
-      inspect({ iframe: false });
-      inspectCalled.current = true;
-    }
-  }
+  //   if (inspectCalled.current === false) {
+  //     inspect({ iframe: false });
+  //     inspectCalled.current = true;
+  //   }
+  // }
 
-  return (
-    <>
-      <CartProvider>{children}</CartProvider>
-    </>
-  );
+  return <CommerceProvider>{children}</CommerceProvider>;
 };
 
 export default AppProvider;

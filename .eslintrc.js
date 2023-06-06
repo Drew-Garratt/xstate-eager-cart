@@ -6,9 +6,7 @@
 // Workaround for https://github.com/eslint/eslint/issues/3458 (re-export of @rushstack/eslint-patch)
 require('./eslint-config-bases/patch/modern-module-resolution');
 
-const {
-  getDefaultIgnorePatterns,
-} = require('./eslint-config-bases/helpers');
+const { getDefaultIgnorePatterns } = require('./eslint-config-bases/helpers');
 
 module.exports = {
   root: true,
@@ -18,17 +16,17 @@ module.exports = {
   },
   ignorePatterns: [...getDefaultIgnorePatterns(), '.next', '.out'],
   extends: [
-    './eslint-config-bases/typescript',
-    './eslint-config-bases/sonar',
-    './eslint-config-bases/regexp',
-    './eslint-config-bases/jest',
-    './eslint-config-bases/react',
-    './eslint-config-bases/tailwind',
-    './eslint-config-bases/rtl',
+    './eslint-config-bases/bases/typescript',
+    './eslint-config-bases/bases/sonar',
+    './eslint-config-bases/bases/regexp',
+    './eslint-config-bases/bases/jest',
+    './eslint-config-bases/bases/react',
+    './eslint-config-bases/bases/tailwind',
+    './eslint-config-bases/bases/rtl',
     // Add specific rules for nextjs
     'plugin:@next/next/core-web-vitals',
     // Apply prettier and disable incompatible rules
-    './eslint-config-bases/prettier',
+    './eslint-config-bases/bases/prettier',
   ],
   rules: {
     // https://github.com/vercel/next.js/discussions/16832

@@ -1,13 +1,20 @@
-import { CartContext } from '@/components/providers/cart/CartProvider';
 import { useContext } from 'react';
-import { CartItemBody } from 'types.d/cart';
+import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
+import { type CartItemBody } from '@/lib/vercelCommerce/types/cart';
 
-export function useUpdateItem(input: { itemId: string; item: CartItemBody }) {
-  const cartService = useContext(CartContext);
+export function useUpdateItem(): (data: {
+  itemId: string;
+  item: CartItemBody;
+}) => void {
+  const cartService = useContext(StoreContext);
 
   if (cartService === undefined) {
-    throw new Error('useAddItem must be used within a CartProvider');
+    throw new Error('useUpdateItem must be used within a CartProvider');
   }
 
-  return cartService.send({ type: 'UPDATE_ITEM', input });
+  return (data: { itemId: string; item: CartItemBody }) =>
+    cartService.send({
+      type: 'SEND_TO_CART_QUEUE',
+      data: { type: 'UPDATE_ITEM', data },
+    });
 }
