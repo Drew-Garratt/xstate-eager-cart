@@ -1,40 +1,38 @@
-import { type StoreActor } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
 import commercejsUpdateToCart from '../../postUpdateToCart';
 import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 import { findLineItem } from '../../utils/findLineItem';
 
-export const asyncUpdateCart: StoreActor = async (context, event) => {
-  if (event.type !== 'ASYNC_UPDATE_CART') return;
+export const asyncUpdateCart: StoreMachineOptions['services']['asyncUpdateCart'] =
+  async (context, event) => {
+    /**
+     * If there is no cart in the context return
+     **/
+    if (!context.cartContext.cart) throw new Error('No cart in context');
 
-  /**
-   * If there is no cart in the context return
-   **/
-  if (!context.cartContext.cart) throw new Error('No cart in context');
+    /**
+     * Find the line item in the cart
+     * If there is no line item return early
+     * Otherwise destructure the line item and the line item ID
+     */
+    const cartLineItem = findLineItem({
+      productId: event.data.itemId,
+      lineItems: context.cartContext.cart.lineItems,
+    });
 
-  /**
-   * Find the line item in the cart
-   * If there is no line item return early
-   * Otherwise destructure the line item and the line item ID
-   */
-  const cartLineItem = findLineItem({
-    productId: event.data.itemId,
-    lineItems: context.cartContext.cart.lineItems,
-  });
+    if (!cartLineItem) throw new Error('Cart line not found');
 
-  if (!cartLineItem) return context;
+    const { lineItem } = cartLineItem;
 
-  const { lineItem } = cartLineItem;
+    const responce = await commercejsUpdateToCart({
+      cartId: context.cartContext.cart.id,
+      lineItemId: lineItem.id,
+      quantity: event.data.item.quantity,
+    });
 
-  const responce = await commercejsUpdateToCart({
-    cartId: context.cartContext.cart.id,
-    lineItemId: lineItem.id,
-    quantity: event.data.item.quantity,
-  });
+    if (!responce) throw new Error('Cart is undefined');
 
-  if (!responce) throw new Error('Cart is undefined');
-
-  return {
-    type: 'UPDATE_CART_DONE',
-    cart: commercejsCleanCartResponse(responce),
+    return {
+      cart: commercejsCleanCartResponse(responce),
+    };
   };
-};

@@ -1,5 +1,6 @@
-import { type StoreActor } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
 
-export const asyncCreateCart: StoreActor = async () => {
-  return { data: null };
-};
+export const asyncCreateCart: StoreMachineOptions['services']['asyncCreateCart'] =
+  async () => {
+    return { cart: null };
+  };

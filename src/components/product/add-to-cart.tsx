@@ -35,7 +35,7 @@ export function AddToCart({
       )
     );
 
-    if (variantIndex) {
+    if (variantIndex > -1) {
       setSelectedVariantIndex(variantIndex);
       setSelectedVariantId(variants[variantIndex].id);
     }
