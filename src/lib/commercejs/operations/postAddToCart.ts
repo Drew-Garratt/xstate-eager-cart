@@ -37,5 +37,3 @@ export async function commercejsAddToCart({
     schema: addUpdateResponseSchema,
   });
 }
-
-export default commercejsAddToCart;

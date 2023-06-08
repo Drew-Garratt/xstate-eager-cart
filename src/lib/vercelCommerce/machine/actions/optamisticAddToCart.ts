@@ -99,8 +99,6 @@ export const optimisticAddToCart: StoreMachineOptions['actions']['optimisticAddT
 
     const lineItemPrice = lineItem.variant.price.value * eventQuantity;
 
-    console.log('lineItemPrice', lineItemPrice);
-
     optimisticCart.lineItemsSubtotalPrice =
       optimisticCart.lineItemsSubtotalPrice + lineItemPrice;
     optimisticCart.subtotalPrice = optimisticCart.subtotalPrice + lineItemPrice;

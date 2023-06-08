@@ -80,7 +80,7 @@ export const productSchema = z.object({
     collects_fullname: z.boolean(),
     collects_shipping_address: z.boolean(),
     collects_billing_address: z.boolean(),
-    collects_extra_fields: z.boolean().or(z.undefined()),
+    collects_extra_fields: z.boolean().or(z.undefined()).optional(),
   }),
   is: z.object({
     active: z.boolean(),
@@ -106,7 +106,7 @@ export const productSchema = z.object({
     checkout: z.string(),
     display: z.string(),
   }),
-  extra_fields: z.array(z.any()),
+  extra_fields: z.array(z.any()).optional(),
   variant_groups: z.array(productVariantGroupSchema),
   categories: z.array(
     z.object({

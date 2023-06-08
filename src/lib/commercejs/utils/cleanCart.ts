@@ -8,7 +8,7 @@ import {
   type CommercejsAddUpdateResponse,
   type CommercejsCart,
   type CommercejsCartRemoveResponse,
-} from '../zod/cart';
+} from '../operations/zod/cart';
 
 export const commercejsCleanCartResponse = (
   responce: CommercejsAddUpdateResponse | CommercejsCartRemoveResponse

@@ -260,14 +260,6 @@ const optimisticUpdateCart: StoreMachineOptions['actions']['optimisticUpdateCart
     optimisticCart.totalPrice =
       optimisticCart.totalPrice + lineItemPriceAdjustment;
 
-    console.log('optimisticCart', {
-      ...context,
-      cartContext: {
-        ...cartContext,
-        optimisticCart,
-      },
-    });
-
     return {
       ...context,
       cartContext: {
