@@ -30,7 +30,6 @@ export default function Collections() {
         </div>
       }
     >
-      {/* @ts-expect-error Server Component */}
       {/* <CollectionList /> */}
     </Suspense>
   );
