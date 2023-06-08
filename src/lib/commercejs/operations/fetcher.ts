@@ -1,6 +1,24 @@
 import { type ZodSchema } from 'zod';
 import { jsonFetcher } from '@/lib/helpers/jsonFetcher';
 
+let domain = 'http://localhost:3000';
+
+if (process) {
+  const { URL, VERCEL_URL, PORT = '3000' } = process.env;
+
+  domain = `http://localhost:${PORT}`;
+
+  if (VERCEL_URL) {
+    domain = `https://${VERCEL_URL}`;
+  } else if (URL) {
+    domain = URL;
+  }
+}
+
+if (typeof window !== 'undefined') {
+  domain = window.location.origin;
+}
+
 const baseUrl = 'https://api.chec.io/v1/';
 
 const defaultHeaders = {
@@ -35,7 +53,7 @@ export async function commercejsFetcher<T>(input: {
   /** Create fetch config based on local or commerceJS location */
   const fetchConfig = local
     ? {
-        baseUrl: 'http://localhost:3000/api/commercejs/',
+        baseUrl: domain,
         headers: defaultHeaders,
       }
     : {
