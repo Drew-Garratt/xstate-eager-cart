@@ -1,13 +1,12 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
-import { getCollections } from 'lib/saleor';
 import FilterList from './filter';
 
-async function CollectionList() {
-  const collections = await getCollections();
-  return <FilterList list={collections} title="Collections" />;
-}
+// async function CollectionList() {
+//   // const collections = await getCollections();
+//   return <FilterList list={collections} title="Collections" />;
+// }
 
 const skeleton = 'mb-3 h-4 w-5/6 animate-pulse rounded';
 const activeAndTitles = 'bg-gray-800 dark:bg-gray-300';
@@ -31,8 +30,7 @@ export default function Collections() {
         </div>
       }
     >
-      {/* @ts-expect-error Server Component */}
-      <CollectionList />
+      {/* <CollectionList /> */}
     </Suspense>
   );
 }

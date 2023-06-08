@@ -1,5 +1,5 @@
 import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
-import commercejsAddToCart from '../../postAddToCart';
+import { commercejsAddToCart } from '../../operations/postAddToCart';
 import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 
 export const asyncAddToCart: StoreMachineOptions['services']['asyncAddToCart'] =
@@ -46,7 +46,6 @@ export const asyncAddToCart: StoreMachineOptions['services']['asyncAddToCart'] =
     if (!responce.success) throw new Error('Add to cart failed');
 
     return {
-      type: 'ADD_TO_CART_DONE',
       cart: commercejsCleanCartResponse(responce),
     };
   };

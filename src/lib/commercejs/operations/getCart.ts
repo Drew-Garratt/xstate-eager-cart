@@ -15,5 +15,3 @@ export async function commercejsGetCart(): Promise<CommercejsCart | false> {
     schema: commercejsCartSchema,
   });
 }
-
-export default commercejsGetCart;

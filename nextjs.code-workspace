@@ -1,21 +1,22 @@
 {
   "folders": [
     {
-      "name": "🌳 nextjs",
+      "name": "🌳 root",
       "path": "."
     }
   ],
   "extensions": {
     "recommendations": [
-      "folke.vscode-monorepo-workspace",
       "dbaeumer.vscode-eslint",
       "esbenp.prettier-vscode",
-      "zixuanchen.vitest-explorer",
-      "orta.vscode-jest",
+      "ZixuanChen.vitest-explorer",
+      "Orta.vscode-jest",
       "statelyai.stately-vscode"
     ]
   },
   "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {

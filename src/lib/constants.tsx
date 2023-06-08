@@ -1,16 +1,14 @@
-import { ProductOrderField } from './saleor/generated/graphql';
-
 export type SortFilterItem = {
   title: string;
   slug: string | null;
-  sortKey: ProductOrderField;
+  sortKey: 'sort_order' | 'created_at' | 'price';
   reverse: boolean;
 };
 
 export const defaultSort: SortFilterItem = {
   title: 'Relevance',
   slug: null,
-  sortKey: ProductOrderField.Rank,
+  sortKey: 'sort_order',
   reverse: false,
 };
 
@@ -19,28 +17,19 @@ export const sorting: SortFilterItem[] = [
   {
     title: 'Trending',
     slug: 'trending-desc',
-    sortKey: ProductOrderField.Rating,
+    sortKey: 'sort_order',
     reverse: false,
   }, // asc
   {
     title: 'Latest arrivals',
     slug: 'latest-desc',
-    sortKey: ProductOrderField.PublishedAt,
+    sortKey: 'created_at',
     reverse: true,
   },
   {
     title: 'Price: Low to high',
     slug: 'price-asc',
-    sortKey: ProductOrderField.MinimalPrice,
+    sortKey: 'price',
     reverse: false,
   }, // asc
-  {
-    title: 'Price: High to low',
-    slug: 'price-desc',
-    sortKey: ProductOrderField.MinimalPrice,
-    reverse: true,
-  },
 ];
-
-export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
-export const DEFAULT_OPTION = 'Default Title';

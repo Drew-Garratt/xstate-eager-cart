@@ -1,5 +1,5 @@
 import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
-import commercejsUpdateToCart from '../../postUpdateToCart';
+import commercejsUpdateToCart from '../../operations/postUpdateToCart';
 import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 import { findLineItem } from '../../utils/findLineItem';
 

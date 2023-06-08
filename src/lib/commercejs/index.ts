@@ -1,16 +1,19 @@
-export { commercejsGetCart } from './getCart';
-export { commercejsGetVariants } from './getVariants';
+export { commercejsGetCart } from './operations/getCart';
+export { commercejsGetVariants } from './operations/getVariants';
 
-export { commercejsAddToCart } from './postAddToCart';
+export { commercejsAddToCart } from './operations/postAddToCart';
 
 import {
   type Image,
   type Product,
   type ProductVariant,
   type ProductOption,
+  type Menu,
 } from '../vercelCommerce/types/index';
-import { commercejsGetProduct } from './getProduct';
-import { type CommercejsProduct } from './zod/product';
+import { commercejsGetMenu } from './operations/getMenu';
+import { commercejsGetProduct } from './operations/getProduct';
+import { commercejsGetProducts } from './operations/getProducts';
+import { type CommercejsProduct } from './operations/zod/product';
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
   const product = await commercejsGetProduct({ permalink: handle });
@@ -106,7 +109,7 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
 
   return {
     id: product.id,
-    handle: `/products/${product.permalink}`,
+    handle: product.permalink,
     availableForSale: product.is.active,
     title: product.name,
     description: product.description,
@@ -127,3 +130,77 @@ const reshapeProduct = (product: CommercejsProduct): Product | undefined => {
     updatedAt: new Date(product.updated).toISOString(),
   };
 };
+
+const reshapeProducts = (
+  products: CommercejsProduct[]
+): Array<Product | undefined> => {
+  return products.map((product) => reshapeProduct(product));
+};
+
+export async function getProducts({
+  query,
+  reverse,
+  sortKey,
+}: {
+  query?: string;
+  reverse?: boolean;
+  sortKey?: string;
+}): Promise<Product[]> {
+  const commerceCategoryProducts = commercejsGetProducts({
+    query,
+    sortDirection: reverse ? 'desc' : 'asc',
+    sortBy: 'sort_order',
+  });
+
+  const execute = await Promise.allSettled([commerceCategoryProducts]);
+
+  if (execute[0].status === 'rejected') {
+    return [];
+  }
+
+  if (!execute[0].value || !execute[0].value.data) {
+    return [];
+  }
+
+  const products = reshapeProducts(execute[0].value.data);
+
+  return products.filter(notEmpty);
+}
+
+export async function getCollectionProducts(
+  handle: string
+): Promise<Product[]> {
+  const commerceCategoryProducts = commercejsGetProducts({
+    ['category_slug']: handle,
+    limit: 3,
+  });
+
+  const execute = await Promise.allSettled([commerceCategoryProducts]);
+
+  if (execute[0].status === 'rejected') {
+    return [];
+  }
+
+  if (!execute[0].value || !execute[0].value.data) {
+    return [];
+  }
+
+  const products = reshapeProducts(execute[0].value.data);
+
+  return products.filter(notEmpty);
+}
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+export async function getMenu(): Promise<Menu[]> {
+  const res = await commercejsGetMenu();
+
+  if (!res) return [];
+
+  return res.items.map((item: { title: string; url: string }) => ({
+    title: item.title,
+    path: item.url,
+  }));
+}

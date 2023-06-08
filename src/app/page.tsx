@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Carousel } from 'components/carousel';
-// import { ThreeItemGrid } from 'components/grid/three-items';
+import { ThreeItemGrid } from 'components/grid/three-items';
 import Footer from 'components/layout/footer';
 
 export const runtime = 'edge';
@@ -23,7 +23,8 @@ export const metadata = {
 export default async function HomePage() {
   return (
     <>
-      {/* <ThreeItemGrid /> */}
+      {/* @ts-expect-error Server Component */}
+      <ThreeItemGrid />
       <Suspense>
         {/* @ts-expect-error Server Component */}
         <Carousel />

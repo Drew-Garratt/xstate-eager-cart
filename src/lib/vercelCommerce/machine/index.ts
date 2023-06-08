@@ -78,7 +78,7 @@ export const storeMachine = createMachine({
       | { type: 'CLOSE_CART_DRAW' },
     services: {} as {
       asyncAddToCart: { data: { cart: Cart } };
-      asyncCreateCart: { data: { cart: Cart | null } };
+      asyncCreateCart: { data: { cart: Cart } };
       asyncRemoveFromCart: { data: { cart: Cart } };
       asyncUpdateCart: { data: { cart: Cart } };
       checkAsyncQueue: { data: unknown };
