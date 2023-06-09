@@ -9,8 +9,10 @@ import LogoIcon from 'components/icons/logo';
 import MobileMenu from './mobile-menu';
 import Search from './search';
 
+const { DEFAULT_MENU = '' } = process.env;
+
 export default async function Navbar() {
-  const menu = await getMenu();
+  const menu = await getMenu(DEFAULT_MENU);
 
   return (
     <nav className="relative flex items-center justify-between bg-white p-4 dark:bg-black lg:px-6">
