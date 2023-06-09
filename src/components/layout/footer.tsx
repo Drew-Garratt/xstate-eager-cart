@@ -6,12 +6,12 @@ import LogoIcon from 'components/icons/logo';
 import VercelIcon from 'components/icons/vercel';
 import { getMenu } from 'lib/adapter';
 
-const { SITE_NAME } = process.env;
+const { SITE_NAME = 'NextJs Commerce', DEFAULT_MENU = '' } = process.env;
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
   const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  const menu = await getMenu();
+  const menu = await getMenu(DEFAULT_MENU);
 
   return (
     <footer className="border-t border-gray-700 bg-white text-black dark:bg-black dark:text-white">

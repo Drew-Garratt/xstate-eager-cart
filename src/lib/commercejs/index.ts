@@ -9,6 +9,7 @@ import {
   type ProductVariant,
   type ProductOption,
   type Menu,
+  type Page,
 } from '../vercelCommerce/types/index';
 import { commercejsGetMenu } from './operations/getMenu';
 import { commercejsGetProduct } from './operations/getProduct';
@@ -194,7 +195,8 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined;
 }
 
-export async function getMenu(): Promise<Menu[]> {
+export async function getMenu(_: string): Promise<Menu[]> {
+  /** In commerce JS our menu config string is ignored as it does not handle menus */
   const res = await commercejsGetMenu();
 
   if (!res) return [];
@@ -203,4 +205,8 @@ export async function getMenu(): Promise<Menu[]> {
     title: item.title,
     path: item.url,
   }));
+}
+
+export async function getPage(_: string): Promise<Page | false> {
+  return false;
 }

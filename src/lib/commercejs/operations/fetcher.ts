@@ -53,7 +53,7 @@ export async function commercejsFetcher<T>(input: {
   /** Create fetch config based on local or commerceJS location */
   const fetchConfig = local
     ? {
-        baseUrl: domain,
+        baseUrl: `${domain}/api/commercejs/`,
         headers: defaultHeaders,
       }
     : {
