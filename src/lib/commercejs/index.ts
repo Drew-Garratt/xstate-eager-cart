@@ -1,3 +1,4 @@
+import { notEmpty } from '../utils';
 import {
   type Product,
   type Menu,
@@ -20,7 +21,6 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 export async function getProducts({
   query,
   reverse,
-  sortKey,
 }: {
   query?: string;
   reverse?: boolean;
