@@ -1,2 +1,2 @@
-import services from '../../../commercejs/commerceMachine/services';
+import services from '../../../saleor/commerceMachine/services';
 export default services;

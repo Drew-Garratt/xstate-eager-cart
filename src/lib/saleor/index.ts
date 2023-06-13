@@ -10,6 +10,9 @@ import {
   GetMenuBySlugDocument,
   GetPageBySlugDocument,
   GetProductBySlugDocument,
+  OrderDirection,
+  ProductOrderField,
+  SearchProductsDocument,
   type MenuItemFragment,
 } from './generated/graphql';
 import { saleorProductToVercelProduct } from './mappers';
@@ -133,6 +136,32 @@ export async function getMenu(handle: string): Promise<Menu[]> {
     return result.slice(0, 3);
   }
   return result;
+}
+
+export async function getProducts({
+  query,
+  reverse,
+  sortKey,
+}: {
+  query?: string;
+  reverse?: boolean;
+  sortKey?: ProductOrderField;
+}): Promise<Product[]> {
+  const saleorProducts = await saleorFetch({
+    query: SearchProductsDocument,
+    variables: {
+      search: query || '',
+      sortBy:
+        sortKey || (query ? ProductOrderField.Rank : ProductOrderField.Rating),
+      sortDirection: reverse ? OrderDirection.Desc : OrderDirection.Asc,
+    },
+  });
+
+  return (
+    saleorProducts.products?.edges.map((product) =>
+      saleorProductToVercelProduct(product.node)
+    ) || []
+  );
 }
 
 export async function getPage(handle: string): Promise<Page> {

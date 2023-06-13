@@ -1,4 +1,4 @@
-import * as nextCommerceAdapter from '../commercejs';
+import * as nextCommerceAdapter from '../saleor';
 import { type NextCommerdeAdapterFunctions } from './types';
 
 export const {
