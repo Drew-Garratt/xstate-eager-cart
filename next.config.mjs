@@ -166,6 +166,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cdn.chec.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'prod.demo.saleor.cloud',
+      },
     ],
     unoptimized: false,
   },

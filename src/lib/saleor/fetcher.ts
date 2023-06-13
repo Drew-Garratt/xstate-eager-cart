@@ -1,8 +1,8 @@
 import { type TypedDocumentString } from './generated/graphql';
 import { invariant } from './utils';
 
-const endpoint = process.env.SALEOR_INSTANCE_URL;
-invariant(endpoint, `Missing SALEOR_INSTANCE_URL!`);
+const endpoint = process.env.NEXT_PUBLIC_SALEOR_INSTANCE_URL;
+invariant(endpoint, `Missing NEXT_PUBLIC_SALEOR_INSTANCE_URL!`);
 
 type GraphQlError = {
   message: string;
@@ -20,7 +20,7 @@ export async function saleorFetch<Result, Variables>({
   headers?: HeadersInit;
   cache?: RequestCache;
 }): Promise<Result> {
-  invariant(endpoint, `Missing SALEOR_INSTANCE_URL!`);
+  invariant(endpoint, `Missing NEXT_PUBLIC_SALEOR_INSTANCE_URL!`);
 
   const result = await fetch(endpoint, {
     method: 'POST',

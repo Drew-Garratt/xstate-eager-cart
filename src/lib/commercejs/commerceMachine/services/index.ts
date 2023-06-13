@@ -18,5 +18,3 @@ export const services: StoreMachineOptions['services'] = {
   checkOptimisticQueue,
   initialiseCart,
 };
-
-export default services;
