@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import { getMenu } from '@/lib/commercejs';
+import { getMenu } from '@/lib/adapter';
 import { type Menu } from '@/lib/vercelCommerce/types';
 import Cart from 'components/cart';
 import CartIcon from 'components/icons/cart';
