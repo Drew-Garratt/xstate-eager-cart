@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import { getMenu } from '@/lib/commercejs';
+import { getMenu } from '@/lib/adapter';
 import { type Menu } from '@/lib/vercelCommerce/types';
 import Cart from 'components/cart';
 import CartIcon from 'components/icons/cart';
@@ -9,8 +9,10 @@ import LogoIcon from 'components/icons/logo';
 import MobileMenu from './mobile-menu';
 import Search from './search';
 
+const { DEFAULT_MENU = '' } = process.env;
+
 export default async function Navbar() {
-  const menu = await getMenu();
+  const menu = await getMenu(DEFAULT_MENU);
 
   return (
     <nav className="relative flex items-center justify-between bg-white p-4 dark:bg-black lg:px-6">
@@ -44,7 +46,6 @@ export default async function Navbar() {
 
       <div className="flex w-1/3 justify-end">
         <Suspense fallback={<CartIcon className="h-6" />}>
-          {/* @ts-expect-error Server Component */}
           <Cart />
         </Suspense>
       </div>

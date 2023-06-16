@@ -1,7 +1,10 @@
+import { type Simplify } from 'type-fest';
 import { assign } from 'xstate';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
 import type { StoreMachineOptions } from '..';
 import { optimisticAddToCart } from './optamisticAddToCart';
+
+type Actions = Simplify<StoreMachineOptions['actions']>;
 
 const addSuccessMessage: StoreMachineOptions['actions']['addSuccessMessage'] =
   () => {

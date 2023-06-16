@@ -77,7 +77,6 @@ export default async function ProductPage({
         </div>
 
         <div className="p-6 lg:col-span-2">
-          {/* @ts-expect-error Server Component */}
           <VariantSelector
             options={product.options}
             variants={product.variants}
@@ -100,7 +99,6 @@ export default async function ProductPage({
       <Suspense>
         {/* <RelatedProducts id={product.id} /> */}
         <Suspense>
-          {/* @ts-expect-error Server Component */}
           <Footer />
         </Suspense>
       </Suspense>

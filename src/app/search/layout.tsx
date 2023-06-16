@@ -22,7 +22,6 @@ export default function SearchLayout({
           <FilterList list={sorting} title="Sort by" />
         </div>
       </div>
-      {/* @ts-expect-error Server Component */}
       <Footer />
     </Suspense>
   );
