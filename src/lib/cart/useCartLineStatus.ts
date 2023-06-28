@@ -1,7 +1,7 @@
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
-import { type StoreState, type CartEvents } from '../vercelCommerce/machine';
+import { type StoreState, type CartEvents } from '../vercelCommerce/xstate';
 
 export function useCartLineStatus({ itemId }: { itemId: string }): {
   isItemInAsyncQueue: boolean;

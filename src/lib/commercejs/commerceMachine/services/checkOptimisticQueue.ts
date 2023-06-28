@@ -1,4 +1,4 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
 
 export const checkOptimisticQueue: StoreMachineOptions['services']['checkOptimisticQueue'] =
   (context) => (sendBack) => {

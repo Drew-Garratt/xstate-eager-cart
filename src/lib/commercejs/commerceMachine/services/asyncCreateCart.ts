@@ -1,4 +1,4 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
 import { commercejsGetCart } from '../../operations/getCart';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 

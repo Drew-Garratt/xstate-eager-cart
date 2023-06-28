@@ -1,7 +1,7 @@
 import { useInterpret } from '@xstate/react';
 import { createContext, type ReactNode } from 'react';
 import services from '@/lib/adapter/commerceMachine/services';
-import { storeMachine, type StoreService } from '@/lib/vercelCommerce/machine';
+import { storeMachine, type StoreService } from '@/lib/vercelCommerce/xstate';
 
 /**
  * Service imports
@@ -16,8 +16,8 @@ import { storeMachine, type StoreService } from '@/lib/vercelCommerce/machine';
  * Actions and guards are machine specific functions are imported
  * from the vercelCommerceMachine folder and assigned to the machine
  */
-import actions from '@/lib/vercelCommerce/machine/actions';
-import guards from '@/lib/vercelCommerce/machine/guards';
+import actions from '@/lib/vercelCommerce/xstate/actions';
+import guards from '@/lib/vercelCommerce/xstate/guards';
 
 /**
  * Type for the cart context value

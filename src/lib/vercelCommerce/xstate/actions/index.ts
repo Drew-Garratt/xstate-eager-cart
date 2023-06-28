@@ -1,7 +1,8 @@
 import { type Simplify } from 'type-fest';
-import { assign } from 'xstate';
+import { assign, spawn } from 'xstate';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
-import type { StoreMachineOptions } from '..';
+import { cartAsync } from '../machines/CartAsync';
+import type { StoreMachineOptions } from '../machines/storeMachine';
 import { optimisticAddToCart } from './optamisticAddToCart';
 
 type Actions = Simplify<StoreMachineOptions['actions']>;
@@ -10,6 +11,15 @@ const addSuccessMessage: StoreMachineOptions['actions']['addSuccessMessage'] =
   () => {
     return null;
   };
+
+const spawnStoreMachines: StoreMachineOptions['actions']['spawnStoreMachines'] =
+  assign(() => ({
+    childMachineRefs: () => [
+      spawn(cartAsync, {
+        autoForward: true,
+      }),
+    ],
+  }));
 
 // Assign the error to the context
 const assignError: StoreMachineOptions['actions']['assignError'] = assign(

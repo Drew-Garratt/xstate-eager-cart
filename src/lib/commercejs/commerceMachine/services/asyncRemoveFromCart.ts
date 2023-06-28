@@ -1,4 +1,4 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
 import commercejsRemoveFromCart from '../../operations/deleteCartItem';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 import { findLineItem } from '../../utils/findLineItem';

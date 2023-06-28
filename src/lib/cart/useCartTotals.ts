@@ -1,7 +1,7 @@
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
-import { type StoreState } from '@/lib/vercelCommerce/machine';
+import { type StoreState } from '@/lib/vercelCommerce/xstate';
 
 const selectCart = (state: StoreState) => state.context.cartContext.cart;
 

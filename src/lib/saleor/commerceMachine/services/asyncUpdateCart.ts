@@ -1,4 +1,4 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
 import { saleorFetch } from '../../fetcher';
 import { CheckoutUpdateLineDocument } from '../../generated/graphql';
 import { saleorCheckoutToVercelCart } from '../../mappers';

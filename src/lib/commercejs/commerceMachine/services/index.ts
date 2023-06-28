@@ -1,5 +1,5 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
-import defaultServices from '@/lib/vercelCommerce/machine/services';
+import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
+import defaultServices from '@/lib/vercelCommerce/xstate/services';
 import { asyncAddToCart } from './asyncAddToCart';
 import { asyncCreateCart } from './asyncCreateCart';
 import { asyncRemoveFromCart } from './asyncRemoveFromCart';
