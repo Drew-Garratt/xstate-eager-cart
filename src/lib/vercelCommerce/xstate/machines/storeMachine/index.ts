@@ -70,6 +70,7 @@ export const storeMachine = createMachine({
           data: { cart: Cart | null };
         }
       | { type: 'CART_SUCCESS' }
+      | { type: 'CART_WORKING' }
       | { type: 'CART_ERROR'; data: unknown[] }
       | { type: 'CART_BLOCKED' }
       | { type: 'CART_CONTINUE' }

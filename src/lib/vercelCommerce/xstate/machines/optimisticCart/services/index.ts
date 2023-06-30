@@ -1,5 +1,5 @@
 import { type OptimisticCartMachineOptions } from '..';
-import { type CartEvents } from '../../..';
+import { type CartEvents } from '../../storeMachine';
 
 export const defaultServices: Pick<
   OptimisticCartMachineOptions['services'],

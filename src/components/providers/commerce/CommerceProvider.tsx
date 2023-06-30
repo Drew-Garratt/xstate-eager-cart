@@ -15,9 +15,9 @@ import services from '@/lib/adapter/commerceMachine/services';
  * Actions and guards are machine specific functions are imported
  * from the vercelCommerceMachine folder and assigned to the machine
  */
-import actions from '@/lib/vercelCommerce/xstate/actions';
-import guards from '@/lib/vercelCommerce/xstate/guards';
-import { cartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
+import actions from '@/lib/vercelCommerce/xstate/machines/optimisticCart/actions';
+import guards from '@/lib/vercelCommerce/xstate/machines/optimisticCart/guards';
+import { optimisticCartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import {
   storeMachine,
   type StoreService,
@@ -38,6 +38,15 @@ type StoreContextType = StoreService | undefined;
  * This context will be used to provide the cart machine to the rest of the application
  */
 export const StoreContext = createContext<StoreContextType>(undefined);
+
+/**
+ * Import and configure the cart machine
+ */
+const cartMachine = optimisticCartMachine.withConfig({
+  services,
+  actions,
+  guards,
+});
 
 /**
  * Cart Provider
@@ -69,12 +78,8 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
        * https://stately.ai/docs/xstate/actors/actions-vs-actors
        */
       services: {
-        cartMachine: cartMachine.withConfig({
-          services: {
-            ...services,
-          },
-        }),
-        initialiseCart: async () => {
+        cartMachine,
+        initialiseStore: async () => {
           return null;
         },
       },

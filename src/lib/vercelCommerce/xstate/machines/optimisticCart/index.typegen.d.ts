@@ -67,6 +67,9 @@ export interface Typegen0 {
       | 'removeFromCartContext'
       | 'removeOldestFromOptQueue'
       | 'removeOldestItemFromAsyncQueue'
+      | 'sendCartErrorToParent'
+      | 'sendCartSuccessToParent'
+      | 'sendCartWorkingToParent'
       | 'updateCartContext';
     delays: never;
     guards:
@@ -114,7 +117,10 @@ export interface Typegen0 {
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Add to Cart:invocation[0]'
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Update Cart:invocation[0]';
+    sendCartErrorToParent: '';
+    sendCartSuccessToParent: '';
     sendCartUpdateToParent: '';
+    sendCartWorkingToParent: '';
     updateCartContext: 'done.invoke.Optimistic Cart.Async.Execute async action.Update Cart:invocation[0]';
   };
   eventsCausingDelays: {};
@@ -154,8 +160,10 @@ export interface Typegen0 {
     | 'Async.Execute async action.Remove from Cart'
     | 'Async.Execute async action.Update Cart'
     | 'Async.Idle'
-    | 'Async.Send Cart Cart Working to Parent'
+    | 'Async.Send Cart Error to Parent'
+    | 'Async.Send Cart Success to Parent'
     | 'Async.Send Cart Update To Parent'
+    | 'Async.Send Cart Working to Parent'
     | 'Optimistic'
     | 'Optimistic.Check Optimistic Queue'
     | 'Optimistic.Execute Optimistic Action'
@@ -171,8 +179,10 @@ export interface Typegen0 {
           | 'Check Async Queue'
           | 'Execute async action'
           | 'Idle'
-          | 'Send Cart Cart Working to Parent'
+          | 'Send Cart Error to Parent'
+          | 'Send Cart Success to Parent'
           | 'Send Cart Update To Parent'
+          | 'Send Cart Working to Parent'
           | {
               'Execute async action'?:
                 | 'Action done'
