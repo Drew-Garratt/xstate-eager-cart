@@ -1,7 +1,6 @@
 import { useInterpret } from '@xstate/react';
 import { createContext, type ReactNode } from 'react';
 import services from '@/lib/adapter/commerceMachine/services';
-import { storeMachine, type StoreService } from '@/lib/vercelCommerce/xstate';
 
 /**
  * Service imports
@@ -18,6 +17,11 @@ import { storeMachine, type StoreService } from '@/lib/vercelCommerce/xstate';
  */
 import actions from '@/lib/vercelCommerce/xstate/actions';
 import guards from '@/lib/vercelCommerce/xstate/guards';
+import { cartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
+import {
+  storeMachine,
+  type StoreService,
+} from '@/lib/vercelCommerce/xstate/machines/storeMachine';
 
 /**
  * Type for the cart context value
@@ -64,7 +68,16 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
        * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
        * https://stately.ai/docs/xstate/actors/actions-vs-actors
        */
-      services,
+      services: {
+        cartMachine: cartMachine.withConfig({
+          services: {
+            ...services,
+          },
+        }),
+        initialiseCart: async () => {
+          return null;
+        },
+      },
       /**
        * Actions
        *

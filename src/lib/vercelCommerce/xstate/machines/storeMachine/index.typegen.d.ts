@@ -18,29 +18,58 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {
     cartMachine: 'done.invoke.cart';
-    initialiseCart: 'done.invoke.Store Machine.Initialise:invocation[0]';
+    initialiseStore: 'done.invoke.Store Machine.Initialise:invocation[0]';
   };
   missingImplementations: {
-    actions: 'sendAddToCart' | 'sendUpdateCart' | 'sendcRemoveFromCart';
+    actions: never;
     delays: never;
     guards: never;
-    services: 'cartMachine' | 'initialiseCart';
+    services: 'cartMachine' | 'initialiseStore';
   };
-  eventsCausingActions: {
-    sendAddToCart: 'ADD_TO_CART';
-    sendUpdateCart: 'UPDATE_CART';
-    sendcRemoveFromCart: 'REMOVE_FROM_CART';
-  };
+  eventsCausingActions: {};
   eventsCausingDelays: {};
   eventsCausingGuards: {};
   eventsCausingServices: {
     cartMachine:
-      | 'ADD_TO_CART'
-      | 'REMOVE_FROM_CART'
+      | 'ADD_ITEM'
+      | 'REMOVE_ITEM'
       | 'UPDATE_CART'
+      | 'UPDATE_ITEM'
       | 'done.invoke.Store Machine.Initialise:invocation[0]';
-    initialiseCart: 'xstate.init';
+    initialiseStore: 'xstate.init';
   };
-  matchesStates: 'Initialise' | 'Ready' | 'Ready.Cart' | { Ready?: 'Cart' };
+  matchesStates:
+    | 'Initialise'
+    | 'Ready'
+    | 'Ready.Cart'
+    | 'Ready.Cart Draw'
+    | 'Ready.Cart Draw.closed'
+    | 'Ready.Cart Draw.open'
+    | 'Ready.Cart.Cart Machine'
+    | 'Ready.Cart.Cart Process'
+    | 'Ready.Cart.Cart Process.Blocked'
+    | 'Ready.Cart.Cart Process.Idle'
+    | 'Ready.Cart.Cart Process.Idle.Error'
+    | 'Ready.Cart.Cart Process.Idle.No Error'
+    | 'Ready.Cart.Cart Process.Idle.Success'
+    | 'Ready.Cart.Cart Process.Working'
+    | {
+        Ready?:
+          | 'Cart'
+          | 'Cart Draw'
+          | {
+              Cart?:
+                | 'Cart Machine'
+                | 'Cart Process'
+                | {
+                    'Cart Process'?:
+                      | 'Blocked'
+                      | 'Idle'
+                      | 'Working'
+                      | { Idle?: 'Error' | 'No Error' | 'Success' };
+                  };
+              'Cart Draw'?: 'closed' | 'open';
+            };
+      };
   tags: never;
 }
