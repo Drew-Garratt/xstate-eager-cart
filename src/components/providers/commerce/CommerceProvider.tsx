@@ -15,9 +15,9 @@ import services from '@/lib/adapter/commerceMachine/services';
  * Actions and guards are machine specific functions are imported
  * from the vercelCommerceMachine folder and assigned to the machine
  */
+import { optimisticCartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import actions from '@/lib/vercelCommerce/xstate/machines/optimisticCart/actions';
 import guards from '@/lib/vercelCommerce/xstate/machines/optimisticCart/guards';
-import { optimisticCartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import {
   storeMachine,
   type StoreService,

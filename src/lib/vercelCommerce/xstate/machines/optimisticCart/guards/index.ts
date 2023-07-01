@@ -1,26 +1,27 @@
-import { type StoreMachineOptions } from '..';
+import { type OptimisticCartMachineOptions } from '..';
 
-const ifThereAreErrors: StoreMachineOptions['guards']['ifThereAreErrors'] = (
+const ifThereAreErrors: OptimisticCartMachineOptions['guards']['ifThereAreErrors'] =
+  (context) => {
+    return !!context?.error;
+  };
+
+const thereAreMoreOptimisticActionsInQueue: OptimisticCartMachineOptions['guards']['thereAreMoreOptimisticActionsInQueue'] =
+  (context) => {
+    return context.optimisticQueue.length > 0;
+  };
+
+const thereAreMoreAsyncActionsInQueue: OptimisticCartMachineOptions['guards']['thereAreMoreAsyncActionsInQueue'] =
+  (context) => {
+    return context.asyncQueue.length > 0;
+  };
+
+const cartExists: OptimisticCartMachineOptions['guards']['cartExists'] = (
   context
 ) => {
-  return !!context.cartContext?.error;
+  return context.cart !== null;
 };
 
-const thereAreMoreOptimisticActionsInQueue: StoreMachineOptions['guards']['thereAreMoreOptimisticActionsInQueue'] =
-  (context) => {
-    return context.cartContext.optimisticQueue.length > 0;
-  };
-
-const thereAreMoreAsyncActionsInQueue: StoreMachineOptions['guards']['thereAreMoreAsyncActionsInQueue'] =
-  (context) => {
-    return context.cartContext.asyncQueue.length > 0;
-  };
-
-const cartExists: StoreMachineOptions['guards']['cartExists'] = (context) => {
-  return context.cartContext.cart !== null;
-};
-
-const guards: StoreMachineOptions['guards'] = {
+const guards: OptimisticCartMachineOptions['guards'] = {
   ifThereAreErrors,
   thereAreMoreOptimisticActionsInQueue,
   thereAreMoreAsyncActionsInQueue,

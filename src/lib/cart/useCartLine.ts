@@ -1,11 +1,9 @@
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
-import { type StoreState } from '@/lib/vercelCommerce/xstate';
-import type { LineItem } from '@/lib/vercelCommerce/types/cart';
+import { type StoreState } from '../vercelCommerce/xstate/machines/storeMachine';
 
-const selectCartStatus = (state: StoreState) =>
-  state.matches('Cart.Ready.Cart Async.Idle');
+const selectLineItems = (state: StoreState) => state.context.cart?.lineItems;
 
 export function useCartLine(lineId: string) {
   const cartService = useContext(StoreContext);
@@ -14,27 +12,15 @@ export function useCartLine(lineId: string) {
     throw new Error('useAddItem must be used within a CartProvider');
   }
 
-  const selectLineItems = (state: StoreState) =>
-    state.context.cartContext.cart?.lineItems;
+  const cartLines = useSelector(cartService, selectLineItems, (prev, next) => {
+    const prevLine = prev ? prev.get(lineId) : null;
+    const nextLine = next ? next.get(lineId) : null;
 
-  const selectOptamisticLineItems = (state: StoreState) =>
-    state.context.cartContext.optimisticCart?.lineItems;
+    const prevCompare = `${prevLine?.id}${prevLine?.quantity}${prevLine?.variantId}`;
+    const nextCompare = `${nextLine?.id}${nextLine?.quantity}${nextLine?.variantId}`;
 
-  const cartStatus = useSelector(cartService, selectCartStatus);
-
-  const cartLines = useSelector(
-    cartService,
-    cartStatus ? selectLineItems : selectOptamisticLineItems,
-    (prev, next) => {
-      const prevLine = prev ? prev.get(lineId) : null;
-      const nextLine = next ? next.get(lineId) : null;
-
-      const prevCompare = `${prevLine?.id}${prevLine?.quantity}${prevLine?.variantId}`;
-      const nextCompare = `${nextLine?.id}${nextLine?.quantity}${nextLine?.variantId}`;
-
-      return prevCompare === nextCompare;
-    }
-  );
+    return prevCompare === nextCompare;
+  });
 
   return cartLines?.get(lineId) ?? null;
 }
