@@ -1,16 +1,16 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import { saleorFetch } from '../../fetcher';
 import { CheckoutDeleteLineDocument } from '../../generated/graphql';
 import { saleorCheckoutToVercelCart } from '../../mappers';
 
-export const asyncRemoveFromCart: StoreMachineOptions['services']['asyncRemoveFromCart'] =
+export const asyncRemoveFromCart: OptimisticCartMachineOptions['services']['asyncRemoveFromCart'] =
   async (context, event) => {
     /**
      * If there is no cart in the context return
      **/
-    if (!context.cartContext.cart) throw new Error('No cart in context');
+    if (!context.cart) throw new Error('No cart in context');
 
-    const cartId = context.cartContext.cart.id;
+    const cartId = context.cart.id;
 
     const saleorCheckout = await saleorFetch({
       query: CheckoutDeleteLineDocument,

@@ -1,16 +1,13 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 
-export const checkOptimisticQueue: StoreMachineOptions['services']['checkOptimisticQueue'] =
+export const checkOptimisticQueue: OptimisticCartMachineOptions['services']['checkOptimisticQueue'] =
   (context) => (sendBack) => {
-    if (context.cartContext.optimisticQueue.length < 1) return;
+    if (context.optimisticQueue.length < 1) return;
 
     /**
      * Get the last event in the async queue
      */
-    const event =
-      context.cartContext.optimisticQueue[
-        context.cartContext.optimisticQueue.length - 1
-      ];
+    const event = context.optimisticQueue[context.optimisticQueue.length - 1];
 
     switch (event.type) {
       case 'ADD_ITEM':

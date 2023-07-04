@@ -1,14 +1,13 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/xstate';
-import defaultServices from '@/lib/vercelCommerce/xstate/services';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
+import { defaultServices } from '@/lib/vercelCommerce/xstate/machines/optimisticCart/services';
 import { asyncAddToCart } from './asyncAddToCart';
 import { asyncCreateCart } from './asyncCreateCart';
 import { asyncRemoveFromCart } from './asyncRemoveFromCart';
 import { asyncUpdateCart } from './asyncUpdateCart';
 import { checkAsyncQueue } from './checkAsyncQueue';
 import { checkOptimisticQueue } from './checkOptimisticQueue';
-import { initialiseCart } from './initialiseCart';
 
-export const services: StoreMachineOptions['services'] = {
+export const services: OptimisticCartMachineOptions['services'] = {
   ...defaultServices,
   asyncAddToCart,
   asyncCreateCart,
@@ -16,5 +15,4 @@ export const services: StoreMachineOptions['services'] = {
   asyncUpdateCart,
   checkAsyncQueue,
   checkOptimisticQueue,
-  initialiseCart,
 };
