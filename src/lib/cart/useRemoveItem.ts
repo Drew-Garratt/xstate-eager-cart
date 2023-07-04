@@ -9,8 +9,5 @@ export function useRemoveItem(): (data: { itemId: string }) => void {
   }
 
   return (data: { itemId: string }) =>
-    cartService.send({
-      type: 'SEND_TO_CART_QUEUE',
-      data: { type: 'REMOVE_ITEM', data },
-    });
+    cartService.send({ type: 'REMOVE_ITEM', data });
 }

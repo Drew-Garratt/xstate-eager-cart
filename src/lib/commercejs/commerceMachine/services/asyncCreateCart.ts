@@ -1,8 +1,8 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import { commercejsGetCart } from '../../operations/getCart';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 
-export const asyncCreateCart: StoreMachineOptions['services']['asyncCreateCart'] =
+export const asyncCreateCart: OptimisticCartMachineOptions['services']['asyncCreateCart'] =
   async () => {
     const cart = await commercejsGetCart();
 

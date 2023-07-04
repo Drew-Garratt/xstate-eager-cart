@@ -1,13 +1,13 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 
-export const checkAsyncQueue: StoreMachineOptions['services']['checkAsyncQueue'] =
+export const checkAsyncQueue: OptimisticCartMachineOptions['services']['checkAsyncQueue'] =
   (context) => (sendBack) => {
     /**
      * Cart Queue
      *
      * Refrence the cart queue from the context
      */
-    const cartQueue = context.cartContext.asyncQueue;
+    const cartQueue = context.asyncQueue;
 
     /**
      * If the queue is empty return

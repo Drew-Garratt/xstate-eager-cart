@@ -1,9 +1,9 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import { saleorFetch } from '../../fetcher';
 import { CreateCheckoutDocument } from '../../generated/graphql';
 import { saleorCheckoutToVercelCart } from '../../mappers';
 
-export const asyncCreateCart: StoreMachineOptions['services']['asyncCreateCart'] =
+export const asyncCreateCart: OptimisticCartMachineOptions['services']['asyncCreateCart'] =
   async () => {
     const saleorCheckout = await saleorFetch({
       query: CreateCheckoutDocument,

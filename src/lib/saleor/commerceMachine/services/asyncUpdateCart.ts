@@ -1,16 +1,16 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import { saleorFetch } from '../../fetcher';
 import { CheckoutUpdateLineDocument } from '../../generated/graphql';
 import { saleorCheckoutToVercelCart } from '../../mappers';
 
-export const asyncUpdateCart: StoreMachineOptions['services']['asyncUpdateCart'] =
+export const asyncUpdateCart: OptimisticCartMachineOptions['services']['asyncUpdateCart'] =
   async (context, event) => {
     /**
      * If there is no cart in the context return
      **/
-    if (!context.cartContext.cart) throw new Error('No cart in context');
+    if (!context.cart) throw new Error('No cart in context');
 
-    const cartId = context.cartContext.cart.id;
+    const cartId = context.cart.id;
     const saleorCheckout = await saleorFetch({
       query: CheckoutUpdateLineDocument,
       variables: {

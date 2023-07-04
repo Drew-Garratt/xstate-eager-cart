@@ -11,9 +11,5 @@ export function useAddItem() {
 
   const { send } = cartService;
 
-  return (item: CartItemBody) =>
-    send({
-      type: 'SEND_TO_CART_QUEUE',
-      data: { type: 'ADD_ITEM', data: { item } },
-    });
+  return (item: CartItemBody) => send({ type: 'ADD_ITEM', data: { item } });
 }

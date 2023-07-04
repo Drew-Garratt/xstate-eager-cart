@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 
 import { useAddItem } from '@/lib/cart/useAddItem';
-import { useCartLineStatus } from '@/lib/cart/useCartLineStatus';
 import { type Product, type ProductVariant } from '@/lib/vercelCommerce/types';
 import LoadingDots from 'components/loading-dots';
 
@@ -23,9 +22,7 @@ export function AddToCart({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const { isItemInOptimisticQueue } = useCartLineStatus({
-    itemId: selectedVariantId,
-  });
+  const disbled = false;
   const sendAddToCart = useAddItem();
 
   useEffect(() => {
@@ -41,7 +38,7 @@ export function AddToCart({
     }
   }, [searchParams, variants, setSelectedVariantId]);
 
-  const isMutating = isItemInOptimisticQueue || isPending;
+  const isMutating = disbled || isPending;
 
   async function handleAdd() {
     if (!availableForSale) return;

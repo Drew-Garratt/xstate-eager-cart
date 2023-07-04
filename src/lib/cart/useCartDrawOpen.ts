@@ -1,12 +1,12 @@
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
-import { type StoreState } from '@/lib/vercelCommerce/machine';
+import { type StoreState } from '../vercelCommerce/xstate/machines/storeMachine';
 
 const selectCartDrawOpen = (state: StoreState) =>
-  state.matches('Cart.Ready.Cart Draw.open');
+  state.matches('Ready.Cart Draw.open');
 const selectCartDrawClosed = (state: StoreState) =>
-  state.matches('Cart.Ready.Cart Draw.closed');
+  state.matches('Ready.Cart Draw.closed');
 
 export function useCartDrawOpen(): {
   isCartOpen: boolean;

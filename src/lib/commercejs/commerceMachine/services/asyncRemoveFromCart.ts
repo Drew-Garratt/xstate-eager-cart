@@ -1,14 +1,14 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import commercejsRemoveFromCart from '../../operations/deleteCartItem';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 import { findLineItem } from '../../utils/findLineItem';
 
-export const asyncRemoveFromCart: StoreMachineOptions['services']['asyncRemoveFromCart'] =
+export const asyncRemoveFromCart: OptimisticCartMachineOptions['services']['asyncRemoveFromCart'] =
   async (context, event) => {
     /**
      * If there is no cart in the context return
      **/
-    if (!context.cartContext.cart) throw new Error('No cart in context');
+    if (!context.cart) throw new Error('No cart in context');
 
     /**
      * Find the line item in the cart
@@ -17,7 +17,7 @@ export const asyncRemoveFromCart: StoreMachineOptions['services']['asyncRemoveFr
      */
     const cartLineItem = findLineItem({
       productId: event.data.itemId,
-      lineItems: context.cartContext.cart.lineItems,
+      lineItems: context.cart.lineItems,
     });
 
     if (!cartLineItem) throw new Error('No cart line found');
@@ -25,7 +25,7 @@ export const asyncRemoveFromCart: StoreMachineOptions['services']['asyncRemoveFr
     const { lineItem } = cartLineItem;
 
     const cart = await commercejsRemoveFromCart({
-      cartId: context.cartContext.cart.id,
+      cartId: context.cart.id,
       lineItemId: lineItem.id,
     });
 

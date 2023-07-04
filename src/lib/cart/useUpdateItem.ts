@@ -13,8 +13,5 @@ export function useUpdateItem(): (data: {
   }
 
   return (data: { itemId: string; item: CartItemBody }) =>
-    cartService.send({
-      type: 'SEND_TO_CART_QUEUE',
-      data: { type: 'UPDATE_ITEM', data },
-    });
+    cartService.send({ type: 'UPDATE_ITEM', data });
 }

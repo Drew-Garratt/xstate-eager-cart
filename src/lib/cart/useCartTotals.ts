@@ -1,15 +1,9 @@
 import { useSelector } from '@xstate/react';
 import { useContext } from 'react';
 import { StoreContext } from '@/components/providers/commerce/CommerceProvider';
-import { type StoreState } from '@/lib/vercelCommerce/machine';
+import { type StoreState } from '../vercelCommerce/xstate/machines/storeMachine';
 
-const selectCart = (state: StoreState) => state.context.cartContext.cart;
-
-const selectOptamisticCart = (state: StoreState) =>
-  state.context.cartContext.optimisticCart;
-
-const selectCartStatus = (state: StoreState) =>
-  state.matches('Cart.Ready.Cart Async.Idle');
+const selectCart = (state: StoreState) => state.context.cart;
 
 export function useCartTotals(): {
   currencyCode: string;
@@ -23,15 +17,9 @@ export function useCartTotals(): {
     throw new Error('useAddItem must be used within a CartProvider');
   }
 
-  const cartStatus = useSelector(cartService, selectCartStatus);
-
-  const cart = useSelector(
-    cartService,
-    cartStatus ? selectCart : selectOptamisticCart,
-    (prev, next) => {
-      return prev?.totalPrice === next?.totalPrice;
-    }
-  );
+  const cart = useSelector(cartService, selectCart, (prev, next) => {
+    return prev?.totalPrice === next?.totalPrice;
+  });
 
   return {
     currencyCode: cart?.currency.code ?? 'USD',

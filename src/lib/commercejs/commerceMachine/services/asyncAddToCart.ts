@@ -1,13 +1,13 @@
-import { type StoreMachineOptions } from '@/lib/vercelCommerce/machine';
+import { type OptimisticCartMachineOptions } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
 import { commercejsAddToCart } from '../../operations/postAddToCart';
 import { commercejsCleanCartResponse } from '../../utils/cleanCart';
 
-export const asyncAddToCart: StoreMachineOptions['services']['asyncAddToCart'] =
+export const asyncAddToCart: OptimisticCartMachineOptions['services']['asyncAddToCart'] =
   async (context, event) => {
     /**
      * If there is no cart in the context return
      **/
-    if (!context.cartContext.cart) throw new Error('No cart in context');
+    if (!context.cart) throw new Error('No cart in context');
 
     let payload: {
       cartId: string;
@@ -16,7 +16,7 @@ export const asyncAddToCart: StoreMachineOptions['services']['asyncAddToCart'] =
       options?: unknown;
       variantId?: string;
     } = {
-      cartId: context.cartContext.cart.id,
+      cartId: context.cart.id,
       productId: event.data.item.productId ?? event.data.item.variantId,
       quantity: event.data.item.quantity ?? 1,
     };
@@ -32,7 +32,7 @@ export const asyncAddToCart: StoreMachineOptions['services']['asyncAddToCart'] =
     if (variantIds.length === 3) {
       const [productId, variantId, optionId] = variantIds;
       payload = {
-        cartId: context.cartContext.cart.id,
+        cartId: context.cart.id,
         productId,
         options: { [variantId]: optionId },
         quantity: event.data.item.quantity ?? 1,

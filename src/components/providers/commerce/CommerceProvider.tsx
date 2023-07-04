@@ -1,7 +1,6 @@
 import { useInterpret } from '@xstate/react';
 import { createContext, type ReactNode } from 'react';
 import services from '@/lib/adapter/commerceMachine/services';
-import { storeMachine, type StoreService } from '@/lib/vercelCommerce/machine';
 
 /**
  * Service imports
@@ -16,8 +15,13 @@ import { storeMachine, type StoreService } from '@/lib/vercelCommerce/machine';
  * Actions and guards are machine specific functions are imported
  * from the vercelCommerceMachine folder and assigned to the machine
  */
-import actions from '@/lib/vercelCommerce/machine/actions';
-import guards from '@/lib/vercelCommerce/machine/guards';
+import { optimisticCartMachine } from '@/lib/vercelCommerce/xstate/machines/optimisticCart';
+import actions from '@/lib/vercelCommerce/xstate/machines/optimisticCart/actions';
+import guards from '@/lib/vercelCommerce/xstate/machines/optimisticCart/guards';
+import {
+  storeMachine,
+  type StoreService,
+} from '@/lib/vercelCommerce/xstate/machines/storeMachine';
 
 /**
  * Type for the cart context value
@@ -36,6 +40,15 @@ type StoreContextType = StoreService | undefined;
 export const StoreContext = createContext<StoreContextType>(undefined);
 
 /**
+ * Import and configure the cart machine
+ */
+const cartMachine = optimisticCartMachine.withConfig({
+  services,
+  actions,
+  guards,
+});
+
+/**
  * Cart Provider
  *
  * This component will provide the cart machine to the rest of the application
@@ -52,39 +65,23 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
    *
    * useSelector can be used to subscribe to the specific values in state without triggering a re-render for every state change.
    */
-  const storeService = useInterpret(
-    storeMachine,
-    {
-      // Enable devTools in development
-      devTools: process.env.NODE_ENV === 'development',
-      /**
-       * Services
-       *
-       * Services are actors that invoked by the machine when a transition to a given state occurs.
-       * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
-       * https://stately.ai/docs/xstate/actors/actions-vs-actors
-       */
-      services,
-      /**
-       * Actions
-       *
-       * Actions are functions that are executed when a transition occurs.
-       * Here we load actions from the actions folder and assign them to machine.
-       */
-      actions,
-      /**
-       * Guards
-       *
-       * Guards are functions that are executed when a transition occurs.
-       * They are used to determine if a transition should occur
-       */
-      guards,
+  const storeService = useInterpret(storeMachine, {
+    // Enable devTools in development
+    devTools: process.env.NODE_ENV === 'development',
+    /**
+     * Services
+     *
+     * Services are actors that invoked by the machine when a transition to a given state occurs.
+     * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
+     * https://stately.ai/docs/xstate/actors/actions-vs-actors
+     */
+    services: {
+      cartMachine,
+      initialiseStore: async () => {
+        return null;
+      },
     },
-    (state) => {
-      // subscribes to state changes
-      console.log(state);
-    }
-  );
+  });
 
   return (
     <StoreContext.Provider value={storeService}>
