@@ -65,44 +65,37 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
    *
    * useSelector can be used to subscribe to the specific values in state without triggering a re-render for every state change.
    */
-  const storeService = useInterpret(
-    storeMachine,
-    {
-      // Enable devTools in development
-      devTools: process.env.NODE_ENV === 'development',
-      /**
-       * Services
-       *
-       * Services are actors that invoked by the machine when a transition to a given state occurs.
-       * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
-       * https://stately.ai/docs/xstate/actors/actions-vs-actors
-       */
-      services: {
-        cartMachine,
-        initialiseStore: async () => {
-          return null;
-        },
+  const storeService = useInterpret(storeMachine, {
+    // Enable devTools in development
+    devTools: process.env.NODE_ENV === 'development',
+    /**
+     * Services
+     *
+     * Services are actors that invoked by the machine when a transition to a given state occurs.
+     * Actors can be used to make API calls, perform side effects, or anything else that is synchronous effect.
+     * https://stately.ai/docs/xstate/actors/actions-vs-actors
+     */
+    services: {
+      cartMachine,
+      initialiseStore: async () => {
+        return null;
       },
-      /**
-       * Actions
-       *
-       * Actions are functions that are executed when a transition occurs.
-       * Here we load actions from the actions folder and assign them to machine.
-       */
-      actions,
-      /**
-       * Guards
-       *
-       * Guards are functions that are executed when a transition occurs.
-       * They are used to determine if a transition should occur
-       */
-      guards,
     },
-    (state) => {
-      // subscribes to state changes
-      console.log(state);
-    }
-  );
+    /**
+     * Actions
+     *
+     * Actions are functions that are executed when a transition occurs.
+     * Here we load actions from the actions folder and assign them to machine.
+     */
+    actions,
+    /**
+     * Guards
+     *
+     * Guards are functions that are executed when a transition occurs.
+     * They are used to determine if a transition should occur
+     */
+    guards,
+  });
 
   return (
     <StoreContext.Provider value={storeService}>

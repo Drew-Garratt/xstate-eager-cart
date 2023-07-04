@@ -44,6 +44,8 @@ export const optimisticAddToCart: OptimisticCartMachineOptions['actions']['optim
           path: '',
         });
 
+        console.log(optimisticCart);
+
         optimisticCart.lineItemsSubtotalPrice = variant.price.amount;
         optimisticCart.subtotalPrice = variant.price.amount;
         optimisticCart.totalPrice = variant.price.amount;

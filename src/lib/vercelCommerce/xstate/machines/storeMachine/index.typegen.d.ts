@@ -26,7 +26,9 @@ export interface Typegen0 {
     guards: never;
     services: 'cartMachine' | 'initialiseStore';
   };
-  eventsCausingActions: {};
+  eventsCausingActions: {
+    assaignCart: 'CART_SUCCESS' | 'UPDATE_CART';
+  };
   eventsCausingDelays: {};
   eventsCausingGuards: {};
   eventsCausingServices: {

@@ -9,6 +9,7 @@ import {
   type StateFrom,
   MachineOptionsFrom,
   forwardTo,
+  assign,
 } from 'xstate';
 import { type Cart, type CartItemBody } from '../../../types/cart';
 
@@ -56,160 +57,177 @@ export type StoreEvents = EventFrom<StoreMachineType>;
 
 export type StoreMachineOptions = MachineOptionsFrom<StoreMachineType, true>;
 
-export const storeMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgEkKzUyCAbM2MAYgnSusoBu6ANY00WXIVKUa9RszYcEg9EQJNeAbQAMAXR27EoAA7pY83kZAAPRAFoAnA+raATAEYAHABYHrgGyBAOwO-gA0IACeiO4O2tRB3gCsAMyuQUkOmUE+QQC+eRHi2PjE5HwASmAEEJHUAMIEmKgNTail0lScFQCieADyAGo9APq0ACp9Blam5hoUVrYI-qnUDt5BHt4Brp7a2xHRCHb+QdTJ26kpbtoOId4FRRglUuU0VTV1jc2tzR1vnAAqgAFAAiAEFJmNJnhpkgQLMLAt4UtvJ5-NQUu4Lp4ktoUkEgqdDvZTuckpcUtdXLd7o8QMVJGUZNQPrVfi1vu1XjJOODQaDoVM9DMzEjFog0klqO5-J5XNssoE8e4kiTjmSLq4rjc7ut6Yz-iy2V82hyjV0QRCofVwRVxnCTGL5hKEO53Np4kF9nsgmlPJt3Oq7N4Uud3K4qSl5d5Tjl8oUGc8mZ13tV2VzzcDMKo4LA6BAWFxbfaRgAhAAy-XqAGkeqDHQjnWRLCjEBlPNQkv4PSqsn73EF1elXNR-Ck-BskrsHLEkgbkxa058OVmc0Q8wWi9RkABXIgb2CwTgl8YjeoVnp2kbIcaQwHIRuIl1thAEzu+bxuTxxJzY9WhmcWL4v4s4Bm4QSyguEhLqy6amj8XI4NmuZHluNA9JgOaYCedpnheV4VDed7jA+T7Nq2oBLO+5zrN+v6zt4w7yl2aI+N4sb+No7jRv40EvMylTwauSEoYe+ZliwqiiBAuGlj0FQVP0FTkXMLbIlRMS0jKbgqrpWLhFEiAeO4Y4cdokH7JBDieLZ-Epm8cErpmonrpuknSZAcn4f0ABy4y0L5gI9Kp4qvuszjeIOBKhHEGQbOqKSZJiWJ+qc6IWRO9mwSaIltMhbloQA6lgwiUFA3k3oC9T1D0yCPiK8LPuproeui1C7D2yRJIk7GeOqSTumOoTRhSEYOElCZPDBPJCc5Zquah+YlZgZUUBVp4jApSkqY1TpqZRNhaXcOnatx+mysOQ3+OZlkbLEtmeNls3Lhm+WgpgBAAO7UEQUkcLJ-TAj0vnnnhIyghU4JFaFL6aW+tljqcPYhKkfiBOqWSdp42JEpGqSygSz2Ca9CHtB933UOgxhgBQJ5VsgoybZD0Owy1r7Rt4CTXLZqN+hZ47qjjYZJedXEBp1DjE6mTlvYh+ViZutCFsW4NFcpNaBQA4mzh1LBkZynPsHE-qN8oAXiXZpYN2jTlStzS45uUuQrhUSVJRAyZVyDVbV9W6xpR1uto7Wde6co2bshIDddI2eCkN2hBxCcFImFDoBAcBWIaL2igdgdLHYsrxAGPhyoN45+P1RnHPb5yEpBsoeiHROJjnJN0AwTCsOwYB52F8NFxG1Cl7GuKE34ITqokXb4lFg42WkXWO8a8H93DQdeGGOTC-HmTJLiQ413YCqjnchKqrGs45KqK9zXLqDr+z8ORlzn70bcjHBqq0obBfE27BHIEO+pM8p-Fzk1CiBdEA+GlFiJI8pqS2X8OkYMZJz6QSSINa42x9ggNlmTNcS0n562Mixd+M5P7-hrtsFwVwqQ-hQbGdw+DnYLVdktdCJDoFvmuLRL8lC-xMRruNLs9CL641OCkVhwkXZ-EVmhZW249wHjzNw10oYvSyhuuOWIScMgx1MqBccuIoquAmj1GR815byLduhagmFsLqNfMnMcsQLKuBMgEBOwijgeDOLbKkg4caxACHgtui4XoELAe0BR+YlE0F8ugHAjisDOPhqGIxvFrjYhNnsNUNckrOCCWlHIXE-RSwiTNDubCbGxLsR5T2kB0lBxsr-JwHFxygVDCg4cmwxwTgVBkGcc4rEPyIeJagK01pQBaUsGyXMJw5DiPKW2AYClHGSPEHqCdpw427J41wYyyY4Apl9OZxksQJFsjxPe6wEE9WntqEeeJP5ElnIOB4VSBIy1qeTT6P0-pmGaZA-Orp0jOB3rcopB9Hk12QZiO5Y09jxz4t8hyq9rH-MptTWmFyEAILOHcGkPU-SRlCULdq0YinIpbmigoQA */
-  id: 'Store Machine',
+export const storeMachine = createMachine(
+  {
+    /** @xstate-layout N4IgpgJg5mDOIC5QGUAuB7ATmABAWQEMBjACwEsA7MAOgEkKzUyCAbM2MAYgnSusoBu6ANY00WXIVKUa9RszYcEg9EQJNeAbQAMAXR27EoAA7pY83kZAAPRAFoAnA+raATAEYAHABYHrgGyBAOwO-gA0IACeiO4O2tRB3gCsAMyuQUkOmUE+QQC+eRHi2PjE5HwASmAEEJHUAMIEmKgNTail0lScFQCieADyAGo9APq0ACp9Blam5hoUVrYI-qnUDt5BHt4Brp7a2xHRCHb+QdTJ26kpbtoOId4FRRglUuU0VTV1jc2tzR1vnAAqgAFAAiAEFJmNJnhpkgQLMLAt4UtvJ5-NQUu4Lp4ktoUkEgqdDvZTuckpcUtdXLd7o8QMVJGUZNQPrVfi1vu1XjJOODQaDoVM9DMzEjFog0klqO5-J5XNssoE8e4kiTjmSLq4rjc7ut6Yz-iy2V82hyjV0QRCofVwRVxnCTGL5hKEO53Np4kF9nsgmlPJt3Oq7N4Uud3K4qSl5d5Tjl8oUGc8mZ13tV2VzzcDMKo4LA6BAWFxbfaRgAhAAy-XqAGkeqDHQjnWRLCjEBlPNQkv4PSqsn73EF1elXNR-Ck-BskrsHLEkgbkxa058OVmc0Q8wWi5wS+MRgB1foVGu0AByAHFG4iXW2EBkzqd9t40Q5o0l5erkvEkn6Vr3I9cDgLhIS6sumpo-FyODZrmsD5rQhZiAArkQG5wTudp7vUFY9HaIzIOMkKAsgV7Nq2oBLASna+N4bieHETjYp+BKYh6KT+LOAZuEEsrAS8zKVOBq5QTBaHwYh1A9JgOaYBhpbYbhFT4YR4zEaRcwtsiFGSjk5zrHRDGzt4w7yl2aI+M+gTaO40b+HxKZvGBK6ZiJ66bmWLCqKIEByXuPQVBUR7qeKt4encMpuCqkVYuEUSIB47hjs+2g8fsPEOJ4mX2aBJrCW00FuXB1AeV5kC+SM9T9Ke4xnoCPTBTe2kIOszjeIOBKhHEGQbOqKSZJiWK-jk-gpRO2U8oJzlmq5sH5iVRDeeVyCAvU9Q9MgJEivC16aa6HrotQuw9rK9HygGQ5xQgSTumOoTRuxvj+M+7HjQJy4ZtN+WiZu+5YMIlBQEtK1rRtDW7aF2gHUd2JJD+aLPp46rXYlHHjribWuK+P6vamTkfZBX2Ffmv2YP9FCA7uIz+YFFRg+RNgxLSEXatZ0WysON1PbRqUbLEmWeDjjm5VBoKYAQADu1BEJ5HA+f0wI9KeFWYSMoIVOC+501pDMINGnbjrGmRZPRmyI5dIRhj4HjxpsNIvYmhoTe9EHtKLEvUOgxhgBQO5VsgoyU2rGta660beAk6yeLKo30V46p3IlmXYiE3bXZGdkO4uTt4y7OBu5L0tmGV-KChMwqGNtZHa6iHhjqqNmbG1tyDrFRwegq5wTrKqQbHcmwFImFDoBAcBWI7b2ihp9NLHY0fUAGPhytd45+GbRx2FS8QbISriRt2KW74LLJyEwrDsGAk8hU1s8RvPOSxrisoTukDjqokXb4m1g4ZWkPYPJnIFs4mkvo1HWXgww5CjvdTIyRcQXXXgqUcfdG4ThyNqUMR9Jr41QCA8GTVIzhxogZW4RlgyqmlNvTYT0Jw-nRPOAB-FcbC0+n8J2uDp6IB8NKLE75Ix0XROkYMZJkHkJsvsGk-8niALejnPKfxvpwXYdXeKpkiEzhIUxS62wXBXC8LHZIBIExSMYULISLlCazS3BfSuU9lG62uHpWi6jGLGUuhGZwsMqQ0i5lkTBzs5HtAUeJIs1BkAoTEko10oYvSyieuOWIoQpxI05nddG7i+pGKTNIphZiWGBKJlYyS0ksCRNvM9OuXVd7ugCA9DmZxtC6JyO6PwI1JFZJMcaXJBN5EFIQiE086AcBSRkqUpqoYUa2WuNiBGew1SXT6s4Kk7VTjolGkBBhDlOlTW6fkyx81vKjJ1hlChThLLsXWOxVww5NhjmflOGcc4-GyPMT0yxJMyZQEOUsDK4dUH0UhjSd8GRPx4i7L+acUduy71cE85hfx85fPiliBISdoHrHfD+N+2gMQpG2ABdE2xbgZ2MZsrBud85SxlpARFCAX4oqgZ4BZsDMWXUyjixlmQKReEhvbElOUumuzFpLT23saVArWJsBphI0hYj8OqNlmIOVZDansRlGcChAA */
+    id: 'Store Machine',
 
-  tsTypes: {} as import('./index.typegen.d.ts').Typegen0,
+    tsTypes: {} as import('./index.typegen.d.ts').Typegen0,
 
-  schema: {
-    events: {} as
-      | CartEvents
-      | {
-          type: 'UPDATE_CART';
-          data: { cart: Cart | null };
-        }
-      | { type: 'CART_SUCCESS' }
-      | { type: 'CART_WORKING' }
-      | { type: 'CART_ERROR'; data: unknown[] }
-      | { type: 'CART_BLOCKED' }
-      | { type: 'CART_CONTINUE' }
-      | { type: 'CART_CLEAR_STATUS' }
-      | { type: 'OPEN_CART_DRAW' }
-      | { type: 'CLOSE_CART_DRAW' },
-    services: {} as {
-      cartMachine: { data: unknown };
-    },
-  },
-
-  context: {
-    cartStatus: 'idle',
-    cart: null,
-    error: null,
-  } as {
-    cart: Cart | null;
-    cartStatus: 'idle' | 'working' | 'error';
-    error: unknown[] | null;
-  },
-
-  states: {
-    Initialise: {
-      invoke: {
-        src: 'initialiseStore',
-        onDone: [
-          {
-            target: 'Ready',
-          },
-        ],
+    schema: {
+      events: {} as
+        | CartEvents
+        | { type: 'UPDATE_CART'; data: { cart: Cart | null } }
+        | { type: 'CART_SUCCESS'; data: { cart: Cart | null } }
+        | { type: 'CART_WORKING' }
+        | { type: 'CART_ERROR'; data: unknown[] }
+        | { type: 'CART_BLOCKED' }
+        | { type: 'CART_CONTINUE' }
+        | { type: 'CART_CLEAR_STATUS' }
+        | { type: 'OPEN_CART_DRAW' }
+        | { type: 'CLOSE_CART_DRAW' },
+      services: {} as {
+        cartMachine: { data: unknown };
       },
     },
-    Ready: {
-      states: {
-        Cart: {
-          states: {
-            'Cart Machine': {
-              on: {
-                REMOVE_ITEM: {
-                  target: 'Cart Machine',
-                  actions: forwardTo('cart'),
-                  internal: true,
-                },
 
-                UPDATE_ITEM: {
-                  target: 'Cart Machine',
-                  actions: forwardTo('cart'),
-                  internal: true,
-                },
+    context: {
+      cartStatus: 'idle',
+      cart: null,
+      error: null,
+    } as {
+      cart: Cart | null;
+      cartStatus: 'idle' | 'working' | 'error';
+      error: unknown[] | null;
+    },
 
-                ADD_ITEM: {
-                  target: 'Cart Machine',
-                  actions: [forwardTo('cart')],
-                  internal: true,
-                },
-
-                UPDATE_CART: {
-                  target: 'Cart Machine',
-                  internal: true,
-                },
-              },
-
-              invoke: {
-                src: 'cartMachine',
-                id: 'cart',
-              },
+    states: {
+      Initialise: {
+        invoke: {
+          src: 'initialiseStore',
+          onDone: [
+            {
+              target: 'Ready',
             },
-            'Cart Process': {
-              states: {
-                Idle: {
-                  states: {
-                    Success: {
-                      on: {
-                        CART_CLEAR_STATUS: 'No Error',
-                      },
-                    },
-
-                    Error: {
-                      on: {
-                        CART_CLEAR_STATUS: 'No Error',
-                      },
-                    },
-
-                    'No Error': {},
-                  },
-
-                  initial: 'No Error',
-
-                  on: {
-                    CART_BLOCKED: 'Blocked',
-                    CART_WORKING: 'Working',
-                  },
-                },
-
-                Blocked: {
-                  on: {
-                    CART_ERROR: 'Idle.Error',
-                    CART_CONTINUE: 'Working',
-                    CART_SUCCESS: 'Idle.Success',
-                  },
-                },
-
-                Working: {
-                  on: {
-                    CART_SUCCESS: 'Idle.Success',
-                    CART_ERROR: 'Idle.Error',
-                  },
-                },
-              },
-
-              initial: 'Idle',
-            },
-          },
-
-          type: 'parallel',
-        },
-
-        'Cart Draw': {
-          states: {
-            closed: {
-              on: {
-                OPEN_CART_DRAW: 'open',
-              },
-            },
-            open: {
-              on: {
-                CLOSE_CART_DRAW: 'closed',
-              },
-            },
-          },
-
-          initial: 'closed',
+          ],
         },
       },
-      type: 'parallel',
-    },
-  },
+      Ready: {
+        states: {
+          Cart: {
+            states: {
+              'Cart Machine': {
+                on: {
+                  REMOVE_ITEM: {
+                    target: 'Cart Machine',
+                    actions: forwardTo('cart'),
+                    internal: true,
+                  },
 
-  initial: 'Initialise',
-  predictableActionArguments: true,
-  preserveActionOrder: true,
-});
+                  UPDATE_ITEM: {
+                    target: 'Cart Machine',
+                    actions: forwardTo('cart'),
+                    internal: true,
+                  },
+
+                  ADD_ITEM: {
+                    target: 'Cart Machine',
+                    actions: [forwardTo('cart')],
+                    internal: true,
+                  },
+
+                  UPDATE_CART: {
+                    target: 'Cart Machine',
+                    actions: 'assaignCart',
+                    internal: true,
+                  },
+                },
+
+                invoke: {
+                  src: 'cartMachine',
+                  id: 'cart',
+                },
+              },
+              'Cart Process': {
+                states: {
+                  Idle: {
+                    states: {
+                      Success: {
+                        on: {
+                          CART_CLEAR_STATUS: 'No Error',
+                        },
+                      },
+
+                      Error: {
+                        on: {
+                          CART_CLEAR_STATUS: 'No Error',
+                        },
+                      },
+
+                      'No Error': {},
+                    },
+
+                    initial: 'No Error',
+
+                    on: {
+                      CART_BLOCKED: 'Blocked',
+                      CART_WORKING: 'Working',
+                    },
+                  },
+
+                  Blocked: {
+                    on: {
+                      CART_ERROR: 'Idle.Error',
+                      CART_CONTINUE: 'Working',
+                      CART_SUCCESS: {
+                        target: 'Idle.Success',
+                        actions: 'assaignCart',
+                      },
+                    },
+                  },
+
+                  Working: {
+                    on: {
+                      CART_SUCCESS: {
+                        target: 'Idle.Success',
+                        actions: 'assaignCart',
+                      },
+                      CART_ERROR: 'Idle.Error',
+                    },
+                  },
+                },
+
+                initial: 'Idle',
+              },
+            },
+
+            type: 'parallel',
+          },
+
+          'Cart Draw': {
+            states: {
+              closed: {
+                on: {
+                  OPEN_CART_DRAW: 'open',
+                  ADD_ITEM: 'open',
+                },
+              },
+
+              open: {
+                on: {
+                  CLOSE_CART_DRAW: 'closed',
+                },
+              },
+            },
+
+            initial: 'closed',
+          },
+        },
+        type: 'parallel',
+      },
+    },
+
+    initial: 'Initialise',
+    predictableActionArguments: true,
+    preserveActionOrder: true,
+  },
+  {
+    actions: {
+      assaignCart: assign({
+        cart: (context, event) => {
+          return event.data.cart ?? context.cart;
+        },
+      }),
+    },
+  }
+);

@@ -1,9 +1,10 @@
-import { assign } from 'xstate';
+import { assign, raise } from 'xstate';
 import { sendParent } from 'xstate/lib/actions';
 import { findLineItem } from '@/lib/commercejs/utils/findLineItem';
 import { type Cart } from '@/lib/vercelCommerce/types/cart';
 import type { OptimisticCartMachineOptions } from '..';
 import { optimisticAddToCart } from './optimisticAddToCart';
+
 const addSuccessMessage: OptimisticCartMachineOptions['actions']['addSuccessMessage'] =
   () => {
     return null;
@@ -183,9 +184,9 @@ const assignOptimisticCart: OptimisticCartMachineOptions['actions']['assignOptim
       /**
        * If there is no cart in the context return early
        */
-      if (!context.cart) return context.optimisticCart;
+      if (!context.optimisticCart) return context.optimisticCart;
 
-      return context.cart;
+      return context.optimisticCart;
     },
   });
 
@@ -197,17 +198,28 @@ const clearOptimisticQueue: OptimisticCartMachineOptions['actions']['clearOptimi
 const sendCartUpdateToParent: OptimisticCartMachineOptions['actions']['sendCartUpdateToParent'] =
   sendParent((context) => ({
     type: 'UPDATE_CART',
-    data: { cart: context.cart },
+    data: { cart: context.optimisticCart },
   }));
 
 const sendCartSuccessToParent: OptimisticCartMachineOptions['actions']['sendCartSuccessToParent'] =
-  sendParent({ type: 'CART_SUCCESS' });
+  sendParent((context) => {
+    return { type: 'CART_SUCCESS', data: { cart: context.cart } };
+  });
 
 const sendCartWorkingToParent: OptimisticCartMachineOptions['actions']['sendCartWorkingToParent'] =
   sendParent({ type: 'CART_WORKING' });
 
 const sendCartErrorToParent: OptimisticCartMachineOptions['actions']['sendCartErrorToParent'] =
   sendParent({ type: 'CART_ERROR' });
+
+// @ts-expect-error XState raise types are incorrect bug is known
+const sendCartItemEventToParent: OptimisticCartMachineOptions['actions']['sendCartItemEventToParent'] =
+  raise((_, event) => {
+    return {
+      type: 'SEND_TO_CART_QUEUE',
+      data: event,
+    };
+  });
 
 const actions: OptimisticCartMachineOptions['actions'] = {
   removeFromCartContext,
@@ -229,6 +241,7 @@ const actions: OptimisticCartMachineOptions['actions'] = {
   sendCartWorkingToParent,
   sendCartUpdateToParent,
   sendCartErrorToParent,
+  sendCartItemEventToParent,
 };
 
 export default actions;

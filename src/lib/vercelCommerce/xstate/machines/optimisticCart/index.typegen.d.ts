@@ -49,7 +49,6 @@ export interface Typegen0 {
     asyncUpdateCart: 'done.invoke.Optimistic Cart.Async.Execute async action.Update Cart:invocation[0]';
     checkAsyncQueue: 'done.invoke.Optimistic Cart.Async.Execute async action.Check Queue:invocation[0]';
     checkOptimisticQueue: 'done.invoke.Optimistic Cart.Optimistic.Execute Optimistic Action.Check Action:invocation[0]';
-    sortParentMessages: 'done.invoke.Optimistic Cart.Sort Messages from Parent.Sort Messages:invocation[0]';
   };
   missingImplementations: {
     actions:
@@ -68,6 +67,7 @@ export interface Typegen0 {
       | 'removeOldestFromOptQueue'
       | 'removeOldestItemFromAsyncQueue'
       | 'sendCartErrorToParent'
+      | 'sendCartItemEventToParent'
       | 'sendCartSuccessToParent'
       | 'sendCartUpdateToParent'
       | 'sendCartWorkingToParent'
@@ -84,8 +84,7 @@ export interface Typegen0 {
       | 'asyncRemoveFromCart'
       | 'asyncUpdateCart'
       | 'checkAsyncQueue'
-      | 'checkOptimisticQueue'
-      | 'sortParentMessages';
+      | 'checkOptimisticQueue';
   };
   eventsCausingActions: {
     addActionToAsyncQueue: 'SEND_TO_CART_QUEUE';
@@ -119,6 +118,7 @@ export interface Typegen0 {
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Remove from Cart:invocation[0]'
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Update Cart:invocation[0]';
     sendCartErrorToParent: '';
+    sendCartItemEventToParent: 'ADD_ITEM' | 'REMOVE_ITEM' | 'UPDATE_ITEM';
     sendCartSuccessToParent: '';
     sendCartUpdateToParent: '';
     sendCartWorkingToParent: '';
@@ -140,12 +140,6 @@ export interface Typegen0 {
       | ''
       | 'done.invoke.Optimistic Cart.Async.Execute async action.Create Cart:invocation[0]';
     checkOptimisticQueue: '' | 'SEND_TO_CART_QUEUE';
-    sortParentMessages:
-      | 'ADD_ITEM'
-      | 'REMOVE_ITEM'
-      | 'SEND_TO_CART_QUEUE'
-      | 'UPDATE_ITEM'
-      | 'xstate.init';
   };
   matchesStates:
     | 'Async'
@@ -163,7 +157,6 @@ export interface Typegen0 {
     | 'Async.Idle'
     | 'Async.Send Cart Error to Parent'
     | 'Async.Send Cart Success to Parent'
-    | 'Async.Send Cart Update To Parent'
     | 'Async.Send Cart Working to Parent'
     | 'Optimistic'
     | 'Optimistic.Check Optimistic Queue'
@@ -173,7 +166,6 @@ export interface Typegen0 {
     | 'Optimistic.Idle'
     | 'Optimistic.Send Cart Update To Parent'
     | 'Sort Messages from Parent'
-    | 'Sort Messages from Parent.Sort Messages'
     | {
         Async?:
           | 'Awaiting retry'
@@ -182,7 +174,6 @@ export interface Typegen0 {
           | 'Idle'
           | 'Send Cart Error to Parent'
           | 'Send Cart Success to Parent'
-          | 'Send Cart Update To Parent'
           | 'Send Cart Working to Parent'
           | {
               'Execute async action'?:
@@ -201,7 +192,6 @@ export interface Typegen0 {
           | 'Idle'
           | 'Send Cart Update To Parent'
           | { 'Execute Optimistic Action'?: 'Action done' | 'Check Action' };
-        'Sort Messages from Parent'?: 'Sort Messages';
       };
   tags: never;
 }

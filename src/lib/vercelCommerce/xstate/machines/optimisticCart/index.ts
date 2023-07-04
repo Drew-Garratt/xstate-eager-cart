@@ -2,7 +2,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { createMachine, type MachineOptionsFrom } from 'xstate';
+import { createMachine, type MachineOptionsFrom, raise } from 'xstate';
 import { Cart } from '../../../types/cart';
 import {
   AddItemCartInput,
@@ -19,7 +19,7 @@ export type OptimisticCartMachineOptions = MachineOptionsFrom<
 >;
 
 export const optimisticCartMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QHkAOAXAlgW07LAxgAQDCAhgE7oB0AygPZVECycsZMsRAZhfdkQAKlMADsaDJq1jtOAYgCqggCIBBACoBRAPoBJLcwDaABgC6iUKnqxMWeqIsgAHogBMr49QCMXgGwAWAHZAr1d-LwBmLwAOVwAaEABPRAiATk9XX2jUgFZjQNjo2JyAXxKEtCxcfExicio6RnQWNg44Hj4BYQoxCSaWmTbYOQAlTWZkADUdfXGTcyQQKxs7B0WXBAjor2pjCP8c1y9g-1jIhOTN9OpM7LyC1yLXUvKQSpw8QlJKPqlWzg6-CEInEjT+g3kqmUyj0BnmjmWtkw9kcG0CEWowQigT2riiWS8-niSRS11uuXyhWKZQqGA+NTqPzBzWksnavCB3V6zIGbOGtE0ADkYepkNoSKoRuptABFBSaeXwxaI1aoxDRfbUXypKKBQ4BCK+UIXUkZLKpba5NLGIn+GlvOnVL71GiqWCJUQEaiaJxgAgAV3QYCIZHdnpDBFWcgg9jA1HwZCD1HeTtq3wabo9Xp9fsDwdDWYjqyVlmsSJR60Qx3y1FOrgtvmMMUJIRNCFinn8xht2WixkergK9pTnzTLuomc93t9AaDIbDxDIkeRomjsfj6ETcZHDPTroX09zc4L4aXxa8C1LKxXaoQx0y1CiPi8uUy-mxvjbpxymOxxhyBLons2LDo6o6MhmB45rO+YLkWK5yAKwraKK4qStKcoKpoJZLGWqqVpsOReD+eLuKk-hEhaOQ5NEbaNhiOQRHsVHuKELy0lU4F7hOUEznm86FmeK7UCQAAWfoANZEDK-pgLJciqLQACagokNoUIimKEpSjhKo3gRzwAbsHiRPWhJhP4n4kneERMbs3b-v4FqEtRoGcbu46TtmfHHnBQn2CJ4kEFJMlyWACnKap2hjBM0zaAAYiMyDMGhOlmAieH6aAGz7M8uxYtRhqPKkVmXJEdkOY5zkHOxDruc6TJeYeMECaey4BWJknSbJ8mKSpalKGoWipeoumZRW2VuKk003I22wFDE6K+Dkbamak1DTdN+yRMYjY5IEbn0g1kFZs1-Enou7WiIFXWhb1kVqZh8p6LQ2jjII6hKWN14Tc4bh+NEj7BHkETuNsGqrbZniVTkTnbDVh2phB+6ndB51+Vd1AjGA2D0AAbsGHICC6a6iHGmCiHj9ASduYEeY1vFHrBgmY9juME4CxM-AgFNUwQiYrvM33lmsk2bBROyPHserbIOgS+KVVb7T+qTPHiu1nNEsOI1xnmMy1F3wQFbP44TnR7nIYAUHwFDUKgAA2ibcIw2DJnTx0o1OaO+SzqxYzjpuc3uPOU-Q-PFmYwv4WLhozQUhrURqzxWqtlkYuENFHIEmSNpkOv0ydXs+czbV+6oEAQEQ6D0BbMZk9QvPU7T9VjgzqPF61l1lxXVc1y6Id8wL9hC+lyrjaLf0IM8ASPqDOK+ExgThORq3KxtzxeMYFpRLZviuPnHs8e3TOd0b13l5X1cW1bNt2476DOxQrs7ofTXeyXXfCRfvfB434eC5HUeV4Ra3kHEUR8qRyrywAjkciERU4L1rMRM42cFb9n3q8F+rdC7eRPobfy10FCoAgFuWu65G40zdi3ZGR8i54Ixn7IhJC5z9z-kPUQI9Ly4R+hPHK3Yfw+D3hqPwAQV7WWInqdehwmJZCOFrA+2DPa4INgw4STDSEkxvowO+TsXZUKOoo2hyj0a+zUcQjR3M2ER1MFHLKk9QaPExERaasNDSBB1CtcRackH7W7NEPUep9gKJoW-Du+DMadWCjwRgFtbG-Q2IOJyTjQhZF1NEBWis7zGD7EDYi-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-H7Am49L-jeDfjpDmpFIWmKkOZLZOkqz64FCTrG6nCSZRAbR0bEovhbBcn2EF4ZYMhOYUmamoF4k3AZxdg0T0mJmxB4qRA0SuJ-hHDfYkkOEjmEBqFy6Um14WgSxtlG7pKeJlS7SUYHDnG4gUTawNl-alK7lA405U5dQvkTx6q3jhA+FbR7QxAORnlVjEQYjhqZB7BEhumh6Pmy7PmYzvnlGxiUlpAYigELxEikEVonpeLyxajNLgXbCEgRBQVIybGO7CETm3iSLTrojY52q2aJmHq1iZyi4ahLxorEXgR0DBlIZqkfqOkUW+ZVY7Bdj3bBZ0VLzYm1oeC7RCphD3YYJlBAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QHkAOAXAlgW07LAxgAQDCAhgE7oB0AygPZVECycsZMsRAZhfdkQAKlMADt0AYgCCAERkB9AJIAVAKLMA2gAYAuolCp6sTFnqj9IAB6IALAA4ArNS0B2G-fd2AjADZvNhwAaEABPRAAmAGYbZxtwmy1ErR9Iu3CtcIBfTOC0LFx8TGJyKjpGdBY2DjgePgFhCjFJAFVBGSk1JTVNXQtDY1NzJCtEH3Cfah8XAE5ph0io328g0Ijo2Ki7La1plxdw8ezcjBw8QlJKGgYmVlh2Tlr+IRFxCQAldWQANVUu9W09MN+iZMGYLNYEDNwtR7K5ovYll4VmEEFEYlo4qltrt9lkciA8qdCsVLtQpLAQqICNRVJYwAQAK7oMBEMgUqmsgiDCQQMxgaj4MjM6iEgrnEo0cmU6m0+lMlls6WcwYAvpGEFg4YQrwuVwwtLTOw+LRefwuLzBFFpLQwxL2Q0ZNIuOxHAknMVFC6lKVUml0xnM1ns4hkLmg0Q8vkC9BC-mis6eiVk4N+uWBxUc0MqryAgzqwbgxA68bUSJeLxaSLTcIOHx+aY2S2jOKlrzhLyGtyRaKV13x4leyUp2UBhXB5XhiS0VQAOQUymQ8hIUjeynkAEVmqot6qgfnw4WEJEHEjqFEDg24oaHA47E2EMbItR5pXrwc2w4++6EyTvcP-fKQZKlm4bUCQAAW9IANZEOuDJgPB0i0AAmjOJDyLI86Lsuq67nmAwHlqEQ3hMGQmgs0xeHE7g+PeXjdjaSRaA4NiGlRN5fvkP6Dsm0qpqOQGZmGZhgZBBAwXBCFgEhqHoR8zDfL8ABibzIMwS4rsoeEgMCBZEUecROK4LjHvMYx2NMtGrAg9GRIxSQsWxASfvi-biqSPoygB6bjiBIkQdBsHwYhUgoWh8itO0nQ4VpvR7gRmqgBC4SzNMZ7Gt4zqmiZPjIkWFHUKl0zRPRyTMS4nFEu5f58SOgEZiGwmiKJgWSSFYXoZu26-IotDyOogjKMh2m6YRSUREspZ7A4lYHN4diRHRDHOA5rH+BxrnfgOSaefx9W+U11BvGA2D0AAbiyvBPBKkaiPymCiGd9BQXGW3VUOtXeWOwGHcdp0XY8AgSggD1PQQQrhgCI37olIwGTYXhnnYlYuLebZ7HWdEOKjhU1lEyRpKaLGVR6v4fb6dU+T9gxHSd52XXUg4SGAFB8BQ1CoAANkK3CMNgIpvYmHn-mm31CTTf304Dg4g499DgyqujQwlQzjUePizNQzqRLlt4LA4cyLdZVEpDCSKE-sdYZD4JPcTtIsCQ1E4iVIEAQEQ6D0EzvJ3dQoPPa9XHbcLn2i4JjU0677uezL-sK5DStxfhGqq3DNY+DE3bhLqKSuAjDZYzj1YnjsC22WMtvBzVFNfeHzvNVHHtezdLNsxz3PoLzFD825QvV15YdO35Ddu03sdy-HZhQ0nOkw6nyXOnYpaUd2Li5blDZGyiJtPgjt7tpbxoHJX728TXg8HTTzSoBAsbe1G-svQLQen7tlNixHoHX7fgbA3HENT0TrmWeKtDx2WYtQcs5kyx1lYo2Y22MnDF3xn4dsjgT593JgPR2l8v43zvi3VmjB248z5s-KqmCz7YP2tTPBP8WR-wngA0Q09gGjVhhCBY4Ql6ow7HMGwOsZjHjojYU2e9dRaDsKjVG0QMFkyoXtKm4tQIBXEjwRgTNlYp0PNnViWsTzjDLs6OsVlt6SJtJEc0M0ZrlkcG2ORPE361yHodVRMEu6aJzGqUB+ls4sVLDYfY2MDiWMkfeSyS90gIwEVA1IKQHH21Djg2h-lGgEMuLde6csn693kU4i+KTmokDSb-S4sswbMNYd47R+lwEuEgZImaDZfDRBYnRSsT4ZgG2WOeSiNtNov0ofk5JyjUlgHSVQZmRD2Zc1Id3chpNHEOxoaMopJSGFlP-orHQWi9JqwWKkUsUwGzTEkeaBG4SSxbCCQEU0NYAgJJDr6KQAB3MgIJRBQCII0dAFAQjvFUMoN4w0Z7sPnkWOYExqzrwNs6fY7S6yTBrBiKsKU-EugGRQvJKZXnvKwJ875YBfn-OnHOeQC4NKrg3FuHcoK56HmLNCYqBwTR+DrO2LeRYOwTHcJ4W5UxyyREef3agigICc2kqSrClK1xdVpWw+lvjYHPmxpvBYs1Ub3h8DqagC1aypANpZbsLljiDOxXxNxRBPJBSklOWc0qYrUu6rssacNGWFQWFRXwbg16ausgsHlt5lgBEkRWZiwqsEtTUdatq0kXUcIiCEmElkdh6wxOje87h6mVlrClbwgrir9NNVipZFqxIwRjcFONXj4o1LVuMGYz5comUCVEDGmaMTOBMhkU5dzGkRoUbQMQ7sJREAAOqMCgg9L5McGhNAkPG8FqJxgxDbBZNFFYth5QfGkM8dlTl+G5SlE1bozWlt9EO0QI7LhEFoAyAgBA2Bjzna8RdYCzldt2JRARBpwiZpMrqssZEdY6wrHMAdu1L3XqYKoaZz6XiSDffpHU3ZdU5RaaIg4LhwmWN1dCsYPqxhxAHbk0V4rJX2vJdhTSTr5XVL2W60NurAk9rRQ4bhnKEDVh4Skea8Q4j0WmCRwW1DAy5KtU1TJ0ZYwLLtqSUj78iDiakE1JDasqJ2Ugcc3tlithViWseM8bgGzmg7PRDaxbFlJgU7XZTkmpVUZlbR1Qam4bWNxqBm8CMMQHsuTx1Idz3AcqE5iqz8mROKJZHZmmlqVPcmQINRQzBerKEUOhSKHRfgxVcxCBGEwbw6mSOkE0dgBGmPyhWLWhpolGgxBiItp6S3WYi4p6LKjy0Sfi4l5LtBUtyU+D8eQKk1Iypy4gHOurTSiPYsaAId5jZAaq6VqitWEiiOE2ayLSmROdfa4FOLk5aAAGlFCCAwiQVLyAZxjZshiJw4xsYLFK24AmBnOnGb2AfY8sjQtydKDZsObX-IdYO2YCQCXUs9b6xhOQjnst0p8ep9shVSsI2dPYbVRpt30UqzMZbGO6vrd+1XGgpHLXidjQuhHda4YWX0aZSFoiUX3jSEvA1pWj7eGiHiSzf3ScRfJztynGga3JwYxCDWiNzQ+eNDsFeLPuGlkcEaQJdl2MVWJ6fUjUHBxEG-nfZQXsX2Iep+L-KAHHCXhStEOYlZwnVg9UiXUFk7kLGyPiUQ9AIBwAsOJiU9HXUQgALQHDPOMFKUw-BlkcGvER+XMRGgziYxIGLeck7KDcKoDwrr1AQwHhNqInB7FCQcxE1F7xoi1vWA2HKKwHB541sL-d89Lt8AbfUebjSmiouaCvhy5hbAOEzkypWG9+6eaJj+9cW86LbBY6as1uGmk4-4JXQSUgpGPPYzXQzllKM-sD1qVaZ++MNGz9ltvvtImx74fLyNLL2GzunBr4+RWKZcRLOmAMc+DhP-suI9Sa8rESI5Y1YraIihy4iGsqa8Q2MEGe+U+w8ZIo8Mc-utaZuheM0k2GsFkrGli8C28P6Zs2M0BcwsBGuaer8CBdcSB+upSVAf+acswiMsubKJkfSvgEBS8UBpyZBAQFBjefOCi7+uCLsTURAPsYAjByUxU9SxqPaOmDY5WNkyM+WN4M0NYZY6QSI8BSSKyB+Dc4hrcjAkA0hiAVYcwWsQB3YqKrEyQEB9SbeyMUi2qgSJ6r+kaIhhSUa7iGiaBYugeEQcQNoGcCQcwl45oOs7SOwaGuiOs2q7Yfguh58IyBhYE6yv+6BgRqIswT4NelEeavaf61kvauqUiXCJkewoiqegh6eu0uKHyXyPyfyZhNka8NoGmJs5Ya0duxsrg0IrKUQGsMwRqAhHhCiYqEqrRZY7eJ43OVEshGQWqCQk2aCSelEzhyR1IsW44sarROolkpYqQpmAiD+Ooma2qKOOcZY7giCUiWxdAw6uuE6FAU6BKs6eeWRBeQ+9S8wpyLEK6I+82KIGc9SyM3Chq7Y1YrgDxOuo6d6D6T6HxjQ4g0xrgFiemyMdyFY7gmahy2crhSIr4gSsJTxo6sGbM8GKJ6A+x+wjEWwAQhoxUoi26-xkC9gBsGQ5mbYXgG2WKrRNYKO7gOopWRopoGcwJiA8wiMA+2clEhaqMfJpMZGUxXxrevg0I8QSICQt4Ow3YCuEw5mjgAioSiRSpP4W2QOqcYKh4AG1WaOopmOuUCKTgGcM0DEwpmU5pxIlpO2oORSIOTUrR3meGhazEpoDkdESIT47E1slYhk3Y3phAvpZ6-pZI4hkh0xxUzgbYKQcQjgBsrE2GxsgSEwUwLE8Z+aAiSZRQPh22Z6exaptpTgUicIc2o+mIWqHYMI+8+wy+bgUwNZ1IcJN6dBLIhuzw1J+xW+toiQHYNYo+bg7SuouMiQwx8Qc5eI2QQAA */
   id: 'Optimistic Cart',
 
   tsTypes: {} as import('./index.typegen.d.ts').Typegen0,
@@ -61,7 +61,6 @@ export const optimisticCartMachine = createMachine({
       | { type: 'OPEN_CART_DRAW' }
       | { type: 'CLOSE_CART_DRAW' },
     services: {} as {
-      sortParentMessages: { data: unknown };
       asyncAddToCart: { data: { cart: Cart } };
       asyncCreateCart: { data: { cart: Cart } };
       asyncRemoveFromCart: { data: { cart: Cart } };
@@ -73,38 +72,25 @@ export const optimisticCartMachine = createMachine({
 
   states: {
     'Sort Messages from Parent': {
-      states: {
-        'Sort Messages': {
-          on: {
-            UPDATE_ITEM: {
-              target: 'Sort Messages',
-              internal: true,
-            },
+      description: `Messages incoming from the parent machine are recieved here.`,
+      on: {
+        ADD_ITEM: {
+          target: 'Sort Messages from Parent',
+          actions: 'sendCartItemEventToParent',
+        },
 
-            REMOVE_ITEM: {
-              target: 'Sort Messages',
-              internal: true,
-            },
+        UPDATE_ITEM: {
+          target: 'Sort Messages from Parent',
+          internal: true,
+          actions: 'sendCartItemEventToParent',
+        },
 
-            ADD_ITEM: {
-              target: 'Sort Messages',
-              internal: true,
-            },
-
-            SEND_TO_CART_QUEUE: {
-              target: 'Sort Messages',
-              internal: true,
-            },
-          },
-
-          invoke: {
-            src: 'sortParentMessages',
-          },
+        REMOVE_ITEM: {
+          target: 'Sort Messages from Parent',
+          internal: true,
+          actions: 'sendCartItemEventToParent',
         },
       },
-
-      initial: 'Sort Messages',
-      description: `Messages incoming from the parent machine are recieved here.`,
     },
 
     Async: {
@@ -249,7 +235,7 @@ export const optimisticCartMachine = createMachine({
         Idle: {
           on: {
             SEND_TO_CART_QUEUE: {
-              target: 'Execute async action',
+              target: 'Send Cart Working to Parent',
               actions: 'addActionToAsyncQueue',
             },
           },
@@ -263,7 +249,7 @@ export const optimisticCartMachine = createMachine({
               cond: 'thereAreMoreAsyncActionsInQueue',
             },
             {
-              target: 'Send Cart Update To Parent',
+              target: 'Send Cart Success to Parent',
               actions: ['assignOptimisticCart', 'clearOptimisticQueue'],
             },
           ],
@@ -273,13 +259,6 @@ export const optimisticCartMachine = createMachine({
               internal: false,
               actions: 'addActionToAsyncQueue',
             },
-          },
-        },
-
-        'Send Cart Update To Parent': {
-          always: {
-            target: 'Send Cart Success to Parent',
-            actions: 'sendCartUpdateToParent',
           },
         },
 

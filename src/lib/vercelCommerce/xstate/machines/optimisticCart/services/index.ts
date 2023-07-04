@@ -1,29 +1,9 @@
 import { type OptimisticCartMachineOptions } from '..';
-import { type CartEvents } from '../../storeMachine';
 
 export const defaultServices: Pick<
   OptimisticCartMachineOptions['services'],
-  'sortParentMessages' | 'checkAsyncQueue' | 'checkOptimisticQueue'
+  'checkAsyncQueue' | 'checkOptimisticQueue'
 > = {
-  sortParentMessages: () => (sendBack, onReceive) => {
-    onReceive(
-      (
-        message:
-          | CartEvents
-          | {
-              type: 'SEND_TO_CART_QUEUE';
-              data: CartEvents;
-            }
-      ) => {
-        if (message.type !== 'SEND_TO_CART_QUEUE') {
-          sendBack({
-            type: 'SEND_TO_CART_QUEUE',
-            data: message,
-          });
-        }
-      }
-    );
-  },
   checkAsyncQueue: (context) => (sendBack) => {
     /**
      * Cart Queue
