@@ -81,20 +81,6 @@ export const CommerceProvider = ({ children }: { children: ReactNode }) => {
         return null;
       },
     },
-    /**
-     * Actions
-     *
-     * Actions are functions that are executed when a transition occurs.
-     * Here we load actions from the actions folder and assign them to machine.
-     */
-    actions,
-    /**
-     * Guards
-     *
-     * Guards are functions that are executed when a transition occurs.
-     * They are used to determine if a transition should occur
-     */
-    guards,
   });
 
   return (
