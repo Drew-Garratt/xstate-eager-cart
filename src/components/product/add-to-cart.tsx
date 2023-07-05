@@ -22,7 +22,7 @@ export function AddToCart({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const disbled = false;
+  const disabled = false;
   const sendAddToCart = useAddItem();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function AddToCart({
     }
   }, [searchParams, variants, setSelectedVariantId]);
 
-  const isMutating = disbled || isPending;
+  const isMutating = disabled || isPending;
 
   async function handleAdd() {
     if (!availableForSale) return;
