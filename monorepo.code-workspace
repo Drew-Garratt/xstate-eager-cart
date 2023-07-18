@@ -5,6 +5,10 @@
       "path": "."
     },
     {
+      "name": "🍂 commerce-app",
+      "path": "apps/commerce-app"
+    },
+    {
       "name": "🍂 nextjs-app",
       "path": "apps/nextjs-app"
     },
@@ -39,10 +43,14 @@
     {
       "name": "📦 ts-utils",
       "path": "packages/ts-utils"
-    }
+    },
     {
       "name": "📦 ui-lib",
       "path": "packages/ui-lib"
+    },
+    {
+      "name": "📦 xstate-commerce",
+      "path": "packages/xstate-commerce"
     }
   ],
   "extensions": {
@@ -73,23 +81,27 @@
       "./apps/nextjs-app",
       "./apps/remix-app",
       "./apps/vite-app",
+      "./apps/commerce-app",
       "./packages/api-gateway",
       "./packages/common-i18n",
       "./packages/core-lib",
       "./packages/db-main-prisma",
       "./packages/eslint-config-bases",
       "./packages/ts-utils",
-      "./packages/ui-lib"
+      "./packages/ui-lib",
+      "./packages/xstate-commerce"
     ],
     "jest.disabledWorkspaceFolders": [
       "🍂 nextjs-app",
+      "🍂 commerce-app",
       "📦 eslint-config-bases",
       "📦 db-main-prisma",
       "📦 common-i18n",
       "🍂 remix-app",
       "📦 ui-lib",
       "📦 core-lib",
-      "🍂 vite-app"
+      "🍂 vite-app",
+      "📦 xstate-commerce"
     ]
   }
 }

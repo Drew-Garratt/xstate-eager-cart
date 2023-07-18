@@ -34,11 +34,11 @@ const rules = {
       `yarn stylelint --allow-empty-input --ignore-disables --config ./stylelint.config.js --max-warnings 25 --color ${concatFilesForStylelint(
         filenames
       )}`,
-      `prettier --write ${concatFilesForPrettier(filenames)}`,
+      `npx prettier --write ${concatFilesForPrettier(filenames)}`,
     ];
   },
   '**/*.{json,md,mdx,html,yml,yaml,scss}': (filenames) => {
-    return [`prettier --write ${concatFilesForPrettier(filenames)}`];
+    return [`npx prettier --write ${concatFilesForPrettier(filenames)}`];
   },
 };
 

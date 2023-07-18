@@ -1,0 +1,35 @@
+{
+  "name": "@your-org/xstate-commerce",
+  "version": "3.15.1",
+  "private": true,
+  "module": "dist/index.esm.js",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "packageManager": "yarn@4.0.0-rc.48",
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf ./dist ./build ./tsconfig.tsbuildinfo ./node_modules/.cache",
+    "fix-all-files": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs --fix",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.cjs,.mjs --cache --cache-location ../../.cache/eslint/ui-lib.eslintcache",
+    "serve-storybook": "sirv build/storybook --cors --port 8888",
+    "test": "run-s test-unit",
+    "test-unit": "echo \"No unit tests yet\"",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@xstate/react": "3.2.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "type-fest": "3.13.0",
+    "xstate": "4.38.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "@your-org/eslint-config-bases": "workspace:^",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.6"
+  }
+}
