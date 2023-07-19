@@ -1,12 +1,12 @@
 'use client';
 
-import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   type ProductOption,
   type ProductVariant,
-} from '@/lib/vercelCommerce/types';
+} from '@your-org/xstate-commerce/types';
+import clsx from 'clsx';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createUrl } from 'lib/utils';
 
 type ParamsMap = {

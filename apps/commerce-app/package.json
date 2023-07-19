@@ -59,6 +59,7 @@
     "@vercel/og": "0.5.8",
     "@xstate/inspect": "0.8.0",
     "@xstate/react": "3.2.2",
+    "@your-org/xstate-commerce": "workspace:^",
     "autoprefixer": "10.4.14",
     "clsx": "1.2.1",
     "eslint-config-prettier": "^8.8.0",

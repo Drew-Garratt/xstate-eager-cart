@@ -1,16 +1,15 @@
+import { HIDDEN_PRODUCT_TAG } from '@your-org/xstate-commerce/adapters/commercejs/constants';
+import { type Image } from '@your-org/xstate-commerce/types';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { type Image } from '@/lib/vercelCommerce/types';
-import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
 import { AddToCart } from 'components/product/add-to-cart';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
 import { getProduct } from 'lib/adapter';
-import { HIDDEN_PRODUCT_TAG } from 'lib/commercejs/constants';
 
 export const runtime = 'edge';
 

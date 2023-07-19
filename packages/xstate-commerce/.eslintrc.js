@@ -20,7 +20,7 @@ module.exports = {
     ...getDefaultIgnorePatterns(),
     '/storybook-static',
     '**/typegen.ts',
-    '**/index.typegen.d.ts',
+    '**/*.typegen.d.ts',
   ],
   extends: [
     '@your-org/eslint-config-bases/typescript',

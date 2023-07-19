@@ -1,8 +1,7 @@
 import { Dialog } from '@headlessui/react';
-import { AnimatePresence, motion } from 'framer-motion';
 
-import { useCartLinesIds } from '@/lib/cart/useCartLines';
-import { useCartTotals } from '@/lib/cart/useCartTotals';
+import { useCartLinesIds, useCartTotals } from '@your-org/xstate-commerce';
+import { AnimatePresence, motion } from 'framer-motion';
 import CloseIcon from 'components/icons/close';
 import ShoppingBagIcon from 'components/icons/shopping-bag';
 import Price from 'components/price';

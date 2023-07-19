@@ -62,7 +62,7 @@ const getEslintFixCmd = ({
       .map((f) => `"./${path.relative(cwd, f)}"`)
       .join(' '),
   ].join(' ');
-  return `npx eslint ${args}`;
+  return `eslint ${args}`;
 };
 
 /**

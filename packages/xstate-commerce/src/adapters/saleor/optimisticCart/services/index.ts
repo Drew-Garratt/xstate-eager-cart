@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart';
+import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart/optimisticCartMachine';
 import { defaultServices } from '../../../../machines/optimisticCart/services';
 import { asyncAddToCart } from './asyncAddToCart';
 import { asyncCreateCart } from './asyncCreateCart';

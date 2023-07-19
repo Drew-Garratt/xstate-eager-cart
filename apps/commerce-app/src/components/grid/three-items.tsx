@@ -1,5 +1,5 @@
+import type { Product } from '@your-org/xstate-commerce/types';
 import Link from 'next/link';
-import type { Product } from '@/lib/vercelCommerce/types';
 import { GridTileImage } from 'components/grid/tile';
 import { getCollectionProducts } from 'lib/adapter';
 

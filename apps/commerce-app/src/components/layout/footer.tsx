@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import { type Menu } from '@your-org/xstate-commerce/types';
 import Link from 'next/link';
 
-import { type Menu } from '@/lib/vercelCommerce/types';
 import GitHubIcon from 'components/icons/github';
 import LogoIcon from 'components/icons/logo';
 import VercelIcon from 'components/icons/vercel';

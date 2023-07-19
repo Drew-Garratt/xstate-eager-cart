@@ -1,6 +1,6 @@
+import { useCartLine } from '@your-org/xstate-commerce';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCartLine } from '@/lib/cart/useCartLine';
 import Price from '../price';
 import DeleteItemButton from './delete-item-button';
 import EditItemQuantityButton from './edit-item-quantity-button';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Inter } from 'next/font/google';
 import { type ReactNode, Suspense } from 'react';
 import Navbar from 'components/layout/navbar';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCartDrawOpen } from '@/lib/cart/useCartDrawOpen';
+import { useCartDrawOpen } from '@your-org/xstate-commerce';
 import CartIcon from 'components/icons/cart';
 import CartModal from './modal';
 

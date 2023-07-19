@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '..';
+import { type OptimisticCartMachineOptions } from '../optimisticCartMachine';
 
 const ifThereAreErrors: OptimisticCartMachineOptions['guards']['ifThereAreErrors'] =
   (context) => {

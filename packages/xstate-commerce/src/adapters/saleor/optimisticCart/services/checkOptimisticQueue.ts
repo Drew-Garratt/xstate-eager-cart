@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart';
+import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart/optimisticCartMachine';
 
 export const checkOptimisticQueue: OptimisticCartMachineOptions['services']['checkOptimisticQueue'] =
   (context) => (sendBack) => {

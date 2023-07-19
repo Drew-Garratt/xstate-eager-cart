@@ -19,7 +19,13 @@
       "@/types/*": ["src/lib/vercelCommerce/types/*"],
       "@/styles/*": ["./styles/*"],
       "@/public/*": ["../public/*"],
-      "@/themes/*": ["./themes/*"]
+      "@/themes/*": ["./themes/*"],
+      "@your-org/xstate-commerce/*": [
+        "../../../packages/xstate-commerce/src/*"
+      ],
+      "@your-org/xstate-commerce": [
+        "../../../packages/xstate-commerce/src/index"
+      ]
     },
     "strictNullChecks": true,
     "plugins": [

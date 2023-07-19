@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '..';
+import { type OptimisticCartMachineOptions } from '../optimisticCartMachine';
 
 export const defaultServices: Pick<
   OptimisticCartMachineOptions['services'],

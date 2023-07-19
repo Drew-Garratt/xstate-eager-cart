@@ -1,13 +1,16 @@
 'use client';
 
+import { CommerceProvider } from '@your-org/xstate-commerce';
+import { services } from '@your-org/xstate-commerce/adapters/commercejs/optimisticCart';
+import { cartMachine } from '@your-org/xstate-commerce/machines/optimisticCart';
 import { type ReactNode } from 'react';
 import XStateInspect from '@/components/xstate/inspect';
-import { CommerceProvider } from '../commerce/CommerceProvider';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <CommerceProvider>
-      {process.env.NODE_ENV === 'development' && <XStateInspect />}
+    <CommerceProvider cartMachine={cartMachine({ services })}>
+      {process.env.NODE_ENV === 'development' &&
+        typeof window !== undefined && <XStateInspect />}
       {children}
     </CommerceProvider>
   );

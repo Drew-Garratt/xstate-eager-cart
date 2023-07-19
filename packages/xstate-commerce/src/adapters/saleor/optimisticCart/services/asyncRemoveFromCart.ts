@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart';
+import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart/optimisticCartMachine';
 import { saleorFetch } from '../../fetcher';
 import { CheckoutDeleteLineDocument } from '../../generated/graphql';
 import { saleorCheckoutToVercelCart } from '../../mappers';

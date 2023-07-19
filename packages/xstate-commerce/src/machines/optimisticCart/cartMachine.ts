@@ -1,8 +1,8 @@
 import actions from './actions';
 import guards from './guards';
+import { type OptimisticCartMachineOptions } from './optimisticCartMachine';
+import { optimisticCartMachine } from './optimisticCartMachine';
 import { defaultServices } from './services';
-import { type OptimisticCartMachineOptions } from '.';
-import { optimisticCartMachine } from '.';
 
 type AsyncServices = Pick<
   OptimisticCartMachineOptions['services'],
@@ -14,7 +14,7 @@ type AsyncServices = Pick<
 /**
  * Import and configure the cart machine
  */
-export default function cartMachine(services: AsyncServices) {
+export function cartMachine({ services }: { services: AsyncServices }) {
   return optimisticCartMachine.withConfig({
     services: { ...defaultServices, ...services },
     actions,

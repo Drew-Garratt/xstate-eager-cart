@@ -1,12 +1,12 @@
 'use client';
 
 import { Dialog } from '@headlessui/react';
+import { type Menu } from '@your-org/xstate-commerce/types';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { type Menu } from '@/lib/vercelCommerce/types';
 import CloseIcon from 'components/icons/close';
 import MenuIcon from 'components/icons/menu';
 import Search from './search';

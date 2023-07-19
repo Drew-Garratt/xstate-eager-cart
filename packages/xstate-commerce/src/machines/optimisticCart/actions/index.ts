@@ -1,8 +1,8 @@
 import { assign, raise } from 'xstate';
 import { sendParent } from 'xstate/lib/actions';
-import type { OptimisticCartMachineOptions } from '..';
 import { type Cart } from '../../../types/cart';
 import { findLineItem } from '../../../utils/findLineItem';
+import type { OptimisticCartMachineOptions } from '../optimisticCartMachine';
 import { optimisticAddToCart } from './optimisticAddToCart';
 
 const addSuccessMessage: OptimisticCartMachineOptions['actions']['addSuccessMessage'] =

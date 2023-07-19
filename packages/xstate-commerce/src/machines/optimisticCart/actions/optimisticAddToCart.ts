@@ -1,7 +1,7 @@
 import { assign } from 'xstate';
-import { type OptimisticCartMachineOptions } from '..';
 import { defaultCart } from '../../../utils';
 import { findLineItem } from '../../../utils/findLineItem';
+import { type OptimisticCartMachineOptions } from '../optimisticCartMachine';
 
 export const optimisticAddToCart: OptimisticCartMachineOptions['actions']['optimisticAddToCart'] =
   assign({

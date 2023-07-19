@@ -26,7 +26,7 @@ const rules = {
     });
   },
   '**/*.{json,md,mdx,css,html,yml,yaml,scss}': (filenames) => {
-    return [`npx prettier --write ${concatFilesForPrettier(filenames)}`];
+    return [`prettier --write ${concatFilesForPrettier(filenames)}`];
   },
 };
 

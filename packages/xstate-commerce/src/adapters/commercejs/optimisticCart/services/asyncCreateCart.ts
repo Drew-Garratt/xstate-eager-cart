@@ -1,4 +1,4 @@
-import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart';
+import { type OptimisticCartMachineOptions } from '../../../../machines/optimisticCart/optimisticCartMachine';
 import { commercejsGetCart } from '../../operations/getCart';
 import { commercejsCleanCart } from '../../utils/cleanCart';
 

@@ -1,3 +1,4 @@
+import { type Product, type Menu, type Page } from '../../types';
 import { saleorFetch } from './fetcher';
 import {
   GetCategoryProductsBySlugDocument,
@@ -11,7 +12,6 @@ import {
   type MenuItemFragment,
 } from './generated/graphql';
 import { saleorProductToVercelProduct } from './mappers';
-import { type Product, type Menu, type Page } from './types';
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
   const saleorProduct = await saleorFetch({
